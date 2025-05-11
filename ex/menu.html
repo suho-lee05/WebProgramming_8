@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MENU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        body {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #mainContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 타이틀 영역 */
+        #header {
+            margin-bottom: 50px; /* 메뉴와의 간격 */
+        }
+        #titleImg {
+            width: 500px;
+            height: auto;
+        }
+
+        /* 메뉴 버튼 영역 */
+        #menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .optionImg {
+            width: 430px;
+            height: 280px;
+        }
+    </style>
+</head>
+<body>
+    <div id="mainContent">
+        <!-- 헤더 영역 -->
+        <div id="header">
+            <img src="https://placehold.co/500x150?text=Game+Title" id="titleImg" alt="Game Title">
+        </div>
+
+        <!-- 메뉴 버튼 영역 -->
+        <div id="menu">
+            <button id="playBtn">
+                <img src="https://placehold.co/350x150?text=Play" class="optionImg" alt="Play">
+            </button>
+            <button id="optionBtn">
+                <img src="https://placehold.co/350x150?text=Options" class="optionImg" alt="Options">
+            </button>
+            <button id="exitBtn">
+                <img src="https://placehold.co/350x150?text=Exit" class="optionImg" alt="Exit">
+            </button>
+        </div>
+    </div>
+</body>
+</html>
