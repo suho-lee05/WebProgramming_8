@@ -6,13 +6,13 @@
     <title>Brick Breaker</title>
     <style>
         * {
-        margin: 0;
-        padding: 0;
+            margin: 0;
+            padding: 0;
         }
         canvas {
-        background: #eee;
-        display: block;
-        margin: 0 auto;
+            background: #eee;
+            display: block;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -48,6 +48,9 @@
         let score = 0;
         let lives = 3;
 
+        //벽돌 다가오는 setInterval 변수
+        let brickDown;
+
         // 키 입력
         let rightPressed = false;
         let leftPressed = false;
@@ -55,10 +58,10 @@
         // 벽돌 배열 초기화
         const bricks = [];
         for (let c = 0; c < brickColumnCount; c++) {
-        bricks[c] = [];
-        for (let r = 0; r < brickRowCount; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
-        }
+            bricks[c] = [];
+            for (let r = 0; r < brickRowCount; r++) {
+                bricks[c][r] = { x: 0, y: 0, status: 1 };
+            }
         }
 
         // 이벤트 리스너
@@ -67,13 +70,13 @@
         //document.addEventListener("mousemove", mouseMoveHandler);
 
         function keyDownHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
-        else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
+            if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
+            else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
         }
 
         function keyUpHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
-        else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
+            if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
+            else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
         }
 
         // function mouseMoveHandler(e) {
@@ -85,89 +88,113 @@
 
         // 공 그리기
         function drawBall() {
-        ctx.beginPath();
-        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-        ctx.fillStyle = ballColor;
-        ctx.fill();
-        ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ballColor;
+            ctx.fill();
+            ctx.closePath();
         }
 
         // 패들 그리기
         function drawPaddle() {
-        ctx.beginPath();
-        ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
         }
 
         // 벽돌 그리기
         function drawBricks() {
-        for (let c = 0; c < brickColumnCount; c++) {
-            for (let r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status === 1) {
-                const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
-                ctx.fill();
-                ctx.closePath();
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        if(bricks[c][r].x === 0 && bricks[c][r].y === 0){
+                       /* const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;*/
+                            bricks[c][r].x = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                            bricks[c][r].y = r * (brickHeight + brickPadding) + brickOffsetTop;
+                        }
+                        ctx.beginPath();
+                        ctx.rect(bricks[c][r].x, bricks[c][r].y, brickWidth, brickHeight);
+                        ctx.fillStyle = "#0095DD";
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
             }
-            }
-        }
         }
 
         // 충돌 감지
         function collisionDetection() {
-        for (let c = 0; c < brickColumnCount; c++) {
-            for (let r = 0; r < brickRowCount; r++) {
-            const b = bricks[c][r];
-            if (b.status === 1) {
-                if (
-                x > b.x &&
-                x < b.x + brickWidth &&
-                y > b.y &&
-                y < b.y + brickHeight
-                ) {
-                dy = -dy;
-                b.status = 0;
-                score++;
-                if (score === brickRowCount * brickColumnCount) {
-                    alert("YOU WIN, CONGRATULATIONS!");
-                    document.location.reload();
-                }
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const b = bricks[c][r];
+                    if (b.status === 1) {
+                        if (
+                            x + ballRadius > b.x &&
+                            x - ballRadius < b.x + brickWidth &&
+                            y + ballRadius > b.y &&
+                            y - ballRadius < b.y + brickHeight
+                            ) {
+                            dy = -dy;
+                        b.status = 0;
+                        score++;
+                        if (score === brickRowCount * brickColumnCount) {
+                            alert("YOU WIN, CONGRATULATIONS!");
+                            clearInterval(brickDown);
+                            document.location.reload();
+                        }
+                    }
                 }
             }
-            }
         }
-        }
+    }
 
-        function drawScore() {
+    function drawScore() {
         ctx.font = "16px Arial";
         ctx.fillStyle = "#0095DD";
         ctx.fillText("Score: " + score, 8, 20);
-        }
+    }
 
-        function drawLives() {
+    function drawLives() {
         ctx.font = "16px Arial";
         ctx.fillStyle = "red";
         ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
-        }
+    }
 
-        function randomColor() {
+    function randomColor() {
         const letters = "0123456789ABCDEF";
         let color = "#";
         for (let i = 0; i < 6; i++) {
             color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
+    }
+
+    //벽돌 아래로
+    function brickMove(){
+        for (let c = 0; c < brickColumnCount; c++) {
+            for (let r = 0; r < brickRowCount; r++) {
+                bricks[c][r].y += 5; //난이도 별로 여기 수정
+            }
         }
+    }
+
+    //벽돌 바닥에 닿았는지
+    function checkBricksAtBottom(){
+        for(let c = 0; c<brickColumnCount; c++){
+            for(let r = 0; r<brickRowCount; r++){
+                if(bricks[c][r].status === 1 && bricks[c][r].y >= canvas.height - paddleHeight - brickHeight/2){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
         // 메인 그리기 함수
-        function draw() {
+    function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         drawBricks();
@@ -176,19 +203,46 @@
         collisionDetection();
         drawScore();
         drawLives();
+        let ifBricksAtBottom = checkBricksAtBottom();
 
         // 벽 충돌
-        if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) dx = -dx;
+        if (x + dx < ballRadius || x + dx > canvas.width - ballRadius){
+            let originalDx = dx;
+            dx = 0;
+            dy = 0;
+            setTimeout(()=>{
+                dx = -originalDx;
+                dy = 3;
+            }, 1000);
+        }
+
         if (y + dy < ballRadius) {
             dy = -dy;
             ballColor = randomColor();
         } else if (y + dy > canvas.height - ballRadius) {
             if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
+                dy = -dy;
             } else {
+                lives--;
+                if (!lives) {
+                    alert("GAME OVER");
+                    clearInterval(brickDown);
+                    document.location.reload();
+                } else {
+                    x = canvas.width / 2;
+                    y = canvas.height - 30;
+                    dx = 3;
+                    dy = -3;
+                    paddleX = (canvas.width - paddleWidth) / 2;
+                }
+            }
+        }
+
+        if(ifBricksAtBottom){
             lives--;
             if (!lives) {
                 alert("GAME OVER");
+                clearInterval(brickDown);
                 document.location.reload();
             } else {
                 x = canvas.width / 2;
@@ -196,7 +250,11 @@
                 dx = 3;
                 dy = -3;
                 paddleX = (canvas.width - paddleWidth) / 2;
-            }
+                for(let c = 0; c<brickColumnCount; c++){
+                    for(let r = 0; r< brickRowCount; r++){
+                        bricks[c][r].y -= 100;
+                    }
+                }
             }
         }
 
@@ -211,10 +269,12 @@
         y += dy;
 
         requestAnimationFrame(draw);
-        }
+    }
 
-        // 게임 시작
-        draw();
-    </script>
+    // 게임 시작
+    brickDown = setInterval(brickMove,500);
+    draw();
+
+</script>
 </body>
 </html>
