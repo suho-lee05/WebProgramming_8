@@ -1,79 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MENU</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Menu</title>
     <style>
-        * {
+        *{
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: sans-serif;
         }
         body {
-            background-color: white;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background: linear-gradient(to bottom, white, #2e2e4f);
+            font-family: 'Arial', sans-serif;
+            color: white;
         }
+
+
         #mainContent {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            text-align: center;
         }
 
-        /* 타이틀 영역 */
-        #header {
-            margin-bottom: 50px; /* 메뉴와의 간격 */
-        }
-        #titleImg {
-            width: 500px;
-            height: auto;
+        #header img {
+            width: 600px;
+            margin-bottom: 70px;
         }
 
-        /* 메뉴 버튼 영역 */
-        #menu {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
-
-        button {
+        .menuButton {
+            display: block;
+            width: 300px;
+            padding: 20px;
+            margin: 20px auto;
+            font-size: 1.5em;
+            background-color: #444;
+            color: white;
             border: none;
-            background: none;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
-        button:hover {
+
+        .menuButton:hover {
+            background-color: #666;
             transform: scale(1.05);
-        }
-        .optionImg {
-            width: 430px;
-            height: 280px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body>
     <div id="mainContent">
-        <!-- 헤더 영역 -->
         <div id="header">
-            <img src="https://placehold.co/500x150?text=Game+Title" id="titleImg" alt="Game Title">
+            <img src="https://i.namu.wiki/i/zg82dNLsaxHXMEzdAPU_TUd-hOGmHkviUOFO3KgXSMAoiO_E0xUJv9BnY6szFah2QC1DUnfeEIOlkt6MGMCM8A.webp" alt="Game Title">
         </div>
 
-        <!-- 메뉴 버튼 영역 -->
-        <div id="menu">
-            <button id="playBtn">
-                <img src="https://placehold.co/350x150?text=Play" class="optionImg" alt="Play">
-            </button>
-            <button id="optionBtn">
-                <img src="https://placehold.co/350x150?text=Options" class="optionImg" alt="Options">
-            </button>
-            <button id="exitBtn">
-                <img src="https://placehold.co/350x150?text=Exit" class="optionImg" alt="Exit">
-            </button>
-        </div>
-        <!-- 주석처리 -->
+        <button class="menuButton" id="playBtn">Play</button>
+        <button class="menuButton" id="optionBtn">Options</button>
+        <button class="menuButton" id="exitBtn">Exit</button>
     </div>
 </body>
 </html>
