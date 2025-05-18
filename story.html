@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Story</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffffff;
+    }
+
+    .container {
+      width: 960px;
+      height: 600px;
+      display: flex;
+      border: 1px solid black;
+    }
+
+    #left {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    #right {
+      flex: 1;
+      background-color: blue;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    #info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 30px;
+    }
+
+    #number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background-color: black;
+      color: white;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 50%;
+    }
+
+    #now {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    #bar {
+      background-color: aqua;
+      padding: 0 10px;
+      height: 30px;
+      line-height: 30px;
+    }
+
+    #out {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    #out img {
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 1px solid black;
+    }
+
+    #game {
+      border: 1px solid blue;
+      border-radius: 16px;
+      flex-grow: 1;
+      margin-top: 20px;
+    }
+
+    #board {
+      background-color: white;
+      border-radius: 16px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    #stadium {
+      width: 260px;
+      height: 260px;
+      background-color: green;
+      margin: 0 auto;
+      border-radius: 10px;
+    }
+
+    #player {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      
+    }
+
+    #batter {
+      text-align: center;
+    }
+
+    #batterImg {
+      background-color: orange;
+      width: 130px;
+      height: 220px;
+      margin-top: 5px;
+    }
+
+    #playerList {
+      background-color: red;
+      width: 130px;
+      height: 230px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="left">
+      <div id="info">
+        <div id="now">
+          <span id="number">7</span>
+          <span>회말</span>
+        </div>
+        <div id="bar">파괴 퍼센트</div>
+        <div id="out">
+          <span>OUT</span>
+          <img>
+          <img>
+          <img>
+        </div>
+      </div>
+      <div id="game"></div>
+    </div>
+
+    <div id="right">
+      <div id="board">
+        <div id="stadium"></div>
+        <div id="player">
+          <div id="batter">
+            CURRENT<br>BATTER<br>
+            <div id="batterImg"></div>
+          </div>
+          <div id="playerList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
