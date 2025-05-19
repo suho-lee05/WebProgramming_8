@@ -65,15 +65,37 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      width: 108px;
     }
 
-    #bar {
-      background-color: aqua;
-      padding: 0 10px;
+    #barContainer {
+      position: relative;
       height: 30px;
       line-height: 30px;
+      width: 200px; 
+      background-color: #ddd; 
+      border-radius: 8px;
+      margin: 0 auto;
     }
 
+    #bar{
+      width: 60%; 
+      background-color: orange; 
+      height: 100%; 
+      border-radius: 8px;
+    }
+
+    #barText {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    height: 100%;
+    line-height: 30px;
+    font-weight: bold;
+    color: black;
+    }
     #out {
       display: flex;
       align-items: center;
@@ -170,7 +192,10 @@
           <span id="number">7</span>
           <span>회말</span>
         </div>
-        <div id="bar">파괴 퍼센트</div>
+        <div id="barContainer">
+          <div id="bar"></div>
+          <span id="barText">블록 파괴 60%</span>
+        </div>
         <div id="out">
           <span>OUT</span>
           <img src="img/noOut.png">
