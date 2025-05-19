@@ -84,7 +84,6 @@
       width: 20px;
       height: 20px;
       background-color: white;
-      border: 1px solid black;
     }
 
     #game {
@@ -126,14 +125,40 @@
     #batterImg {
       background-color: orange;
       width: 130px;
-      height: 220px;
+      height: 130px;
       margin-top: 5px;
     }
 
     #playerList {
+      width: 130px;
+      list-style: none;
+    }
+    #playerList li{
       background-color: red;
       width: 130px;
-      height: 230px;
+      text-align: center;
+      color: white;
+      border-bottom: 1px solid white;
+    }
+    #playerList li:nth-of-type(1){
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+    #playerList li:nth-of-type(9){
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+    #playerList li span{
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+      background-color: black;
+      color: white;
+      text-align: center;
+      line-height: 20px;
+      border-radius: 16px;
+      padding-left: 4px;
+      padding-right: 4px;
     }
   </style>
 </head>
@@ -148,9 +173,9 @@
         <div id="bar">파괴 퍼센트</div>
         <div id="out">
           <span>OUT</span>
-          <img>
-          <img>
-          <img>
+          <img src="img/noOut.png">
+          <img src="img/noOut.png">
+          <img src="img/noOut.png">
         </div>
       </div>
       <div id="game"></div>
@@ -158,13 +183,24 @@
 
     <div id="right">
       <div id="board">
-        <div id="stadium"></div>
+        <img id="stadium" src="img/stadium.png">
+
         <div id="player">
           <div id="batter">
             CURRENT<br>BATTER<br>
-            <div id="batterImg"></div>
+            <img id="batterImg" src="img/10uniform.png">
           </div>
-          <div id="playerList"></div>
+          <ul id="playerList">
+            <li><span>51</span> 홍창기</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+          </ul>
         </div>
       </div>
     </div>
