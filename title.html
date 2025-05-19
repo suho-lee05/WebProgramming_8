@@ -13,18 +13,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body, html {
             height: 100%;
             display: flex;
             align-items: center;
         }
-
-        a {
-            text-decoration: none;
-        }
-
-        .container {
+        #container {
             width: 960px;
             height: 600px;
             border: 1px solid black;
@@ -32,67 +26,29 @@
             background-image: url("img/mainBackground2.png");
             background-size: cover;
             background-position: center;
+        }
+        ul {
             list-style: none;
         }
+        ul li {
+            height: 50px;
+            width: 200px;
+        }
         #lists {
-            margin-left: 320px;
-            width: 400px;
+            margin-left: 280px;
+            margin-top : 340px;
+            width: 500px;
             display: flex;
         }
-
+        .listTitle {
+            font-family: 'Bangers';
+            font-size: 50px;
+            color: blue;
+        }
         .menu {
-            position: absolute;
-            width:300px;
-            top: 200px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        #storyMode {
-            float: left;
+            font-family: 'Bangers';
+            font-size: 30px;
             color: blue;
-        }
-
-        #storyMode dl {
-            font-size: 18px;
-        }
-
-        #storyMode dd {
-            font-size: 19px;
-            font-weight: bold;
-        }
-
-        #settings {
-            float: right;
-        }
-
-        #settings dd {
-            color: blue;
-            font-size: 19px;
-            font-weight: bold;
-        }
-
-        #divider {
-            position: absolute;
-            width: 450px;
-            height: 1px;
-            background-color: blue;
-            top: 320px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .settingPlane {
-            display: none;
-            width: 350px;
-            height: 350px;
-            background-color: lightgray;
-            opacity: 0.5;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
         }
     </style>
 <script>
@@ -106,7 +62,16 @@
             $(this).css("color", "blue");
             $(this).css("font-size", "30px");
         })
-        $("settings").click(function() {
+        $("#settings").mouseover(function() {
+            $(this).css("color", "red");
+            $(this).css("font-size", "40px");
+            $(this).css("cursor", "pointer");
+        })
+        $("#settings").mouseout(function() {
+            $(this).css("color", "blue");
+            $(this).css("font-size", "30px");
+        })
+        $("#settings").click(function() {
             alert("Settings clicked!");
         })
     });
@@ -125,7 +90,7 @@
             <li class="listTitle">Arcade</li>
             <li>Your Best : </li>
             <li class="interact">Play Ball!</li>
-            <li class="interact" id="settings">Settings</li>
+            <li id="settings">Settings</li>
         </ul>
     </div>
 </body>
