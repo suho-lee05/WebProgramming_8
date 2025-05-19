@@ -37,7 +37,7 @@
         #lists {
             margin-left: 280px;
             margin-top : 340px;
-            width: 500px;
+            width: 450px;
             display: flex;
         }
         .listTitle {
@@ -50,6 +50,9 @@
             font-size: 30px;
             color: blue;
         }
+        .mute {
+            color: gray;
+        }
         #settingScreen {
             display: none;
             position: absolute;
@@ -60,8 +63,17 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 10;
         }
+        #settingWrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
     </style>
-<script>
+    <script>
     $(document).ready(function() {
         $(".story").mouseover(function() {
             $(this).css("color", "red");
@@ -87,17 +99,18 @@
         $(".arcade").click(function() {
             window.location.href = "story.html";
         })
-        $("#settings").mouseover(function() {
+        $(".settings").mouseover(function() {
             $(this).css("color", "red");
             $(this).css("font-size", "40px");
             $(this).css("cursor", "pointer");
         })
-        $("#settings").mouseout(function() {
+        $(".settings").mouseout(function() {
             $(this).css("color", "blue");
             $(this).css("font-size", "30px");
         })
         let isSettingsClicked = false;
-        $("#settings").click(function() {
+        let isMute = false
+        $(".settings").click(function() {
             isSettingsClicked = !isSettingsClicked;
             if (isSettingsClicked) {
                 $("#settingScreen").css("display", "block");
@@ -107,14 +120,39 @@
                 $("#container").css("filter", "none");
             }
         })
+        $(".mute").mouseover(function() {
+            $(this).css("font-size", "40px");
+            $(this).css("cursor", "pointer");
+        })
+        $(".mute").mouseout(function() {
+            $(this).css("font-size", "30px");
+        })
+        $(".mute").click(function() {
+            isMute = !isMute;
+            if (isMute) {
+                $(".mute").css("color", "blue");
+                $("#bgm").prop("muted", false);
+                $("#bgm").get(0).play();
+            } else {
+                $(".mute").css("color", "gray");
+                $("#bgm").prop("muted", true);
+                $("#bgm").get(0).pause();
+            }
+        })
+        bgmVol = $("#bgm")[0];
+        $("#volumeControl").on("input", function() {
+            bgmVol.volume = $(this).val();
+        });
     });
-</script>
+    </script>
 </head>
 <body>
     <div id="settingScreen">
-        <ul class="menu">
-            <li>Volume</li>
-        </ul>
+        <div id="settingWrapper">
+            <ul class="menu"> 
+                <li class="settings">back</li>
+            </ul>
+        </div>
     </div>
     <div id="container">
         <div id="lists">
@@ -128,7 +166,10 @@
                 <li class="listTitle">Arcade</li>
                 <li>Your Best : </li>
                 <li class="arcade">Play Ball!</li>
-                <li id="settings">Settings</li>
+                <!-- <li class="settings">Settings</li> -->
+                <li class="mute">Title BGM</li>
+                <audio id="bgm" src="sound/hitNrun.mp3" muted loop></audio>
+                vol: <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
             </ul>
         </div>
     </div>
