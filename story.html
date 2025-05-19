@@ -37,11 +37,12 @@
 
     #right {
       flex: 1;
-      background-color: blue;
+      background-color: #f0f8ff; /* 파란색 대신 더 부드러운 색 추천 */
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      padding: 10px;
     }
+
 
     #info {
       display: flex;
@@ -118,11 +119,13 @@
     #board {
       background-color: white;
       border-radius: 16px;
-      height: 100%;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 10px;
+      gap: 10px;
     }
 
     #stadium {
@@ -135,9 +138,10 @@
 
     #player {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 20px; /* 유니폼과 리스트 사이 간격 */
       padding: 10px;
-      
+      align-items: center;
     }
 
     #batter {
@@ -146,14 +150,17 @@
 
     #batterImg {
       background-color: orange;
-      width: 130px;
-      height: 130px;
+      width: 100px;
+      height: 100px;
       margin-top: 5px;
+      border-radius: 8px;
+      object-fit: contain;
     }
 
     #playerList {
-      width: 130px;
+      width: 120px;
       list-style: none;
+      padding: 0;
     }
     #playerList li{
       background-color: red;
@@ -183,6 +190,8 @@
       padding-right: 4px;
     }
   </style>
+  
+
 </head>
 <body>
   <div class="container">
@@ -203,7 +212,15 @@
           <img src="img/noOut.png">
         </div>
       </div>
-      <div id="game"></div>
+      <div id="game">
+        <div style="position: relative; width: 100%; height: 100%;">
+          <canvas id="myCanvas" style="width: 100%; height: 100%; background: #eee; border-radius: 16px;"></canvas>
+          <div id="menu" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;">
+            <button onclick="togglePause()">Pause/Resume (ESC)</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div id="right">
@@ -231,4 +248,5 @@
     </div>
   </div>
 </body>
+<script src="story.js"></script>
 </html>
