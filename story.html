@@ -189,6 +189,30 @@
       padding-left: 4px;
       padding-right: 4px;
     }
+    /* 숨김 처리 */
+    .hidden {
+      display: none !important;
+    }
+
+    /* pause 메뉴 스타일 */
+    .pause-menu {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* 버튼 이미지 공통 스타일 */
+    .optionImg {
+      width: 80px;
+    }
+
+
   </style>
   
 
@@ -218,6 +242,25 @@
           <div id="menu" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button onclick="togglePause()">Pause/Resume (ESC)</button>
           </div>
+
+          <div id="pause" class="hidden pauseset pause-menu">
+            <button type="button" id="optionBtn1">
+              <img src="./img/UIBlock/option.png" alt="OPTION" class="optionImg">
+            </button>
+            
+            <button type="button" class="homeBtn">
+              <img src="./img/UIBlock/home.png" alt="HOME" class="optionImg">
+            </button>
+            <button type="button" class="replayBtn">
+              <img src="./img/UIBlock/replay.png" alt="REPLAY" class="optionImg">
+  
+            </button>
+            <button type="button" class="exitBtn">
+              <img src="./img/UIBlock/exit.png" alt="EXIT" class="optionImg">
+            </button>
+          </div>
+
+
         </div>
       </div>
 

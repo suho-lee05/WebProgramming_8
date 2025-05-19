@@ -36,8 +36,8 @@ function init() {
 
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 4;
-    dy = -4;
+    dx = 3;
+    dy = -3;
     ballColor = "#0095DD";
     paddleX = (canvas.width - paddleWidth) / 2;
     initBricks();
@@ -54,9 +54,12 @@ function initBricks() {
 
 // 이벤트 리스너
 document.addEventListener("keydown", (e) => {
-    if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
-    else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
-    else if (e.key === "Escape") isPaused = !isPaused;
+    if (e.key === "Right" || e.key === "ArrowRight") 
+        rightPressed = true;
+    else if (e.key === "Left" || e.key === "ArrowLeft")
+        leftPressed = true;
+    else if (e.key === "Escape") 
+        togglePause();
 });
 
 document.addEventListener("keyup", (e) => {
@@ -66,7 +69,14 @@ document.addEventListener("keyup", (e) => {
 
 function togglePause() {
     isPaused = !isPaused;
+    const pauseMenu = document.getElementById('pause');
+    if (isPaused) {
+        pauseMenu.classList.remove('hidden');
+    } else {
+        pauseMenu.classList.add('hidden');
+    }
 }
+
 
 // 그리기 함수들
 function drawBall() {
@@ -159,15 +169,17 @@ function collisionDetection() {
     }
 }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+let isDrawing = false;
 
+function draw() {
     if (isPaused) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawPausedScreen();
         requestAnimationFrame(draw);
         return;
     }
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
     drawBall();
     drawPaddle();
@@ -202,13 +214,44 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
+function startGameLoopOnce() {
+    if (!isDrawing) {
+        isDrawing = true;
+        requestAnimationFrame(draw);
+    }
+}
+
+
 function resetBallAndPaddle() {
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 4;
-    dy = -4;
+    dx = 3;
+    dy = -3;
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
 init();
+startGameLoopOnce();
+document.querySelector(".homeBtn").addEventListener("click", () => {
+    window.location.href = "title.html";
+});
+
+document.querySelector(".exitBtn").addEventListener("click",()=>{
+    alert("게임이 종료됩니다.");
+    window.location.href = "about:blank"; // 또는 'title.html' 등
+    
+})
+
+document.querySelector(".replayBtn").addEventListener("click", () => {
+    score = 0;
+    lives = 3;
+    isPaused = false;
+
+    init(); // 초기화
+    document.getElementById('pause').classList.add('hidden');
+    // draw(); 호출 제거!! ✅
+});
+
+
+
 draw();
