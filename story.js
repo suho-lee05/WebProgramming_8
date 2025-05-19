@@ -36,8 +36,8 @@ function init() {
 
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 2;
-    dy = -2;
+    dx = 3;
+    dy = -3;
     ballColor = "#0095DD";
     paddleX = (canvas.width - paddleWidth) / 2;
     initBricks();
@@ -197,8 +197,7 @@ function draw() {
         } else {
             lives--;
             if (!lives) {
-                alert("GAME OVER");
-                document.location.reload();
+                window.location.href = "result.html";
             } else {
                 resetBallAndPaddle();
             }
@@ -225,8 +224,8 @@ function startGameLoopOnce() {
 function resetBallAndPaddle() {
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 2;
-    dy = -2;
+    dx = 3;
+    dy = -3;
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 

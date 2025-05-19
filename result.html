@@ -1,11 +1,166 @@
+<!DOCTYPE HTML5>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Result</title>
-    <link rel="stylesheet" href="result.css">
-    <script src="result.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        *{
+            margin:0 auto;
+            padding:0;
+        }
+
+        body,html {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        li{
+            list-style:none;
+        }
+
+        .container{
+            width:960px;
+            height:600px;
+             border: 1px solid black;
+            overflow:hidden;
+            position:relative;
+        }
+
+        #left{
+            height:580px;
+            width: 300px;
+            background-color: #f0f8ff;
+            position:absolute;
+            left:0;
+            padding:10px;
+            z-index:2;
+        }
+
+        #board{
+            height:560px;
+            width:280px;
+            background-color:#ffffff;
+            border-radius: 16px;
+            padding:10px;
+            display: flex;
+            flex-direction: column;       
+            justify-content: center;      
+            align-items: center;          
+            gap: 10px; 
+        }
+
+        #stadium {
+            width: 260px;
+            height: 260px;
+            background-color: green;
+            border-radius: 10px;
+        }
+
+        #showResult{
+            width:260px;
+            height:300px;
+            border-top:4px solid red;
+            display:flex;
+            flex-direction: column;
+            justify-content:center;
+            align-items: center;
+            gap:10px;
+        }
+
+        #showResult p{
+            color:red;
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        #menuPlane{
+            height:600px;
+            width:960px;
+            overflow:hidden;
+            z-index: 1;
+            position: absolute;
+            left:960px;
+            display:flex;
+            align-items: center;
+        }
+
+        #menuPlane img{
+            height:600px;
+        }
+
+        #menu{
+            color:blue;
+        }
+
+        #menu ul{
+            margin:20px;
+        }
+        
+        .header{
+            font-size:16px;
+        }
+
+        .header~li{
+            font-size:19px;
+            font-weight:bold;
+        }
+    </style>
+    <script>
+            $(window).on('load', function() {
+                $("#menuPlane").animate({left: "0px"},700);
+                $("#easy").click(()=>{
+                    window.location.href = "story.html";
+                });
+                $("#normal").click(()=>{
+                    window.location.href = "story.html";
+                });
+                $("#hard").click(()=>{
+                    window.location.href = "story.html";
+                });
+                $("#main").click(()=>{
+                    window.location.href = "title.html";
+                });
+            });
+            
+    </script>
 </head>
 <body>
-
+    <div class = "container">
+        <div id="left">
+            <div id="board">
+                <img id="stadium" src="img/stadium.png">
+                <div id = "showResult">
+                    <p>You</p>
+                    <p>Lose!</p>
+                </div>
+            </div>
+        </div>
+        <div id = "menuPlane">
+            <img src = "img/gameoverBaseball.png">
+            <div id = "menu">
+                <ul id = "storyMode">
+                    <li class = "header">STORY</li>
+                    <li id = "easy">EASY</li>
+                    <li id = "normal">NORMAL</li>
+                    <li id = "hard">HARD</li>
+                </ul>
+                <ul id = "arcadeMode">
+                    <li class = "header">ARCADE</li>
+                    <li>YOUR BEST: </li>
+                    <li id = "arcade">PLAY BALL!</li>
+                </ul>
+                <ul>
+                    <li class = "header"><br></li>
+                    <li id = "main">MAIN</li>
+                </ul>
+                <ul>
+                    <li class = "header"><br></li>
+                    <li id = "exit">EXIT</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
