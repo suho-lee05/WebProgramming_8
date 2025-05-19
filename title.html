@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< Updated upstream
+=======
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+>>>>>>> Stashed changes
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
@@ -24,8 +31,21 @@
             width: 960px;
             height: 600px;
             border: 1px solid black;
+<<<<<<< Updated upstream
             background-image: url("img/mainBackground2.png");
             position: relative;
+=======
+            overflow: hidden;
+            background-image: url("img/mainBackground2.png");
+            background-size: cover;
+            background-position: center;
+            list-style: none;
+        }
+        #lists {
+            margin-left: 320px;
+            width: 400px;
+            display: flex;
+>>>>>>> Stashed changes
         }
 
         .menu {
@@ -83,6 +103,7 @@
             z-index: 1;
         }
     </style>
+<<<<<<< Updated upstream
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src = "title.js"></script>
@@ -105,6 +126,40 @@
         <div class="settingPlane">
             <button id="settingExit">Exit</button>
         </div>
+=======
+<script>
+    $(document).ready(function() {
+        $(".interact").mouseover(function() {
+            $(this).css("color", "red");
+            $(this).css("font-size", "40px");
+            $(this).css("cursor", "pointer");
+        })
+        $(".interact").mouseout(function() {
+            $(this).css("color", "blue");
+            $(this).css("font-size", "30px");
+        })
+        $("settings").click(function() {
+            alert("Settings clicked!");
+        })
+    });
+</script>
+</head>
+<body>
+<div id="container">
+    <div id="lists">
+        <ul class="menu">
+            <li class="listTitle">Story</li>
+            <li class="interact">Easy</li>
+            <li class="interact">Normal</li>
+            <li class="interact">Hard</li>
+        </ul>
+        <ul class="menu">
+            <li class="listTitle">Arcade</li>
+            <li>Your Best : </li>
+            <li class="interact">Play Ball!</li>
+            <li class="interact" id="settings">Settings</li>
+        </ul>
+>>>>>>> Stashed changes
     </div>
 </body>
 </html>
