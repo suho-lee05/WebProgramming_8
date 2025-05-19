@@ -36,8 +36,8 @@ function init() {
 
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 3;
-    dy = -3;
+    dx = 2;
+    dy = -2;
     ballColor = "#0095DD";
     paddleX = (canvas.width - paddleWidth) / 2;
     initBricks();
@@ -225,8 +225,8 @@ function startGameLoopOnce() {
 function resetBallAndPaddle() {
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 3;
-    dy = -3;
+    dx = 2;
+    dy = -2;
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
