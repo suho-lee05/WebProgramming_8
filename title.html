@@ -50,17 +50,42 @@
             font-size: 30px;
             color: blue;
         }
+        #settingScreen {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
     </style>
 <script>
     $(document).ready(function() {
-        $(".interact").mouseover(function() {
+        $(".story").mouseover(function() {
             $(this).css("color", "red");
             $(this).css("font-size", "40px");
             $(this).css("cursor", "pointer");
         })
-        $(".interact").mouseout(function() {
+        $(".story").mouseout(function() {
             $(this).css("color", "blue");
             $(this).css("font-size", "30px");
+        })
+        $(".story").click(function() {
+            window.location.href = "story.html";
+        })
+        $(".arcade").mouseover(function() {
+            $(this).css("color", "red");
+            $(this).css("font-size", "40px");
+            $(this).css("cursor", "pointer");
+        })
+        $(".arcade").mouseout(function() {
+            $(this).css("color", "blue");
+            $(this).css("font-size", "30px");
+        })
+        $(".arcade").click(function() {
+            window.location.href = "story.html";
         })
         $("#settings").mouseover(function() {
             $(this).css("color", "red");
@@ -71,27 +96,41 @@
             $(this).css("color", "blue");
             $(this).css("font-size", "30px");
         })
+        let isSettingsClicked = false;
         $("#settings").click(function() {
-            alert("Settings clicked!");
+            isSettingsClicked = !isSettingsClicked;
+            if (isSettingsClicked) {
+                $("#settingScreen").css("display", "block");
+                $("#container").css("filter", "blur(5px)");
+            } else {
+                $("#settingScreen").css("display", "none");
+                $("#container").css("filter", "none");
+            }
         })
     });
 </script>
 </head>
 <body>
-<div id="container">
-    <div id="lists">
+    <div id="settingScreen">
         <ul class="menu">
-            <li class="listTitle">Story</li>
-            <li class="interact">Easy</li>
-            <li class="interact">Normal</li>
-            <li class="interact">Hard</li>
+            <li>Volume</li>
         </ul>
-        <ul class="menu">
-            <li class="listTitle">Arcade</li>
-            <li>Your Best : </li>
-            <li class="interact">Play Ball!</li>
-            <li id="settings">Settings</li>
-        </ul>
+    </div>
+    <div id="container">
+        <div id="lists">
+            <ul class="menu">
+                <li class="listTitle">Story</li>
+                <li class="story">Easy</li>
+                <li class="story">Normal</li>
+                <li class="story">Hard</li>
+            </ul>
+            <ul class="menu">
+                <li class="listTitle">Arcade</li>
+                <li>Your Best : </li>
+                <li class="arcade">Play Ball!</li>
+                <li id="settings">Settings</li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
