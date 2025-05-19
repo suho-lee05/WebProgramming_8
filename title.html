@@ -74,76 +74,72 @@
         }
     </style>
     <script>
-    $(document).ready(function() {
-        $(".story").mouseover(function() {
-            $(this).css("color", "red");
-            $(this).css("font-size", "40px");
-            $(this).css("cursor", "pointer");
-        })
-        $(".story").mouseout(function() {
-            $(this).css("color", "blue");
-            $(this).css("font-size", "30px");
-        })
+        $(document).ready(function() {
+        function setHoverEffect(selector) {
+            $(selector).mouseover(function() {
+                $(this).css({
+                    "color": "red",
+                    "font-size": "40px",
+                    "cursor": "pointer"
+                });
+            }).mouseout(function() {
+                $(this).css({
+                    "color": "",
+                    "font-size": ""
+                });
+                if (selector === ".mute") {
+                    if (isMuted) {
+                        $(selector).css("color", "gray");
+                    } else {
+                        $(selector).css("color", "blue");
+                    }
+                }
+            });
+        }
+        setHoverEffect(".story");
+        setHoverEffect(".arcade");
+        setHoverEffect(".settings");
+        setHoverEffect(".mute");
         $(".story").click(function() {
             window.location.href = "story.html";
-        })
-        $(".arcade").mouseover(function() {
-            $(this).css("color", "red");
-            $(this).css("font-size", "40px");
-            $(this).css("cursor", "pointer");
-        })
-        $(".arcade").mouseout(function() {
-            $(this).css("color", "blue");
-            $(this).css("font-size", "30px");
-        })
+        });
         $(".arcade").click(function() {
             window.location.href = "story.html";
-        })
-        $(".settings").mouseover(function() {
-            $(this).css("color", "red");
-            $(this).css("font-size", "40px");
-            $(this).css("cursor", "pointer");
-        })
-        $(".settings").mouseout(function() {
-            $(this).css("color", "blue");
-            $(this).css("font-size", "30px");
-        })
-        let isSettingsClicked = false;
-        let isMute = false
+        });
+        let isSettingsVisible = false;
         $(".settings").click(function() {
-            isSettingsClicked = !isSettingsClicked;
-            if (isSettingsClicked) {
+            isSettingsVisible = !isSettingsVisible;
+            if (isSettingsVisible) {
                 $("#settingScreen").css("display", "block");
                 $("#container").css("filter", "blur(5px)");
             } else {
                 $("#settingScreen").css("display", "none");
                 $("#container").css("filter", "none");
             }
-        })
-        $(".mute").mouseover(function() {
-            $(this).css("font-size", "40px");
-            $(this).css("cursor", "pointer");
-        })
-        $(".mute").mouseout(function() {
-            $(this).css("font-size", "30px");
-        })
+        });
+        let isMuted = true;
         $(".mute").click(function() {
-            isMute = !isMute;
-            if (isMute) {
+            isMuted = !isMuted;
+            if (!isMuted) {
                 $(".mute").css("color", "blue");
                 $("#bgm").prop("muted", false);
-                $("#bgm").get(0).play();
+                $("#bgm")[0].play();
             } else {
                 $(".mute").css("color", "gray");
                 $("#bgm").prop("muted", true);
-                $("#bgm").get(0).pause();
+                $("#bgm")[0].pause();
             }
-        })
-        bgmVol = $("#bgm")[0];
+        });
+        const bgm = $("#bgm")[0];
         $("#volumeControl").on("input", function() {
-            bgmVol.volume = $(this).val();
+            bgm.volume = $(this).val();
         });
     });
+        window.onload = function() {
+            const bgm = document.getElementById("bgm");
+            bgm.volume = 0.5;
+            bgm.play();
+        };
     </script>
 </head>
 <body>
@@ -168,7 +164,7 @@
                 <li class="arcade">Play Ball!</li>
                 <!-- <li class="settings">Settings</li> -->
                 <li class="mute">Title BGM</li>
-                <audio id="bgm" src="sound/hitNrun.mp3" muted loop></audio>
+                <audio id="bgm" src="sound/hitNrun.mp3" autoplay muted loop></audio>
                 vol: <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
             </ul>
         </div>
