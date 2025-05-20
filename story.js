@@ -69,6 +69,10 @@ document.addEventListener("keyup", (e) => {
 
 function togglePause() {
     isPaused = !isPaused;
+    const pauseBtn = document.getElementById('pauseBtn');
+    if (pauseBtn) {
+        pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
+    }
     const pauseMenu = document.getElementById('pause');
     if (isPaused) {
         pauseMenu.classList.remove('hidden');
@@ -130,15 +134,15 @@ function drawLives() {
 }
 
 function drawPausedScreen() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.font = "40px Arial";
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("Paused", canvas.width / 2, canvas.height / 2);
+    // ctx.fillText("Paused", canvas.width / 2, canvas.height / 2);
     ctx.font = "20px Arial";
-    ctx.fillText("Press ESC to Resume", canvas.width / 2, canvas.height / 2 + 40);
+    // ctx.fillText("Press ESC to Resume", canvas.width / 2, canvas.height / 2 + 40);
 }
 
 function randomColor() {
@@ -176,6 +180,11 @@ function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawPausedScreen();
         requestAnimationFrame(draw);
+        document.getElementsByClassName('optionImg')[0].classList.remove('hidden');
+        document.getElementsByClassName('optionImg')[1].classList.remove('hidden');
+        document.getElementsByClassName('optionImg')[2].classList.remove('hidden');
+        document.getElementsByClassName('optionImg')[3].classList.remove('hidden');
+        document.getElementsByClassName('optionImg')[4].classList.remove('hidden'); 
         return;
     }
 
@@ -239,7 +248,16 @@ document.querySelector(".exitBtn").addEventListener("click",()=>{
     alert("게임이 종료됩니다.");
     window.location.href = "about:blank"; // 또는 'title.html' 등
     
-})
+});
+
+document.querySelector(".resumeBtn").addEventListener("click", () => {
+    isPaused = false;
+    document.getElementsByClassName('optionImg')[0].classList.add('hidden');
+    document.getElementsByClassName('optionImg')[1].classList.add('hidden');
+    document.getElementsByClassName('optionImg')[2].classList.add('hidden');
+    document.getElementsByClassName('optionImg')[3].classList.add('hidden');
+    document.getElementsByClassName('optionImg')[4].classList.add('hidden');
+});
 
 document.querySelector(".replayBtn").addEventListener("click", () => {
     score = 0;
