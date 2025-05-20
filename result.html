@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         *{
@@ -23,7 +26,7 @@
         .container{
             width:960px;
             height:600px;
-             border: 1px solid black;
+            border: 1px solid black;
             overflow:hidden;
             position:relative;
         }
@@ -31,7 +34,7 @@
         #left{
             height:580px;
             width: 300px;
-            background-color: #f0f8ff;
+            background-color: blue;
             position:absolute;
             left:0;
             padding:10px;
@@ -59,6 +62,7 @@
         }
 
         #showResult{
+            font-family: 'Bangers';
             width:260px;
             height:300px;
             border-top:4px solid red;
@@ -68,13 +72,11 @@
             align-items: center;
             gap:10px;
         }
-
         #showResult p{
             color:red;
-            font-size: 50px;
+            font-size: 70px;
             font-weight: bold;
         }
-
         #menuPlane{
             height:600px;
             width:960px;
@@ -85,26 +87,26 @@
             display:flex;
             align-items: center;
         }
-
         #menuPlane img{
             height:600px;
         }
-
         #menu{
+            width: 200px;;
+            align-items: center;
             color:blue;
         }
-
-        #menu ul{
-            margin:20px;
-        }
-        
         .header{
-            font-size:16px;
+            font-family: 'Bangers';
+            font-size:50px;
+            margin-bottom: 10px;
         }
-
         .header~li{
-            font-size:19px;
-            font-weight:bold;
+            font-family: 'Bangers';
+            font-size:30px;
+        }
+        li {
+            height: 40px;
+            width: 200px;
         }
     </style>
     <script>
@@ -122,6 +124,26 @@
                 $("#main").click(()=>{
                     window.location.href = "title.html";
                 });
+                function setHoverEffect(selector) {
+                $(selector).mouseover(function() {
+                    $(this).css({
+                        "color": "red",
+                        "font-size": "40px",
+                        "cursor": "pointer"
+                    });
+                }).mouseout(function() {
+                    $(this).css({
+                        "color": "",
+                        "font-size": ""
+                    });
+                });
+                }
+                setHoverEffect("#easy");
+                setHoverEffect("#normal");
+                setHoverEffect("#hard");
+                setHoverEffect("#main");
+                setHoverEffect("#exit");
+                setHoverEffect("#arcade");
             });
             
     </script>
@@ -154,9 +176,6 @@
                 <ul>
                     <li class = "header"><br></li>
                     <li id = "main">MAIN</li>
-                </ul>
-                <ul>
-                    <li class = "header"><br></li>
                     <li id = "exit">EXIT</li>
                 </ul>
             </div>
