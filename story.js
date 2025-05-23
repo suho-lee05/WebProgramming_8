@@ -332,6 +332,4 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     // draw(); 호출 제거!! ✅
 });
 
-
-
 draw();
