@@ -233,6 +233,43 @@
       font-family: 'Bangers';
       font-size: 35px;
     }
+    .block-hit-message {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: bold;
+      padding: 8px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      color: black;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+
+      /* 각 색상별 메시지 스타일 */
+    .block-red {
+      border: 2px solid red;
+      color: red;
+    }
+
+    .block-blue {
+      border: 2px solid blue;
+      color: blue;
+    }
+
+    .block-green {
+      border: 2px solid green;
+      color: green;
+    }
+
+    .block-gray {
+      border: 2px solid #555;
+      color: #555;
+    }
+
   </style>
   
 
@@ -259,6 +296,9 @@
       <div id="game">
         <div style="position: relative; width: 100%; height: 100%;">
           <canvas id="myCanvas" style="width: 100%; height: 100%; background: #eee; border-radius: 16px;"></canvas>
+
+          <div id="blockMessage" class="block-hit-message hidden">블록 메시지</div>
+
           <div id="menu" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button id="pauseBar" onclick="togglePause()">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>
           </div>

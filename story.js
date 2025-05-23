@@ -14,7 +14,7 @@ let x, y, dx, dy, ballColor;
 const paddleHeight = 10;
 const paddleWidth = 100;    //야구 빠따 변수
 let paddleX;
-let paddleSpeed = 5;  // 패들 속도 변수 추가
+let paddleSpeed = 4;  // 패들 속도 변수 추가
 
 
 // 벽돌
@@ -176,21 +176,30 @@ function collisionDetection() {     //공 충돌했을때 alert로 1차 구분�
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
 
-                    // 색상별 alert 출력
-                    // switch (b.status) {
-                    //     case 1:
-                    //         alert("일반 블록에 충돌했습니다!");
-                    //         break;
-                    //     case 2:
-                    //         alert("빨간 블록에 충돌했습니다!");
-                    //         break;
-                    //     case 3:
-                    //         alert("초록 블록에 충돌했습니다!");
-                    //         break;
-                    //     case 4:
-                    //         alert("파란 블록에 충돌했습니다!");
-                    //         break;
-                    // }
+                    //변수 선언 추가
+                    let colorHit = "";
+                    let colorClass = "";
+
+                    switch (b.status) {
+                        case 1:
+                            colorHit = "일반 블록 명중!";
+                            colorClass = "block-normal";
+                            break;
+                        case 2:
+                            colorHit = "빨간 블록 명중!";
+                            colorClass = "block-red";
+                            break;
+                        case 3:
+                            colorHit = "초록 블록 명중!";
+                            colorClass = "block-green";
+                            break;
+                        case 4:
+                            colorHit = "파란 블록 명중!";
+                            colorClass = "block-blue";
+                            break;
+                    }
+
+                    showBlockMessage(colorHit, colorClass);
 
                     b.status = 0;
                     score++;
@@ -203,6 +212,20 @@ function collisionDetection() {     //공 충돌했을때 alert로 1차 구분�
             }
         }
     }
+}
+
+function showBlockMessage(message, colorClass) {    //어떤 블록 명중했는지 임시방편
+  const msg = document.getElementById("blockMessage");
+  
+  // 클래스 초기화 후 새 색상 클래스 추가
+  msg.className = "block-hit-message " + colorClass;
+  msg.innerHTML = message;
+  msg.classList.remove("hidden");
+
+  // 1초 뒤 숨김 처리
+  setTimeout(() => {
+    msg.classList.add("hidden");
+  }, 1000);
 }
 
 
