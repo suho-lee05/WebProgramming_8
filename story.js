@@ -33,6 +33,8 @@ const bricks = [];
 let rightPressed = false;
 let leftPressed = false;
 
+let bar=100;
+
 // 초기화
 function init() {
     canvas.width = canvas.clientWidth;
@@ -207,6 +209,8 @@ function collisionDetection() {     //공 충돌했을때 alert로 1차 구분�
                     b.status = 0;
                     score++;
 
+                    decreaseBar();
+
                     if (score === brickRowCount * brickColumnCount) {
                         alert("YOU WIN, CONGRATULATIONS!");
                         document.location.reload();
@@ -331,5 +335,13 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     document.getElementById('pause').classList.add('hidden');
     // draw(); 호출 제거!! ✅
 });
+
+function decreaseBar(){
+    var rate = (1/(brickColumnCount*brickRowCount))*100;
+    bar-=rate;
+    $("#bar").css("width", bar +"%");
+
+    $("#barText").html("블록 파괴" + bar + "%");
+}
 
 draw();
