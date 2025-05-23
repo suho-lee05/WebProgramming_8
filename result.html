@@ -113,16 +113,51 @@
             $(window).on('load', function() {
                 $("#menuPlane").animate({left: "0px"},700);
                 $("#easy").click(()=>{
-                    window.location.href = "story.html";
+                    clickSound.currentTime = 0;
+                    clickSound.play().then(() => {
+                        setTimeout(() => {
+                            window.location.href = "story.html";
+                        }, 100);
+                    });
                 });
                 $("#normal").click(()=>{
-                    window.location.href = "story.html";
+                    clickSound.currentTime = 0;
+                    clickSound.play().then(() => {
+                        setTimeout(() => {
+                            window.location.href = "story.html";
+                        }, 100);
+                    });
                 });
                 $("#hard").click(()=>{
-                    window.location.href = "story.html";
+                    clickSound.currentTime = 0;
+                    clickSound.play().then(() => {
+                        setTimeout(() => {
+                            window.location.href = "story.html";
+                        }, 100);
+                    });
                 });
+
+                $("#arcade").click(()=>{
+                    clickSound.currentTime = 0;
+                    clickSound.play().then(() => {
+                        setTimeout(() => {
+                            window.location.href = "story.html";
+                        }, 100);
+                    });
+                });
+
                 $("#main").click(()=>{
-                    window.location.href = "title.html";
+                    clickSound.currentTime = 0;
+                    clickSound.play().then(() => {
+                        setTimeout(() => {
+                            window.location.href = "title.html";
+                        }, 100);
+                    });
+                });
+
+                $("#exit").click(()=>{
+                    clickSound.currentTime = 0;
+                    clickSound.play();
                 });
                 function setHoverEffect(selector) {
                 $(selector).mouseover(function() {
@@ -160,6 +195,7 @@
             </div>
         </div>
         <div id = "menuPlane">
+            <audio id = "clickSound" src = "sound/click.mp3" preload="auto"></audio>
             <img src = "img/gameoverBaseball.png">
             <div id = "menu">
                 <ul id = "storyMode">

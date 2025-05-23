@@ -100,11 +100,22 @@
         setHoverEffect(".arcade");
         setHoverEffect(".settings");
         setHoverEffect(".mute");
+        const clickSound = $("#click")[0];
         $(".story").click(function() {
-            window.location.href = "story.html";
+            clickSound.currentTime = 0;
+            clickSound.play().then(() => {
+                setTimeout(() => {
+                    window.location.href = "story.html";
+                }, 100);
+            });
         });
         $(".arcade").click(function() {
-            window.location.href = "story.html";
+            clickSound.currentTime = 0;
+            clickSound.play().then(() => {
+                setTimeout(() => {
+                    window.location.href = "story.html";
+                }, 100);
+            });
         });
         let isSettingsVisible = false;
         $(".settings").click(function() {
@@ -119,6 +130,8 @@
         });
         let isMuted = true;
         $(".mute").click(function() {
+            clickSound.currentTime = 0;
+            clickSound.play();
             isMuted = !isMuted;
             if (!isMuted) {
                 $(".mute").css("color", "blue");
@@ -164,7 +177,8 @@
                 <li class="arcade">Play Ball!</li>
                 <!-- <li class="settings">Settings</li> -->
                 <li class="mute">Title BGM</li>
-                <audio id="bgm" src="sound/hitNrun.mp3" autoplay muted loop></audio>
+                <audio id="bgm" src="sound/hitNrun.mp3"></audio>
+                <audio id = "click" src = "sound/click.mp3" preload = "auto"></audio>
                 vol: <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
             </ul>
         </div>
