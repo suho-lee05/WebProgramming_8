@@ -261,7 +261,6 @@ function draw() {
     //drawLives();
 
     collisionDetection();
-
     if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) dx = -dx;
     if (y + dy < ballRadius) {
         dy = -dy;
@@ -269,7 +268,13 @@ function draw() {
     } else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
+            if (rightPressed) {
+                dx += 0.25 * paddleSpeed;
+            } else if (leftPressed) {
+                dx -= 0.25 * paddleSpeed;
+            }
         } else {    //땅에 떨어졌을때 이 부분 수정하면됨.
+            $("#out"+ (4 - lives)).attr("src", "img/out.png");
             lives--;
             console.log('현재 lives: ' + lives);
             if (!lives) {
@@ -280,8 +285,12 @@ function draw() {
         }
     }
 
-    if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
-    else if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
+    if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        paddleX += paddleSpeed;
+    }
+    else if (leftPressed && paddleX > 0) {
+        paddleX -= paddleSpeed;
+    }
 
     x += dx;
     y += dy;
