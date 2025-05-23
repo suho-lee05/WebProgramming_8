@@ -4,6 +4,8 @@ const ctx = canvas.getContext("2d");
 // 상태 변수
 let isPaused = false;
 let score = 0;
+
+//이걸 아웃 카운트로 사용할예정.
 let lives = 3;
 
 // 공
@@ -14,7 +16,7 @@ let x, y, dx, dy, ballColor;
 const paddleHeight = 10;
 const paddleWidth = 100;    //야구 빠따 변수
 let paddleX;
-let paddleSpeed = 4;  // 패들 속도 변수 추가
+let paddleSpeed = 5;  // 패들 속도 변수 추가
 
 
 // 벽돌
@@ -139,13 +141,14 @@ function drawScore() {
     ctx.fillText("Score: " + score, 20, 20);
 }
 
-function drawLives() {
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "red";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-    ctx.fillText("Lives: " + lives, canvas.width - 100, 20);
-}
+//2025-05-23 lives 삭제
+// function drawLives() {
+//     ctx.font = "20px Arial";
+//     ctx.fillStyle = "red";
+//     ctx.textAlign = "left";
+//     ctx.textBaseline = "top";
+//     ctx.fillText("Lives: " + lives, canvas.width - 100, 20);
+// }
 
 function drawPausedScreen() {
     ctx.fillStyle = "rgba(0, 0, 0, 0)";
@@ -250,7 +253,9 @@ function draw() {
     drawBall();
     drawPaddle();
     drawScore();
-    drawLives();
+
+    //drawLives();
+
     collisionDetection();
 
     if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) dx = -dx;
@@ -260,8 +265,9 @@ function draw() {
     } else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
-        } else {
+        } else {    //땅에 떨어졌을때 이 부분 수정하면됨.
             lives--;
+            console.log('현재 lives: ' + lives);
             if (!lives) {
                 window.location.href = "result.html";
             } else {
