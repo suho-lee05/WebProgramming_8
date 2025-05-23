@@ -12,8 +12,10 @@ let x, y, dx, dy, ballColor;
 
 // 패들
 const paddleHeight = 10;
-const paddleWidth = 120;
+const paddleWidth = 100;    //야구 빠따 변수
 let paddleX;
+let paddleSpeed = 5;  // 패들 속도 변수 추가
+
 
 // 벽돌
 const brickRowCount = 5;
@@ -36,8 +38,8 @@ function init() {
 
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 3;
-    dy = -3;
+    dx = 2;         //공 속도 조절 변수
+    dy = -2;        //공 속도 조절 변수수
     ballColor = "#0095DD";
     paddleX = (canvas.width - paddleWidth) / 2;
     initBricks();
@@ -47,10 +49,12 @@ function initBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
         bricks[c] = [];
         for (let r = 0; r < brickRowCount; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
+            const rand = Math.floor(Math.random() * 4) + 1; // 1~4 사이 랜덤
+            bricks[c][r] = { x: 0, y: 0, status: rand };
         }
     }
 }
+
 
 // 이벤트 리스너
 document.addEventListener("keydown", (e) => {
@@ -102,20 +106,30 @@ function drawPaddle() {
 function drawBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status === 1) {
+            const b = bricks[c][r];
+            if (b.status >= 1 && b.status <= 4) {
                 const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
                 const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
+                b.x = brickX;
+                b.y = brickY;
+
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
+
+                switch (b.status) {
+                    case 1: ctx.fillStyle = "#aaaaaa"; break; // 일반
+                    case 2: ctx.fillStyle = "red"; break;
+                    case 3: ctx.fillStyle = "green"; break;
+                    case 4: ctx.fillStyle = "blue"; break;
+                }
+
                 ctx.fill();
                 ctx.closePath();
             }
         }
     }
 }
+
 
 function drawScore() {
     ctx.font = "20px Arial";
@@ -154,15 +168,33 @@ function randomColor() {
     return color;
 }
 
-function collisionDetection() {
+function collisionDetection() {     //공 충돌했을때 alert로 1차 구분해둠 그리고 status변수가 공 객체 구분하는 방법
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
             const b = bricks[c][r];
-            if (b.status === 1) {
+            if (b.status >= 1 && b.status <= 4) {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
+
+                    // 색상별 alert 출력
+                    // switch (b.status) {
+                    //     case 1:
+                    //         alert("일반 블록에 충돌했습니다!");
+                    //         break;
+                    //     case 2:
+                    //         alert("빨간 블록에 충돌했습니다!");
+                    //         break;
+                    //     case 3:
+                    //         alert("초록 블록에 충돌했습니다!");
+                    //         break;
+                    //     case 4:
+                    //         alert("파란 블록에 충돌했습니다!");
+                    //         break;
+                    // }
+
                     b.status = 0;
                     score++;
+
                     if (score === brickRowCount * brickColumnCount) {
                         alert("YOU WIN, CONGRATULATIONS!");
                         document.location.reload();
@@ -172,6 +204,8 @@ function collisionDetection() {
         }
     }
 }
+
+
 
 let isDrawing = false;
 
@@ -213,8 +247,8 @@ function draw() {
         }
     }
 
-    if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 7;
-    else if (leftPressed && paddleX > 0) paddleX -= 7;
+    if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
+    else if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
 
     x += dx;
     y += dy;
@@ -233,8 +267,8 @@ function startGameLoopOnce() {
 function resetBallAndPaddle() {
     x = canvas.width / 2;
     y = canvas.height - 30;
-    dx = 3;
-    dy = -3;
+    dx = 2;     //공 속도 조절 변수
+    dy = -2;    //공 속도 조절 변수수
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
