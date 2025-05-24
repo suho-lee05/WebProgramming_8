@@ -2,8 +2,203 @@
 <head>
     <meta charset="UTF-8">
     <title>Scene</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin:0 auto;
+            padding:0;
+            font-family: "Hahmlet", "sans-seif";
+        }
+
+        body,html{
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #layout{
+            width:960px;
+            height:600px;
+            border: 5px solid black;
+            background-color: black;
+            position:relative;
+        }
+
+        #cut1{
+            width: 360px;
+            height:270px;
+            background-image: url("img/cut1.jpg");
+            border: 5px solid black;
+            position:relative;
+            position:absolute;
+            top:20px;
+            left:20px;
+        }
+
+        #cut1 div{
+            width:360px;
+            color:black;
+            background-color: white;
+            position: absolute;
+            bottom:0;
+            text-align: center;
+            line-height:30px;
+            border-top: 5px solid black;
+        }
+
+        #cut2{
+            width:320px;
+            height:250px;
+            background-image: url("img/cut2.png");
+            position: relative;
+            position: absolute;
+            top:30px;
+            font-size:17px;
+            margin-left:410px;
+        }
+
+        #cut2 div{
+            width:320px;
+            height:250px;
+            text-align:center;
+            margin-top:90px;
+        }
+
+        #cut3{
+            width:440px;
+            height:200px;
+            border:5px solid black;
+            background-image: url("img/cut3.png");
+            position: relative;
+            margin-left:20px;
+            margin-top: 320px;
+        }
+
+        #cut3 div{
+            width:100px;
+            height:200px;
+            border-left:5px solid black;
+            background-color: white;
+            position:absolute;
+            right:0px;
+            text-align:center;
+        }
+
+        #cut4{
+            width:220px;
+            height:220px;
+            background-image:url("img/cut4.png");
+            background-repeat: no-repeat;
+            color:red;
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left:500px;
+            top: 320px;
+            padding-top:70px;
+            text-align: center;
+            overflow:hidden;
+        }
+
+        #cut5{
+            width:170px;
+            height: 500px;
+            border: 5px solid black;
+            background-color: white;
+            font-size:18px;
+            position: absolute;
+            right:20px;
+            top:20px;
+            text-align:center;
+        }
+
+        #cut1, #cut2, #cut3, #cut4, #cut5 {
+            display: none;
+        }
+
+        #skip{
+            width:70px;
+            height:50px;
+            position: absolute;
+            right:20px;
+            bottom:10px;
+        }
+    </style>
+    <script>
+        $(document).ready(()=>{
+            let cuts = ["#cut1", "#cut2", "#cut3", "#cut4", "#cut5"];
+            let current = 0;
+
+            function showNextCut() {
+                if (current >= cuts.length) return;
+                $(cuts[current]).fadeIn(2000, () => {
+                    current++;
+                    if (current < cuts.length) {
+                        showNextCut();
+                    }
+                    else {
+                        $(cuts.join(", ")).stop(true,true).fadeOut(800, () => {
+                            window.location.href = "story.html";
+                        });
+                    }
+                });
+            }
+
+            showNextCut();
+
+            $("#layout").click(() => {
+                if (current < cuts.length) {
+                    $(cuts[current]).stop(true, true).show();
+                    showNextCut();
+                }
+            });
+
+            $("#skip").click(() => {
+                $(cuts.slice(current).join(",")).stop(true,true).show();
+                $(cuts.join(",")).fadeOut(800,()=>{
+                    window.location.href = "story.html";
+                });
+            });
+        });
+    </script>
 </head>
 <body>
+    <div id = "layout">
+        <div id = "cut1">
+            <div>KBO 시리즈 마지막 경기, 결승이 진행되고 있어요!</div>
+        </div>
+        <div id = "cut2">
+            <div>이 경기만 이기면<br>
+                엘지가 29년만에<br>
+                우승할 수 있답니다!</div>
+        </div>
+        <div id = "cut3">
+            <div>
+                <br>
+                6회가 끝난<br>
+                지금,<br>
+                우리가 낸<br>
+                점수는 0점... <br><br>
+                하지만,
+            </div>
+        </div>
+        <div id = "cut4">
+            야구는<br>
+            789!!!
+        </div>
+        <div id = "cut5">
+            <br><br><br><br><br>
+            위기를 맞은 엘지.<br><br>
+            무적 엘지의<br><br>
+            우승 신화를<br><br>
+            함께<br><br>
+            만들어주세요!
+        </div>
+        <img id = "skip" src = "img/skip.png">
+    </div>
     
 </body> 
 </html>
