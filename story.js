@@ -173,15 +173,34 @@ function randomColor() {
     return color;
 }
 
-function collisionDetection() {     //공 충돌했을때 alert로 1차 구분해둠 그리고 status변수가 공 객체 구분하는 방법
+function collisionDetection() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
             const b = bricks[c][r];
             if (b.status >= 1 && b.status <= 4) {
-                if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-                    dy = -dy;
+                if (x + ballRadius > b.x && x - ballRadius < b.x + brickWidth &&
+                    y + ballRadius > b.y && y - ballRadius < b.y + brickHeight) {
 
-                    //변수 선언 추가
+                    // 충돌 방향 계산
+                    const prevX = x - dx;
+                    const prevY = y - dy;
+
+                    const collidedFromLeft = prevX + ballRadius <= b.x;
+                    const collidedFromRight = prevX - ballRadius >= b.x + brickWidth;
+                    const collidedFromTop = prevY + ballRadius <= b.y;
+                    const collidedFromBottom = prevY - ballRadius >= b.y + brickHeight;
+
+                    if (collidedFromLeft || collidedFromRight) {
+                        dx = -dx;
+                    } else if (collidedFromTop || collidedFromBottom) {
+                        dy = -dy;
+                    } else {
+                        // 대각선 방향 등 불명확한 충돌은 양쪽 모두 반전
+                        dx = -dx;
+                        dy = -dy;
+                    }
+
+                    // 시각 효과 처리
                     let colorHit = "";
                     let colorClass = "";
 
@@ -208,7 +227,6 @@ function collisionDetection() {     //공 충돌했을때 alert로 1차 구분�
 
                     b.status = 0;
                     score++;
-
                     decreaseBar();
 
                     if (score === brickRowCount * brickColumnCount) {
@@ -267,14 +285,14 @@ function draw() {
         ballColor = randomColor();
     } else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-            if (rightPressed) {
-                dx += 0.25 * paddleSpeed;
-            } else if (leftPressed) {
-                dx -= 0.25 * paddleSpeed;
-            }
-        } else {    //땅에 떨어졌을때 이 부분 수정하면됨.
-            $("#out"+ (4 - lives)).attr("src", "img/out.png");
+            // 패들에서 반사 처리
+            const hitPos = (x - (paddleX + paddleWidth / 2)) / (paddleWidth / 2); // -1 ~ 1
+            dx = hitPos * 5; // 좌우 방향으로 튕김
+            dy = -Math.abs(dy); // 항상 위로 튕기도록
+
+        } else {
+            // 바닥에 떨어졌을 때
+            $("#out" + (4 - lives)).attr("src", "img/out.png");
             lives--;
             console.log('현재 lives: ' + lives);
             if (!lives) {
