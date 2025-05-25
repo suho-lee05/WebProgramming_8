@@ -131,15 +131,25 @@
       justify-content: space-between;
       gap: 10px;
     }
-
-    #stadium {
+    #stadium-container {
+      position: relative;
       width: 260px;
       height: 260px;
-      background-color: green;
       margin: 0 auto;
       border-radius: 10px;
+      background-color: green;
     }
-
+    #stadium {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+    .runner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      transition: top 0.3s ease, left 0.3s ease;
+    }
     #player {
       display: flex;
       justify-content: center;
@@ -165,6 +175,7 @@
       width: 120px;
       list-style: none;
       padding: 0;
+      display: block;
     }
     #playerList li{
       background-color: red;
@@ -177,7 +188,7 @@
       border-top-left-radius: 16px;
       border-top-right-radius: 16px;
     }
-    #playerList li:nth-of-type(9){
+    #playerList li:last-child{
       border-bottom-left-radius: 16px;
       border-bottom-right-radius: 16px;
     }
@@ -271,6 +282,29 @@
       color: #555;
     }
 
+    #hitContainer{
+      display: none;
+    }
+    #hit{
+      display: flex;
+      position: absolute;
+      top: 15%;
+      left: 30%;
+      right: 30%;
+      bottom: 15%;
+      border: 5px solid black;
+      border-radius: 16px;
+      flex-direction: column;
+    }
+    #gostop{
+      display: flex;
+      justify-content: center;
+      gap: 5%;
+    }
+    #gostop > div{
+      color: red;
+      font-size: 40px;
+    } 
   </style>
   
 
@@ -298,8 +332,16 @@
         <div style="position: relative; width: 100%; height: 100%;">
           <canvas id="myCanvas" style="width: 100%; height: 100%; background: #eee; border-radius: 16px;"></canvas>
 
-          <div id="blockMessage" class="block-hit-message hidden">블록 메시지</div>
-
+          <div id="hitContainer">
+            <div id="hit">
+              <img id="hitImg1" src="img/1basehit.png" >
+              <img id="hitImg2" src="img/17profile.png">
+              <div id="gostop">
+                  <div onclick="go()">GO</div>
+                  <div onclick="stop()">STOP</div>
+              </div>
+            </div>
+          </div>
           <div id="menu" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button id="pauseBar" onclick="togglePause()">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>
           </div>
@@ -320,6 +362,7 @@
             <button type="button" class="exitBtn">
               <img src="./img/UIBlock/exit.png" alt="EXIT" class="optionImg">
             </button>
+
           </div>
 
 
@@ -330,23 +373,16 @@
 
     <div id="right">
       <div id="board">
-        <img id="stadium" src="img/stadium.png">
-
+          <div id="stadium-container">
+            <img id="stadium" src="img/stadium.png" alt="stadium">
+            <img class="runner" src="img/51piece.png" alt="runner">
+          </div> 
         <div id="player">
           <div id="batter">
             CURRENT<br>BATTER<br>
             <img id="batterImg" src="img/10uniform.png">
           </div>
           <ul id="playerList">
-            <li><span>51</span> 홍창기</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
           </ul>
         </div>
       </div>

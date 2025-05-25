@@ -35,6 +35,9 @@ let leftPressed = false;
 
 let bar=100;
 
+// 선수 목록
+var playerList =["51,홍창기", "2,이", "3,삼", "4,사", "5,오", "6,육", "7,칠", "8,팔", "9,구"];
+
 // 초기화
 function init() {
     canvas.width = canvas.clientWidth;
@@ -47,6 +50,17 @@ function init() {
     ballColor = "#0095DD";
     paddleX = (canvas.width - paddleWidth) / 2;
     initBricks();
+    initPlayer();
+}
+
+
+function initPlayer(){
+    for(var i=0; i< 9; i++){
+        var tmp = playerList[i].split(",");
+        var num = tmp[0];
+        var name = tmp[1];
+        $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
+    }
 }
 
 function initBricks() {
@@ -181,31 +195,9 @@ function collisionDetection() {     //공 충돌했을때 alert로 1차 구분�
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
 
-                    //변수 선언 추가
-                    let colorHit = "";
-                    let colorClass = "";
-
-                    switch (b.status) {
-                        case 1:
-                            colorHit = "일반 블록 명중!";
-                            colorClass = "block-normal";
-                            break;
-                        case 2:
-                            colorHit = "빨간 블록 명중!";
-                            colorClass = "block-red";
-                            break;
-                        case 3:
-                            colorHit = "초록 블록 명중!";
-                            colorClass = "block-green";
-                            break;
-                        case 4:
-                            colorHit = "파란 블록 명중!";
-                            colorClass = "block-blue";
-                            break;
+                    if(nowHit<b.status){
+                        hitBlock(b.status);
                     }
-
-                    showBlockMessage(colorHit, colorClass);
-
                     b.status = 0;
                     score++;
 
@@ -249,9 +241,15 @@ function draw() {
         document.getElementsByClassName('optionImg')[2].classList.remove('hidden');
         document.getElementsByClassName('optionImg')[3].classList.remove('hidden');
         document.getElementsByClassName('optionImg')[4].classList.remove('hidden'); 
+        $("#hitContainer").hide();
+        isHit = false;
         return;
     }
 
+    if(isHit){
+        requestAnimationFrame(draw);
+        return;
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
     drawBall();
@@ -351,6 +349,45 @@ function decreaseBar(){
     $("#bar").css("width", bar +"%");
 
     $("#barText").html("블록 파괴" + bar + "%");
+}
+var isHit =false;
+var idx=-1;
+
+function addPlayer(){
+        idx = (idx+1)%9;
+        var tmp = playerList[idx].split(",");
+        var num = tmp[0];
+        var name = tmp[1];
+        $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
+}
+
+nowHit=0;
+
+function hitBlock(stat){
+
+    if(stat==1){
+        return;
+    }
+
+    switch(stat){
+        case 2: $("#hitContainer").show(); isHit=true; $("#hitImg1").attr("src", "img/1basehit.png"); nowHIt=2; break;
+        case 3: $("#hitContainer").show(); isHit=true; $("#hitImg1").attr("src", "img/2basehit.png"); nowHIt=3; break;
+        case 4: $("#hitContainer").show(); isHit=true; $("#hitImg1").attr("src", "img/3basehit.png"); nowHit=4; break;
+    }
+
+
+}
+
+function go(){
+    isHit = false;
+    $("#hitContainer").hide();
+}
+
+function stop(){
+    isHit = false;
+    $("#hitContainer").hide();
+    $("#playerList li").eq(0).remove();
+    addPlayer();
 }
 
 draw();
