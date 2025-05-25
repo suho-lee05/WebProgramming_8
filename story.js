@@ -108,11 +108,14 @@ function drawPaddle() {
 }
 
 function drawBricks() {
+    const totalBrickWidth = brickColumnCount * (brickWidth + brickPadding) - brickPadding; // 전체 가로 너비
+    const offsetX = (canvas.width - totalBrickWidth) / 2; // 정중앙 배치용 offset
+
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
             const b = bricks[c][r];
             if (b.status >= 1 && b.status <= 4) {
-                const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                const brickX = c * (brickWidth + brickPadding) + offsetX;
                 const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
                 b.x = brickX;
                 b.y = brickY;
@@ -121,7 +124,7 @@ function drawBricks() {
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
 
                 switch (b.status) {
-                    case 1: ctx.fillStyle = "#aaaaaa"; break; // 일반
+                    case 1: ctx.fillStyle = "#aaaaaa"; break;
                     case 2: ctx.fillStyle = "red"; break;
                     case 3: ctx.fillStyle = "green"; break;
                     case 4: ctx.fillStyle = "blue"; break;
@@ -133,6 +136,7 @@ function drawBricks() {
         }
     }
 }
+
 
 
 function drawScore() {
