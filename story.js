@@ -62,7 +62,10 @@ function init() {
     initPlayer();
     initGetOnBase();
     initBar();
+    nowHit=0;
 }
+
+
 
 function initBall(){
     canvas.width = canvas.clientWidth;
@@ -113,8 +116,11 @@ var OnBaseCount =0;
 
 function initGetOnBase(){
     $("#runner1").css({ top: positions[0].top, left: positions[0].left }).show();
+    $("#runner2").hide();
+    $("#runner3").hide();
+    $("#runner4").hide();
     OnBaseCount++;
-    runnerIndex++;
+    //runnerIndex++;
 }
 
 function initPlayer(){
@@ -125,8 +131,8 @@ function initPlayer(){
         var name = tmp[1];
         $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
     }
-
-
+    $("#batterImg").attr("src", "img/51uniform.png");
+    $("#runner1").attr("src", "img/51piece.png");
 }
 
 function initBricks() {
@@ -422,14 +428,26 @@ document.querySelector(".resumeBtn").addEventListener("click", () => {
 });
 
 document.querySelector(".replayBtn").addEventListener("click", () => {
-    score = 0;
+    scores = 0;
     lives = 3;
     isPaused = false;
 
+    $("#out1").attr("src", "img/noOut.png");
+    $("#out2").attr("src", "img/noOut.png");
+    $("#out3").attr("src", "img/noOut.png");
+    nowPlayer=0;
+    OnBaseCount=0;
+    runnerIndex=0;
+    for (let i = 0; i < runners.length; i++) {
+        $("#runner" + i+1).hide();
+    }
     init(); // 초기화
     document.getElementById('pause').classList.add('hidden');
+    $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+    runner.setImg();
     // draw(); 호출 제거!! ✅
 });
+
 
 function initBar(){
     bar =100;
