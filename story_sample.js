@@ -6,7 +6,7 @@ let ctx = canvas.getContext("2d");
 let x, y, dx, dy;
 let paddleX;
 let bar = 100;
-let lives = 3;
+let lives = 3;  //아웃 카운트 사용용
 let score = 0;
 let nowHit = 0;
 let isPaused = false;
@@ -14,6 +14,10 @@ let isHit = false;
 let runnerIndex = 0;
 let scores = 0;
 let OnBaseCount = 0;
+
+// 키 입력
+let rightPressed = false;
+let leftPressed = false;
 
 const ballRadius = 10;
 const paddleWidth = 100;
@@ -28,6 +32,14 @@ const brickPadding = 10;
 const brickOffsetTop = 60;
 const brickOffsetLeft = 30;
 
+let nowPlayer = 0;
+let isDrawing = false;
+
+let hit1 = 50;
+let hit2 = 30;
+let hit3 = 10;
+let hit4 = 0;
+
 const bricks = [];
 
 const playerList = [
@@ -35,10 +47,10 @@ const playerList = [
   "10,오지환", "2,문보경", "27,박동원", "8,문성주", "4,신민재"
 ];
 const positions = [
-  { top: '210px', left: '115px' },
-  { top: '125px', left: '200px' },
-  { top: '40px',  left: '115px' },
-  { top: '125px', left: '30px'  }
+  { top: '210px', left: '115px' }, // 0: homebar
+  { top: '125px', left: '200px' }, // 1: first
+  { top: '40px',  left: '115px' }, // 2: second
+  { top: '125px', left: '30px'  }  // 3: third
 ];
 
 let currentDifficulty = "easy";
@@ -308,6 +320,114 @@ function getOnBase() {
   runners[runnerIndex].setImg();
 
   $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+}
+
+function hitBlock(stat) {
+  if (stat === 1) return;
+
+  isHit = true;
+  $("#hitContainer").show();
+
+  const [num] = playerList[nowPlayer].split(",");
+
+  $("#hitImg2").attr("src", `img/${num}profile.png`);
+  switch (stat) {
+    case 2:
+      $("#hitImg1").attr("src", "img/1basehit.png");
+      nowHit = 2;
+      break;
+    case 3:
+      $("#hitImg1").attr("src", "img/2basehit.png");
+      nowHit = 3;
+      break;
+    case 4:
+      $("#hitImg1").attr("src", "img/3basehit.png");
+      nowHit = 4;
+      break;
+    case 5:
+      $("#hitImg2").attr("src", "img/homerun.png");
+      nowHit = 5;
+      $("#gostop > div:first-child").hide(); // 고/스탑 버튼 숨기기
+      break;
+  }
+}
+
+function go() {
+  isHit = false;
+  $("#hitContainer").hide();
+}
+
+function stop() {
+  isHit = false;
+  $("#gostop > div:first-child").show();
+  $("#hitContainer").hide();
+  getOnBase();                           // 1. 주자 진루
+  $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
+  addPlayer();                           // 3. 다음 타자 배치
+  nowHit = 0;
+
+  initBall();
+  initPaddle();
+  initBar();
+  initBricks();
+}
+
+function addPlayer() {
+  const [num, name] = playerList[nowPlayer].split(",");
+
+  $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
+
+  nowPlayer = (nowPlayer + 1) % 9;
+
+  const runner = runners[runnerIndex];
+  runner.pos = 0;
+  runner.setImg();
+  $(`#runner${runner.num}`).css(positions[0]).show();
+
+  $("#betterImg").attr("src", `img/${num}uniform.png`);
+}
+
+function showBlockMessage(message, colorClass) {
+  const msg = document.getElementById("blockMessage");
+  msg.className = "block-hit-message " + colorClass;
+  msg.innerHTML = message;
+  msg.classList.remove("hidden");
+
+  setTimeout(() => {
+    msg.classList.add("hidden");
+  }, 1000);
+}
+
+function randomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+function togglePause() {
+  isPaused = !isPaused;
+  const pauseBtn = document.getElementById('pauseBtn');
+  const pauseMenu = document.getElementById('pause');
+
+  if (pauseBtn) {
+    pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
+  }
+
+  if (pauseMenu) {
+    pauseMenu.classList.toggle('hidden', !isPaused);
+  }
+
+  document.querySelectorAll('.optionImg').forEach(img => {
+    img.classList.toggle('hidden', !isPaused);
+  });
+
+  if (isPaused) {
+    $("#hitContainer").hide();
+    isHit = false;
+  }
 }
 
 document.addEventListener("keydown", (e) => {
