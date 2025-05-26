@@ -384,6 +384,7 @@ function go(){
 }
 
 function stop(){
+    nowHit =0;
     isHit = false;
     $("#hitContainer").hide();
     $("#playerList li").eq(0).remove();
