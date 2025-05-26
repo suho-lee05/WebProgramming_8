@@ -113,6 +113,7 @@
       background-color: white;
     }
 
+    
     #game {
       border: 1px solid blue;
       border-radius: 16px;
@@ -139,10 +140,25 @@
       border-radius: 10px;
       background-color: green;
     }
+    #stadium-container p{
+      position: absolute;
+      font-size: 20px;
+      color: red;
+    }
+    #stadium-container p:nth-of-type(1) {
+      top: 0;
+    }
+    #stadium-container p:nth-of-type(2) {
+      top: 25px;
+    }
     #stadium {
       width: 100%;
       height: 100%;
       border-radius: 10px;
+    }
+    #hitImg1{
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
     }
     .runner {
       position: absolute;
@@ -304,7 +320,28 @@
     #gostop > div{
       color: red;
       font-size: 40px;
-    } 
+    }
+    
+    .runner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      transition: top 0.3s ease, left 0.3s ease;
+    }
+    
+    #runner1{
+      display: none;
+    }
+    #runner2{
+      display: none;
+    }
+    #runner3{
+      display: none;
+    }
+    #runner4{
+      display: none;
+    }
+
   </style>
   
 
@@ -375,12 +412,17 @@
       <div id="board">
           <div id="stadium-container">
             <img id="stadium" src="img/stadium.png" alt="stadium">
-            <img class="runner" src="img/51piece.png" alt="runner">
+            <img id="runner1" class="runner" src="img/51piece.png" alt="runner">
+            <img id="runner2" class="runner" src="img/22piece.png" alt="runner">
+            <img id="runner3" class="runner" src="img/23piece.png" alt="runner">
+            <img id="runner4" class="runner" src="img/10piece.png" alt="runner">
+            <p>OPPONENT: 0</p>
+            <p>     YOU: 0</p>
           </div> 
         <div id="player">
           <div id="batter">
             CURRENT<br>BATTER<br>
-            <img id="batterImg" src="img/10uniform.png">
+            <img id="batterImg" src="img/51uniform.png">
           </div>
           <ul id="playerList">
           </ul>
