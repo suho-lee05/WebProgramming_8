@@ -94,7 +94,7 @@ class Runner{
             this.pos=0;
             return 1;
         }
-        
+        $("#runner" + this.num).hide();
         $("#runner" + this.num).css({ top: positions[this.pos].top, left: positions[this.pos].left }).show();
         OnBaseCount++;
 
@@ -426,7 +426,7 @@ function decreaseBar(){
         hitBlock(3);
     }else if(bar < hit3 && nowHit<4){
         hitBlock(4);
-    }else if(bar < 0){
+    }else if(bar <= 0){
         hitBlock(5);
     }
 
@@ -509,8 +509,9 @@ function hitBlock(stat) {
             nowHit = 4;
             break;
         case 5:
-            $()
+            $("#hitImg2").attr("src", "img/homerun.png");
             nowHit = 5;
+            $("#gostop > div:first-child").hide();
             break;
     }
 }
@@ -522,8 +523,8 @@ function go(){
 
 function stop() {
     isHit = false;
+    $("#gostop > div:first-child").show();
     $("#hitContainer").hide();
-
     getOnBase();                      // 1. 현재 타자는 진루
     $("#playerList li").eq(0).remove();  // 2. 타자 목록에서 제거
     addPlayer();                      // 3. 다음 타자 홈에 배치
