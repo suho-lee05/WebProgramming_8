@@ -37,9 +37,9 @@ let leftPressed = false;
 let bar=100;
 
 let hit1=50;
-let hit2=70;
-let hit3=90;
-let hit4=100;
+let hit2=30;
+let hit3=10;
+let hit4=0;
 
 // 선수 목록
 var playerList =["51,홍창기", "17,박해민", "22,김현수", "23,오스틴", "10,오지환", "2,문보경", "27,박동원", "8,문성주", "4,신민재"];
@@ -288,7 +288,7 @@ function collisionDetection() {
                         hitBlock(b.status);
                     }
                     b.status = 0;
-                    score++;
+                    //score++;
                     decreaseBar();
 
                     if (score === brickRowCount * brickColumnCount) {
@@ -342,7 +342,7 @@ function draw() {
     drawBricks();
     drawBall();
     drawPaddle();
-    drawScore();
+    //drawScore();
 
     //drawLives();
 
@@ -448,7 +448,7 @@ function decreaseBar(){
         hitBlock(3);
     }else if(bar < hit3 && nowHit<4){
         hitBlock(4);
-    }else if(bar <= 0){
+    }else if(bar <= hit4){
         hitBlock(5);
     }
 
