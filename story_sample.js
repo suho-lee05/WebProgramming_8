@@ -148,7 +148,7 @@ function storyEasy() {
   hit2 = 40;
   hit3 = 20;
   hit4 = 0;
-
+  
   initGameState();
   startGameLoopOnce();
 }
@@ -202,11 +202,19 @@ function draw() {
   y += dy;
 
   // 벽 반사
-  if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) dx = -dx;
+  if (x + dx < ballRadius || x + dx > canvas.width - ballRadius){
+    wallSound.currentTime = 0;
+    wallSound.play();
+    dx = -dx;
+  }
   if (y + dy < ballRadius) {
+    wallSound.currentTime = 0;
+    wallSound.play();
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius) {
     if (x > paddleX && x < paddleX + paddleWidth) {
+      batSound.currentTime=0;
+      batSound.play();
       const hitPos = (x - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
       dx = hitPos * 5;
       dy = -Math.abs(dy);
@@ -413,6 +421,8 @@ function randomColor() {
 }
 
 function togglePause() {
+  clickSound.currentTime = 0;
+  clickSound.play();
   isPaused = !isPaused;
   const pauseBtn = document.getElementById('pauseBtn');
   const pauseMenu = document.getElementById('pause');
@@ -449,15 +459,19 @@ document.addEventListener("keyup", (e) => {
   else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
 });
 
-function togglePause() {
+function togglePause() { //togglePause 두개인데 지금 이거 쓰이고 있어요!
+  clickSound.currentTime = 0;
+  clickSound.play();
   isPaused = !isPaused;
   const pauseMenu = document.getElementById('pause');
   const pauseBtn = document.getElementById('pauseBtn');
   pauseMenu.classList.toggle('hidden', !isPaused);
+  $("#pauseSetting").css("display","none");
   if (pauseBtn) {
     pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
   }
 }
+
 document.querySelector("#optionBtn1").addEventListener("click", () => {
     clickSound.currentTime = 0;
     clickSound.play();
@@ -471,60 +485,84 @@ document.querySelector("#close").addEventListener("click", () => {
 });
 
 let volume = 0.3;
+const cheerSong = document.getElementById("cheerSong");
+
 $("#sound").on("click", function(){
     if($(this).attr("src") == "./img/UIBlock/sound.png"){
         $(this).attr("src","./img/UIBlock/mute.png");
         volume = $("#volumeControl").val();
-        //뮤트되게
+        cheerSong.muted = true;
+        clickSound.muted = true;
+        batSound.muted = true;
+        wallSound.muted = true;
     }else{
-        $(this).attr("src","./img/UIBlock/sound.png");
-        //볼륨 바꾸기기
+      clickSound.currentTime = 0;
+      clickSound.play();
+      $(this).attr("src","./img/UIBlock/sound.png");
+      cheerSong.muted = false;
+      clickSound.muted = false;
+      batSound.muted = false;
+      wallSound.muted = false;
     }
 });
 
 $("#volumeControl").on("input", function(){
-    if($(this).val()=="0"){
-      $("#sound").attr("src","./img/UIBlock/mute.png");  
-    }else{
-        $("#sound").attr("src","./img/UIBlock/sound.png");
-        //볼륨 바꾸기 
+    const vol = parseFloat($(this).val());
+    cheerSong.volume = vol;
+    clickSound.volume = vol;
+    batSound.volume = vol;
+    wallSound.volume = vol;
+    volume = vol;
+
+    if (vol === 0) {
+        $("#sound").attr("src", "./img/UIBlock/mute.png");
+    } else {
+        $("#sound").attr("src", "./img/UIBlock/sound.png");
+        cheerSong.muted = false;
+        clickSound.muted = false;
+        batSound.muted = false;
+        wallSound.muted = false;
     }
 });
 
 let musicTitle = ["무적의 엘지", "사랑한다 엘지", "승리를 위하여", "서울의 아리아", "라인업 송", "깃발 응원", "우리의 함성", "승리의 포효", "포에버 엘지", "최후의 결투", "승리의 노래", "아파트"];
 let musicMP3 = [];
 let musicNum=0;
-$("#previous").on("click", function(){
-    if(musicNum==0){
-        musicNum = 11;
-    }else{
-        musicNum--;
-    }
-    $("#music").html(musicTitle[musicNum]);
-    //음악도 바꿔주기
-});
 
-$("#next").on("click", function(){
-    musicNum = (musicNum+1)%12;
-    $("#music").html(musicTitle[musicNum]);
-    //음악도 바꿔주기
+$("label").on("click", function(){
+  let musicIndex = $(this).attr("for").substring(5);
+  const cheerSong = document.getElementById("cheerSong");
+  cheerSong.src = `sound/music${musicIndex}.mp3`; 
+  cheerSong.currentTime = 0;
+  cheerSong.play();
 });
 
 document.querySelector(".resumeBtn").addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   isPaused = false;
   document.getElementById('pause').classList.add('hidden');
 });
 
 document.querySelector(".homeBtn").addEventListener("click", () => {
-  window.location.href = "title.html";
+  clickSound.currentTime = 0;
+  clickSound.play().then(() => {
+    setTimeout(() => {
+      window.location.href = "title.html";
+    }, 100);
+  });
 });
 
 document.querySelector(".exitBtn").addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   alert("게임이 종료됩니다.");
   window.location.href = "about:blank";
 });
 
 document.querySelector(".replayBtn").addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   scores = 0;
   lives = 3;
   nowPlayer = 0;
@@ -552,4 +590,5 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     $("#music").html(musicTitle[musicNum]);
 
 });
+
 //

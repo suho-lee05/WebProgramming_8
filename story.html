@@ -349,8 +349,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%,-50%);
-      width: 450px;
-      height:300px;
+      width: 250px;
+      height:250px;
       background-color: white;
       border-radius:10px;
     }
@@ -360,6 +360,42 @@
       top:10px;
       right:10px;
     }
+
+    #sound{
+      position:absolute;
+      top:30px;
+      left:30px;
+    }
+
+    #volumeControl{
+      position:absolute;
+      top:42px;
+      left: 75px;
+    }
+
+  .musicSel {
+    display: none;
+  }
+  .musicSel:checked + label {
+    color: blue;
+    font-weight: bold;
+    border: 1px solid blue;
+    width:150px;
+    padding: 0 2px;
+  }
+
+  #musicListBox{
+    overflow:scroll;
+    width:200px;
+    height:150px;
+    text-align: center;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:80px;
+    padding:5px;
+  }
+
   </style>
   <script>
     window.onload = function () {
@@ -377,6 +413,10 @@
             default:
                 storyEasy(); // fallback
         }
+
+        const cheerSong = document.getElementById("cheerSong");
+            cheerSong.volume = 0.3;
+            cheerSong.play();
     };
   </script>
 
@@ -440,32 +480,47 @@
             <audio id = "click" src = "sound/click.mp3" preload = "auto"></audio>
             <audio id = "bat" src = "sound/bat.mp3" preload = "auto"></audio>
             <audio id = "wall" src = "sound/wall.mp3" preload = "auto"></audio>
-            <img src = "./img/UIBlock/sound.png" alt = "SOUND" id = "sound">
+            <audio id = "cheerSong" src = "sound/music0.mp3" preload = "auto" loop></audio>
+            <img src = "./img/UIBlock/sound.png" alt = "SOUND" id = "sound">     
             <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
-            <img src = "./img/UIBlock/close.png" alt = "CLOSE" id = "close">
-            <img src = "./img/UIBlock/previous.png" alt = "PREVIOUS" id = "previous">
-            <div id = "music">무적의 엘지</div>
-            <img src = "./img/UIBlock/next.png" alt = "NEXT" id = "next"> 
-            <!--<table>
-              <tr>
-                <td>1 무적의 엘지</td>
-                <td>4 서울의 아리아</td>
-                <td>7 우리의 함성</td>
-                <td>10 최후의 결투</td>
-              </tr>
-              <tr>
-                <td>2 사랑한다 엘지</td>
-                <td>5 라인업 송</td>
-                <td>8 승리의 포효</td>
-                <td>11 승리의 노래</td>
-              </tr>
-              <tr>
-                <td>3 승리를 위하여</td>
-                <td>6 깃발응원</td>
-                <td>9 포에버 엘지</td>
-                <td>12 아파트</td>
-              </tr>
-            </table>-->
+            <img src = "./img/UIBlock/close.png" alt = "CLOSE" id = "close">      
+            <div id = "musicListBox">
+                <input class="musicSel" type="radio" id="music0" name="musicList" value="0" checked = "checked">
+                <label for= "music0">무적의 엘지</label><br>
+
+                <input class="musicSel" type="radio" id="music1" name="musicList" value="1">
+                <label for="music1">사랑한다 엘지</label><br>
+
+                <input class="musicSel" type="radio" id="music2" name="musicList" value="2">
+                <label for="music2">승리를 위하여</label><br>
+
+                <input class="musicSel" type="radio" id="music3" name="musicList" value="3">
+                <label for="music3">서울의 아리아</label><br>
+
+                <input class="musicSel" type="radio" id="music4" name="musicList" value="4">
+                <label for="music4">라인업 송</label><br>
+
+                <input class="musicSel" type="radio" id="music5" name="musicList" value="5">
+                <label for="music5">깃발 응원</label><br>
+
+                <input class="musicSel" type="radio" id="music6" name="musicList" value="6">
+                <label for="music6">우리의 함성</label><br>
+
+                <input class="musicSel" type="radio" id="music7" name="musicList" value="7">
+                <label for="music7">승리의 포효</label><br>
+
+                <input class="musicSel" type="radio" id="music8" name="musicList" value="8">
+                <label for="music8">포에버 엘지</label><br>
+
+                <input class="musicSel" type="radio" id="music9" name="musicList" value="9">
+                <label for="music9">최후의 결투</label><br>
+
+                <input class="musicSel" type="radio" id="music10" name="musicList" value="10">
+                <label for="music10">승리의 노래</label><br>
+
+                <input class="musicSel" type="radio" id="music11" name="musicList" value="11">
+                <label for="music11">아파트</label><br>
+            </div>
           </div>
 
         </div>
@@ -474,7 +529,7 @@
     </div>
 
     <div id="right">
-      <div id="board">
+        <div id="board">
           <div id="stadium-container">
             <img id="stadium" src="img/stadium.png" alt="stadium">
             <img id="runner1" class="runner" src="img/51piece.png" alt="runner">
