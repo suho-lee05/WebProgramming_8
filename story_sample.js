@@ -55,6 +55,11 @@ const positions = [
 
 let currentDifficulty = "easy";
 
+const clickSound = $("#click")[0];
+const batSound = $("#bat")[0];
+const wallSound = $("#wall")[0];
+let isMuted = false;
+
 class Runner {
   constructor(num) {
     this.num = num;
@@ -422,12 +427,15 @@ function togglePause() {
 
   document.querySelectorAll('.optionImg').forEach(img => {
     img.classList.toggle('hidden', !isPaused);
+    $("#pauseSetting").css("display","none");
   });
 
   if (isPaused) {
     $("#hitContainer").hide();
     isHit = false;
+    
   }
+
 }
 
 document.addEventListener("keydown", (e) => {
@@ -450,6 +458,57 @@ function togglePause() {
     pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
   }
 }
+document.querySelector("#optionBtn1").addEventListener("click", () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    $("#pauseSetting").css("display", "block");
+});
+
+document.querySelector("#close").addEventListener("click", () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    $("#pauseSetting").css("display", "none");
+});
+
+let volume = 0.3;
+$("#sound").on("click", function(){
+    if($(this).attr("src") == "./img/UIBlock/sound.png"){
+        $(this).attr("src","./img/UIBlock/mute.png");
+        volume = $("#volumeControl").val();
+        //뮤트되게
+    }else{
+        $(this).attr("src","./img/UIBlock/sound.png");
+        //볼륨 바꾸기기
+    }
+});
+
+$("#volumeControl").on("input", function(){
+    if($(this).val()=="0"){
+      $("#sound").attr("src","./img/UIBlock/mute.png");  
+    }else{
+        $("#sound").attr("src","./img/UIBlock/sound.png");
+        //볼륨 바꾸기 
+    }
+});
+
+let musicTitle = ["무적의 엘지", "사랑한다 엘지", "승리를 위하여", "서울의 아리아", "라인업 송", "깃발 응원", "우리의 함성", "승리의 포효", "포에버 엘지", "최후의 결투", "승리의 노래", "아파트"];
+let musicMP3 = [];
+let musicNum=0;
+$("#previous").on("click", function(){
+    if(musicNum==0){
+        musicNum = 11;
+    }else{
+        musicNum--;
+    }
+    $("#music").html(musicTitle[musicNum]);
+    //음악도 바꿔주기
+});
+
+$("#next").on("click", function(){
+    musicNum = (musicNum+1)%12;
+    $("#music").html(musicTitle[musicNum]);
+    //음악도 바꿔주기
+});
 
 document.querySelector(".resumeBtn").addEventListener("click", () => {
   isPaused = false;
@@ -488,4 +547,9 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     case "normal": storyNormal(); break;
     case "hard": storyHard(); break;
   }
+
+  musicNum=0;
+    $("#music").html(musicTitle[musicNum]);
+
 });
+//

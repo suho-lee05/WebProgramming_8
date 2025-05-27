@@ -342,6 +342,24 @@
       display: none;
     }
 
+    #pauseSetting{
+      display:none;
+      z-index:30;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: 450px;
+      height:300px;
+      background-color: white;
+      border-radius:10px;
+    }
+
+    #close{
+      position:absolute;
+      top:10px;
+      right:10px;
+    }
   </style>
   <script>
     window.onload = function () {
@@ -418,7 +436,37 @@
             </button>
 
           </div>
-
+          <div id = "pauseSetting">
+            <audio id = "click" src = "sound/click.mp3" preload = "auto"></audio>
+            <audio id = "bat" src = "sound/bat.mp3" preload = "auto"></audio>
+            <audio id = "wall" src = "sound/wall.mp3" preload = "auto"></audio>
+            <img src = "./img/UIBlock/sound.png" alt = "SOUND" id = "sound">
+            <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+            <img src = "./img/UIBlock/close.png" alt = "CLOSE" id = "close">
+            <img src = "./img/UIBlock/previous.png" alt = "PREVIOUS" id = "previous">
+            <div id = "music">무적의 엘지</div>
+            <img src = "./img/UIBlock/next.png" alt = "NEXT" id = "next"> 
+            <!--<table>
+              <tr>
+                <td>1 무적의 엘지</td>
+                <td>4 서울의 아리아</td>
+                <td>7 우리의 함성</td>
+                <td>10 최후의 결투</td>
+              </tr>
+              <tr>
+                <td>2 사랑한다 엘지</td>
+                <td>5 라인업 송</td>
+                <td>8 승리의 포효</td>
+                <td>11 승리의 노래</td>
+              </tr>
+              <tr>
+                <td>3 승리를 위하여</td>
+                <td>6 깃발응원</td>
+                <td>9 포에버 엘지</td>
+                <td>12 아파트</td>
+              </tr>
+            </table>-->
+          </div>
 
         </div>
       </div>
