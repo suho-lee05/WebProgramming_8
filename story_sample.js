@@ -141,7 +141,7 @@ function initBar() {
 
 function storyEasy() {
   currentDifficulty = "easy";
-  lives = 5;
+  lives = 3;
   dx = 2;
   dy = -2;
   hit1 = 60;
@@ -169,7 +169,7 @@ function storyNormal() {
 
 function storyHard() {
   currentDifficulty = "hard";
-  lives = 2;
+  lives = 3;
   dx = 4;
   dy = -4;
   hit1 = 40;
