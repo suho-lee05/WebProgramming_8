@@ -101,14 +101,19 @@
         setHoverEffect(".settings");
         setHoverEffect(".mute");
         const clickSound = $("#click")[0];
+
         $(".story").click(function() {
+
             clickSound.currentTime = 0;
             clickSound.play().then(() => {
+                const difficulty = $(this).text().toLowerCase(); // easy, normal, hard
+                localStorage.setItem("difficulty", difficulty);
                 setTimeout(() => {
                     window.location.href = "scene.html";
                 }, 100);
             });
         });
+
         $(".arcade").click(function() {
             clickSound.currentTime = 0;
             clickSound.play().then(() => {

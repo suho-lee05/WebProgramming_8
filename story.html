@@ -343,7 +343,24 @@
     }
 
   </style>
-  
+  <script>
+    window.onload = function () {
+        const difficulty = localStorage.getItem("difficulty");
+        switch (difficulty) {
+            case "easy":
+                storyEasy();
+                break;
+            case "normal":
+                storyNormal();
+                break;
+            case "hard":
+                storyHard();
+                break;
+            default:
+                storyEasy(); // fallback
+        }
+    };
+  </script>
 
 </head>
 <body>
@@ -431,5 +448,5 @@
     </div>
   </div>
 </body>
-<script src="story.js"></script>
+<script src="story_sample.js"></script>
 </html>
