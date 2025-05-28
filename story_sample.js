@@ -24,8 +24,8 @@ const paddleWidth = 100;
 const paddleHeight = 10;
 const paddleSpeed = 5;
 
-const brickRowCount = 5;
-const brickColumnCount = 8;
+let brickRowCount;
+let brickColumnCount;
 const brickWidth = 60;
 const brickHeight = 18;
 const brickPadding = 10;
@@ -141,6 +141,8 @@ function initBar() {
 
 function storyEasy() {
   currentDifficulty = "easy";
+  brickRowCount = 4;
+  brickColumnCount = 5;
   lives = 3;
   dx = 2;
   dy = -2;
@@ -155,6 +157,8 @@ function storyEasy() {
 
 function storyNormal() {
   currentDifficulty = "normal";
+  brickRowCount = 5;
+  brickColumnCount = 6;
   lives = 3;
   dx = 3;
   dy = -3;
@@ -169,6 +173,8 @@ function storyNormal() {
 
 function storyHard() {
   currentDifficulty = "hard";
+  brickRowCount = 5;
+  brickColumnCount = 8;
   lives = 3;
   dx = 4;
   dy = -4;
