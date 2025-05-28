@@ -280,9 +280,22 @@ function draw() {
       lives--;
       if (!lives) {
         location.href = "result.html";
-      } else {
+      } else { 
+        goCount=0;
+        brickDy=0;
         resetBallAndPaddle();
       }
+    }
+  }
+  if (checkBricksAtBottom()) {
+    $("#out" + (4 - lives)).attr("src", "img/out.png");
+    lives--;
+    if (!lives) {
+        location.href = "result.html";
+      } else {
+        goCount=0;
+        brickDy=0;
+        resetBallAndPaddle();
     }
   }
 
@@ -291,6 +304,17 @@ function draw() {
   if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
 
   requestAnimationFrame(draw);
+}
+
+function checkBricksAtBottom() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      if (bricks[c][r].status >= 1 && bricks[c][r].y >= canvas.height - paddleHeight - brickHeight / 2) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 // function draw() {
