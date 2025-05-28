@@ -451,9 +451,9 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
 
 function initBar(){
     bar =100;
-    $("#bar").css("width", bar +"%");
+    $("#bar").css("width", bar.toFixed(1) +"%");
 
-    $("#barText").html("블록 파괴" + bar + "%");
+    $("#barText").html("블록 파괴" + bar.toFixed(1) + "%");
 }
 
 function decreaseBar(){
@@ -470,9 +470,9 @@ function decreaseBar(){
         hitBlock(5);
     }
 
-    $("#bar").css("width", bar +"%");
+    $("#bar").css("width", bar.toFixed(1) +"%");
 
-    $("#barText").html("블록 파괴" + bar + "%");
+    $("#barText").html("블록 파괴" + bar.toFixed(1) + "%");
 }
 var isHit =false;
 var nowPlayer=0;

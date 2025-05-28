@@ -31,6 +31,7 @@ const brickHeight = 18;
 const brickPadding = 10;
 const brickOffsetTop = 60;
 const brickOffsetLeft = 30;
+let totalBrick;
 
 let nowPlayer = 0;
 let isDrawing = false;
@@ -137,6 +138,7 @@ function initBar() {
   bar = 100;
   $("#bar").css("width", bar + "%");
   $("#barText").html("남은 블록 : " + bar + "%");
+  totalBrick = brickColumnCount * brickRowCount;
 }
 
 function storyEasy() {
@@ -430,6 +432,7 @@ function collisionDetection() {
 
             if (nowHit < b.status) hitBlock(b.status);
             b.status = 0;
+            totalBrick--;
             decreaseBar();
           }
       }
@@ -464,10 +467,10 @@ function decreaseBar() {
   if (bar < hit1 && nowHit < 2) hitBlock(2);
   else if (bar < hit2 && nowHit < 3) hitBlock(3);
   else if (bar < hit3 && nowHit < 4) hitBlock(4);
-  else if (bar <= hit4) hitBlock(5);
+  else if (totalBrick == 0 ) hitBlock(5);
 
-  $("#bar").css("width", bar + "%");
-  $("#barText").html("남은 블록 : " + bar + "%");
+  $("#bar").css("width", bar.toFixed(1) + "%");
+  $("#barText").html("남은 블록 : " + bar.toFixed(1) + "%");
 }
 
 function getOnBase() {
@@ -508,7 +511,7 @@ function hitBlock(stat) {
       nowHit = 4;
       break;
     case 5:
-      $("#hitImg2").attr("src", "img/homerun.png");
+      $("#hitImg1").attr("src", "img/homerun.png");
       nowHit = 5;
       $("#gostop > div:first-child").hide(); // 고/스탑 버튼 숨기기
       break;
