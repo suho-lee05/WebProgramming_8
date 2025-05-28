@@ -316,8 +316,13 @@ function startGameLoopOnce() {
 function resetBallAndPaddle() {
   x = canvas.width / 2;
   y = canvas.height - 30;
-  dx = 2;
-  dy = -2;
+  // 난이도에 맞게 공 dx, dy 설정.
+  switch (currentDifficulty) {
+    case "easy": dx = 2; dy = -2; break;
+    case "normal": dx = 3; dy = -3; break;
+    case "hard": dx = 4; dy = -4; break;
+    case "endless": dx = 5; dy = -5; break;
+  }
   paddleX = (canvas.width - paddleWidth) / 2;
 }
 
@@ -598,10 +603,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     case "easy": storyEasy(); break;
     case "normal": storyNormal(); break;
     case "hard": storyHard(); break;
-    case "endlesss": 
-      console.log("endlesss");
-      storyEndless(); 
-      break;
+    case "endlesss": storyEndless(); break;
   }
 
   musicNum=0;
