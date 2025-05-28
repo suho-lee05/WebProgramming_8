@@ -24,8 +24,8 @@ const paddleWidth = 100;
 const paddleHeight = 10;
 const paddleSpeed = 5;
 
-let brickRowCount;
-let brickColumnCount;
+let brickRowCount = 5;
+let brickColumnCount = 8;
 const brickWidth = 60;
 const brickHeight = 18;
 const brickPadding = 10;
