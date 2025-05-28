@@ -1,3 +1,5 @@
+//디버깅용 파일 폐기처리 예정
+
 const canvas = document.querySelector("#myCanvas");
 const ctx = canvas.getContext("2d");
 
