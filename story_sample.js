@@ -434,33 +434,33 @@ function randomColor() {
   return color;
 }
 
-function togglePause() {
-  clickSound.currentTime = 0;
-  clickSound.play();
-  isPaused = !isPaused;
-  const pauseBtn = document.getElementById('pauseBtn');
-  const pauseMenu = document.getElementById('pause');
+// function togglePause() {
+//   clickSound.currentTime = 0;
+//   clickSound.play();
+//   isPaused = !isPaused;
+//   const pauseBtn = document.getElementById('pauseBtn');
+//   const pauseMenu = document.getElementById('pause');
 
-  if (pauseBtn) {
-    pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
-  }
+//   if (pauseBtn) {
+//     pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
+//   }
 
-  if (pauseMenu) {
-    pauseMenu.classList.toggle('hidden', !isPaused);
-  }
+//   if (pauseMenu) {
+//     pauseMenu.classList.toggle('hidden', !isPaused);
+//   }
 
-  document.querySelectorAll('.optionImg').forEach(img => {
-    img.classList.toggle('hidden', !isPaused);
-    $("#pauseSetting").css("display","none");
-  });
+//   document.querySelectorAll('.optionImg').forEach(img => {
+//     img.classList.toggle('hidden', !isPaused);
+//     $("#pauseSetting").css("display","none");
+//   });
 
-  if (isPaused) {
-    $("#hitContainer").hide();
-    isHit = false;
+//   if (isPaused) {
+//     $("#hitContainer").hide();
+//     isHit = false;
     
-  }
+//   }
 
-}
+// }
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
