@@ -232,13 +232,39 @@ function draw() {
     wallSound.play();
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius) {
-    if (x > paddleX && x < paddleX + paddleWidth) {
-      batSound.currentTime=0;
+    // 패들 충돌 판정
+    const ballBottom = y + ballRadius;
+    const ballTop = y - ballRadius;
+    const ballLeft = x - ballRadius;
+    const ballRight = x + ballRadius;
+
+    const paddleHeight = 15; // 패들의 높이값 (실제 값에 맞춰 조정)
+    const paddleTop = canvas.height - paddleHeight;
+    const paddleBottom = paddleTop + paddleHeight;
+    const paddleLeft = paddleX;
+    const paddleRight = paddleX + paddleWidth;
+
+    const isCollision =
+      ballRight > paddleLeft &&
+      ballLeft < paddleRight &&
+      ballBottom > paddleTop &&
+      ballTop < paddleBottom;
+
+    if (isCollision) {
+      batSound.currentTime = 0;
       batSound.play();
-      const hitPos = (x - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
-      dx = hitPos * 5;
-      dy = -Math.abs(dy);
-    } else {
+
+      const relativeIntersectX = (x - paddleX) / paddleWidth; // 0 (왼쪽 끝) ~ 1 (오른쪽 끝)
+      const maxBounceAngle = (75 * Math.PI) / 180; // 최대 75도
+      const bounceAngle = (relativeIntersectX - 0.5) * 2 * maxBounceAngle;
+
+      const speed = Math.sqrt(dx * dx + dy * dy); // 기존 속도 유지
+      dx = speed * Math.sin(bounceAngle);
+      dy = -speed * Math.cos(bounceAngle);
+
+      // 공 위치 조정 (패들에 박히지 않게)
+      y = paddleTop - ballRadius;
+    }else {
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
       if (!lives) {
@@ -255,6 +281,88 @@ function draw() {
 
   requestAnimationFrame(draw);
 }
+
+// function draw() {
+//   if (isPaused) {
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     return requestAnimationFrame(draw);
+//   }
+
+//   if (isHit) {
+//     return requestAnimationFrame(draw);
+//   }
+
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+//   drawBricks();
+//   drawBall();
+//   drawPaddle();
+//   collisionDetection();
+
+//   // 공 이동
+//   x += dx;
+//   y += dy;
+
+//   // 벽 반사
+//   if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) {
+//     wallSound.currentTime = 0;
+//     wallSound.play();
+//     dx = -dx;
+//   }
+//   if (y + dy < ballRadius) {
+//     wallSound.currentTime = 0;
+//     wallSound.play();
+//     dy = -dy;
+//   } else if (y + dy > canvas.height - ballRadius) {
+//     // 패들 충돌 판정
+//     const ballBottom = y + ballRadius;
+//     const ballTop = y - ballRadius;
+//     const ballLeft = x - ballRadius;
+//     const ballRight = x + ballRadius;
+
+//     const paddleHeight = 15; // 패들의 높이값 (실제 값에 맞춰 조정)
+//     const paddleTop = canvas.height - paddleHeight;
+//     const paddleBottom = paddleTop + paddleHeight;
+//     const paddleLeft = paddleX;
+//     const paddleRight = paddleX + paddleWidth;
+
+//     const isCollision =
+//       ballRight > paddleLeft &&
+//       ballLeft < paddleRight &&
+//       ballBottom > paddleTop &&
+//       ballTop < paddleBottom;
+
+//     if (isCollision) {
+//       batSound.currentTime = 0;
+//       batSound.play();
+
+//       const relativeIntersectX = (x - paddleX) / paddleWidth; // 0 (왼쪽 끝) ~ 1 (오른쪽 끝)
+//       const maxBounceAngle = (75 * Math.PI) / 180; // 최대 75도
+//       const bounceAngle = (relativeIntersectX - 0.5) * 2 * maxBounceAngle;
+
+//       const speed = Math.sqrt(dx * dx + dy * dy); // 기존 속도 유지
+//       dx = speed * Math.sin(bounceAngle);
+//       dy = -speed * Math.cos(bounceAngle);
+
+//       // 공 위치 조정 (패들에 박히지 않게)
+//       y = paddleTop - ballRadius;
+//     } else {
+//       // 공이 패들을 놓쳤을 때
+//       $("#out" + (4 - lives)).attr("src", "img/out.png");
+//       lives--;
+//       if (!lives) {
+//         location.href = "result.html";
+//       } else {
+//         resetBallAndPaddle();
+//       }
+//     }
+//   }
+
+//   // 패들 이동
+//   if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
+//   if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
+
+//   requestAnimationFrame(draw);
+// }
 
 function drawBall() {
   ctx.beginPath();
@@ -298,15 +406,32 @@ function collisionDetection() {
     for (let r = 0; r < brickRowCount; r++) {
       const b = bricks[c][r];
       if (b.status >= 1 && b.status <= 4) {
-        if (x + ballRadius > b.x && x - ballRadius < b.x + brickWidth &&
-            y + ballRadius > b.y && y - ballRadius < b.y + brickHeight) {
-          dx = -dx;
-          dy = -dy;
+        if (
+            x + ballRadius > b.x &&
+            x - ballRadius < b.x + brickWidth &&
+            y + ballRadius > b.y &&
+            y - ballRadius < b.y + brickHeight
+          ) {
+            // 충돌한 중심 거리 계산
+            const overlapLeft = x + ballRadius - b.x;
+            const overlapRight = b.x + brickWidth - (x - ballRadius);
+            const overlapTop = y + ballRadius - b.y;
+            const overlapBottom = b.y + brickHeight - (y - ballRadius);
 
-          if (nowHit < b.status) hitBlock(b.status);
-          b.status = 0;
-          decreaseBar();
-        }
+            const minOverlapX = Math.min(overlapLeft, overlapRight);
+            const minOverlapY = Math.min(overlapTop, overlapBottom);
+
+            // 더 작은 쪽이 먼저 충돌한 방향
+            if (minOverlapX < minOverlapY) {
+              dx = -dx; // 좌우 반사
+            } else {
+              dy = -dy; // 상하 반사
+            }
+
+            if (nowHit < b.status) hitBlock(b.status);
+            b.status = 0;
+            decreaseBar();
+          }
       }
     }
   }
