@@ -41,6 +41,9 @@ let hit2 = 30;
 let hit3 = 10;
 let hit4 = 0;
 
+let goCount = 0;
+let brickDy = 0;
+
 const bricks = [];
 
 const playerList = [
@@ -152,6 +155,8 @@ function storyEasy() {
   hit2 = 40;
   hit3 = 20;
   hit4 = 0;
+  goCount=0;
+  brickDy = 0;
   
   initGameState();
   startGameLoopOnce();
@@ -168,6 +173,8 @@ function storyNormal() {
   hit2 = 30;
   hit3 = 10;
   hit4 = 0;
+  goCount=0;
+  brickDy = 0;
 
   initGameState();
   startGameLoopOnce();
@@ -184,6 +191,8 @@ function storyHard() {
   hit2 = 25;
   hit3 = 10;
   hit4 = 0;
+  goCount=0;
+  brickDy = 0;
 
   initGameState();
   startGameLoopOnce();
@@ -385,6 +394,17 @@ function drawPaddle() {
 function drawBricks() {
   const totalWidth = brickColumnCount * (brickWidth + brickPadding) - brickPadding;
   const offsetX = (canvas.width - totalWidth) / 2;
+  if(currentDifficulty === "hard"){
+          if(goCount===1){
+            brickDy += 0.1;
+          }
+          else if(goCount===2){
+            brickDy += 0.4;
+          }
+          else if(goCount===3){
+            brickDy += 0.7;
+          }
+  }
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
       const b = bricks[c][r];
@@ -392,9 +412,9 @@ function drawBricks() {
         const brickX = c * (brickWidth + brickPadding) + offsetX;
         const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
         b.x = brickX;
-        b.y = brickY;
+        b.y = brickY+brickDy;
         ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+        ctx.rect(brickX, b.y, brickWidth, brickHeight);
         ctx.fillStyle = ["#aaa", "red", "green", "blue"][b.status - 1];
         ctx.fill();
         ctx.closePath();
@@ -520,11 +540,14 @@ function hitBlock(stat) {
 
 function go() {
   isHit = false;
+  goCount++;
   $("#hitContainer").hide();
 }
 
 function stop() {
   isHit = false;
+  goCount=0;
+  brickDy = 0;
   $("#gostop > div:first-child").show();
   $("#hitContainer").hide();
   getOnBase();                           // 1. 주자 진루
