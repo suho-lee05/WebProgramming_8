@@ -97,7 +97,7 @@
             });
         }
         setHoverEffect(".story");
-        setHoverEffect(".arcade");
+        setHoverEffect(".endless");
         setHoverEffect(".settings");
         setHoverEffect(".mute");
         const clickSound = $("#click")[0];
@@ -106,7 +106,7 @@
 
             clickSound.currentTime = 0;
             clickSound.play().then(() => {
-                const difficulty = $(this).text().toLowerCase(); // easy, normal, hard
+                const difficulty = $(this).text().toLowerCase(); // easy, normal, hard, endless
                 localStorage.setItem("difficulty", difficulty);
                 setTimeout(() => {
                     window.location.href = "scene.html";
@@ -114,9 +114,11 @@
             });
         });
 
-        $(".arcade").click(function() {
+        $(".endless").click(function() {
             clickSound.currentTime = 0;
             clickSound.play().then(() => {
+                const difficulty = "endless"; // easy, normal, hard, enless
+                localStorage.setItem("difficulty", difficulty);
                 setTimeout(() => {
                     window.location.href = "story.html";
                 }, 100);
@@ -156,7 +158,6 @@
         window.onload = function() {
             const bgm = document.getElementById("bgm");
             bgm.volume = 0.5;
-            bgm.play();
         };
     </script>
 </head>
@@ -177,9 +178,9 @@
                 <li class="story">Hard</li>
             </ul>
             <ul class="menu">
-                <li class="listTitle">Arcade</li>
+                <li class="listTitle">Endless</li>
                 <li>Your Best : </li>
-                <li class="arcade">Play Ball!</li>
+                <li class="endless">Play Ball!</li>
                 <!-- <li class="settings">Settings</li> -->
                 <li class="mute">Title BGM</li>
                 <audio id="bgm" src="sound/hitNrun.mp3"></audio>

@@ -136,7 +136,7 @@ function initPlayer() {
 function initBar() {
   bar = 100;
   $("#bar").css("width", bar + "%");
-  $("#barText").html("블록 파괴 " + bar + "%");
+  $("#barText").html("남은 블록 : " + bar + "%");
 }
 
 function storyEasy() {
@@ -174,6 +174,20 @@ function storyHard() {
   dy = -4;
   hit1 = 40;
   hit2 = 25;
+  hit3 = 10;
+  hit4 = 0;
+
+  initGameState();
+  startGameLoopOnce();
+}
+
+function storyEndless() {
+  currentDifficulty = "endless";
+  lives = 3;
+  dx = 5;
+  dy = -5;
+  hit1 = 50;
+  hit2 = 30;
   hit3 = 10;
   hit4 = 0;
 
@@ -317,7 +331,7 @@ function decreaseBar() {
   else if (bar <= hit4) hitBlock(5);
 
   $("#bar").css("width", bar + "%");
-  $("#barText").html("블록 파괴 " + bar + "%");
+  $("#barText").html("남은 블록 : " + bar + "%");
 }
 
 function getOnBase() {
@@ -584,6 +598,10 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     case "easy": storyEasy(); break;
     case "normal": storyNormal(); break;
     case "hard": storyHard(); break;
+    case "endlesss": 
+      console.log("endlesss");
+      storyEndless(); 
+      break;
   }
 
   musicNum=0;
