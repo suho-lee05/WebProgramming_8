@@ -29,6 +29,7 @@
       height: 600px;
       display: flex;
       border: 1px solid black;
+      overflow:hidden;
     }
 
     #left {
@@ -37,6 +38,7 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 20px;
+      z-index:10;
     }
 
     #right {
@@ -45,6 +47,7 @@
       display: flex;
       flex-direction: column;
       padding: 10px;
+      z-index:20;
     }
 
 
@@ -115,7 +118,7 @@
 
     
     #myCanvas{
-      border: 1px solid blue;
+      border: 3px solid blue;
       border-radius: 16px;
       flex-grow: 1;
       margin-top: 20px;
@@ -298,9 +301,22 @@
       color: #555;
     }
 
-    #hitContainer{
-      display: none;
+    #game {
+      position: relative;
     }
+
+    #hitContainer {
+      position: absolute;
+      bottom:600px;
+      /*bottom:4px;*/
+      left: 0;
+      width: 100%;
+      height: 506px;
+      background-color: rgba(177, 177, 166, 0.3);
+      border-radius: 16px;
+      z-index: 5;
+    }
+
     #hit{
       display: flex;
       position: absolute;
@@ -309,8 +325,10 @@
       right: 30%;
       bottom: 15%;
       border: 5px solid black;
+      background-color:white;
       border-radius: 16px;
       flex-direction: column;
+      padding:5px;
     }
     #gostop{
       display: flex;
@@ -396,6 +414,15 @@
     padding:5px;
   }
 
+  #pressMessage{
+    color:black;
+    font-size:15px;
+    position:absolute;
+    top:435px;
+    left:50%;
+    transform:translateX(-50%);
+  }
+
   </style>
   <script>
     window.onload = function () {
@@ -451,6 +478,7 @@
                   <div onclick="stop()">STOP</div>
               </div>
             </div>
+            <p id = "pressMessage">Press 'G' to go, 'S' to stop.</p>
           </div>
           <div id="menu" style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button id="pauseBar" onclick="togglePause()">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>

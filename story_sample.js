@@ -578,7 +578,7 @@ function hitBlock(stat) {
   if (stat === 1) return;
 
   isHit = true;
-  $("#hitContainer").show();
+  $("#hitContainer").animate({"bottom":"4px"},500);
 
   const [num] = playerList[nowPlayer].split(",");
 
@@ -607,7 +607,7 @@ function hitBlock(stat) {
 function go() {
   isHit = false;
   goCount++;
-  $("#hitContainer").hide();
+  $("#hitContainer").animate({bottom:"600px"},500);
 }
 
 function stop() {
@@ -615,7 +615,11 @@ function stop() {
   goCount=0;
   brickDy = 0;
   $("#gostop > div:first-child").show();
-  $("#hitContainer").hide();
+  $("#hitContainer").animate(
+  { bottom: "4px", left: "800px"},500,function () {
+    $(this).css({ bottom: "600px", left: "0px" });
+  }
+);
   getOnBase();                           // 1. 주자 진루
   $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
   addPlayer();                           // 3. 다음 타자 배치
