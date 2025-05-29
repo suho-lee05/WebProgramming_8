@@ -111,6 +111,9 @@
     </style>
     <script>
             $(window).on('load', function() {
+                // 최고 점수 출력.
+                const bestScore = localStorage.getItem("bestScore") || "0";
+                $("#bestScore").text("Your Best : " + bestScore);
                 $("#menuPlane").animate({left: "0px"},700);
                 $("#easy").click(()=>{
                     clickSound.currentTime = 0;
@@ -205,8 +208,8 @@
                     <li id = "hard">HARD</li>
                 </ul>
                 <ul id = "arcadeMode">
-                    <li class = "header">ARCADE</li>
-                    <li>YOUR BEST: </li>
+                    <li class = "header">ENDLESS</li>
+                    <li id="bestScore">YOUR BEST: </li>
                     <li id = "arcade">PLAY BALL!</li>
                 </ul>
                 <ul>

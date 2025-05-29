@@ -279,6 +279,7 @@ function draw() {
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
       if (!lives) {
+        renewBestScore();
         location.href = "result.html";
       } else { 
         goCount=0;
@@ -291,6 +292,7 @@ function draw() {
     $("#out" + (4 - lives)).attr("src", "img/out.png");
     lives--;
     if (!lives) {
+        renewBestScore();
         location.href = "result.html";
       } else {
         goCount=0;
@@ -618,6 +620,15 @@ function randomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+function renewBestScore() {
+  if (currentDifficulty === "endless") {
+    const prev = parseInt(localStorage.getItem("bestScore") || "0", 10);
+    if (scores > prev || localStorage.getItem("bestScore") === null) {
+      localStorage.setItem("bestScore", scores);
+    }
+  }
 }
 
 // function togglePause() {
