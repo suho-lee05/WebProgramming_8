@@ -46,6 +46,13 @@ let brickDy = 0;
 
 const bricks = [];
 
+// ==== 난이도별 블록 개수 제한 전역 변수 선언 ====
+let blockCountByStatus = {
+  easy:   { 2: 5, 3: 3, 4: 2 }, // 2~4만 루타 블록
+  normal: { 2: 7, 3: 5, 4: 3 },
+  hard:   { 2: 7, 3: 5, 4: 3 }
+};
+
 const playerList = [
   "51,홍창기", "17,박해민", "22,김현수", "23,오스틴",
   "10,오지환", "2,문보경", "27,박동원", "8,문성주", "4,신민재"
@@ -117,12 +124,48 @@ function initPaddle() {
   paddleX = (canvas.width - paddleWidth) / 2;
 }
 
+// function initBricks() {
+//   for (let c = 0; c < brickColumnCount; c++) {
+//     bricks[c] = [];
+//     for (let r = 0; r < brickRowCount; r++) {
+//       const rand = Math.floor(Math.random() * 4) + 1; // 1~4
+//       bricks[c][r] = { x: 0, y: 0, status: rand };
+//     }
+//   }
+// }
+
+// ==== 블록 초기화 함수 수정 ====
 function initBricks() {
+  const total = brickRowCount * brickColumnCount;
+
+  const statusCounts = blockCountByStatus[currentDifficulty];
+  const totalSpecial = statusCounts[2] + statusCounts[3] + statusCounts[4];
+  const remaining = total - totalSpecial;
+
+  // status 배열 구성 (주의: 1은 일반 블록, 2~4는 루타 블록)
+  const statusList = [];
+
+  for (let i = 0; i < statusCounts[2]; i++) statusList.push(2); // 1루타
+  for (let i = 0; i < statusCounts[3]; i++) statusList.push(3); // 2루타
+  for (let i = 0; i < statusCounts[4]; i++) statusList.push(4); // 3루타
+  for (let i = 0; i < remaining; i++)     statusList.push(1); // 일반 블록
+
+  // 셔플
+  for (let i = statusList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [statusList[i], statusList[j]] = [statusList[j], statusList[i]];
+  }
+
+  // 블록 생성
+  let index = 0;
   for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (let r = 0; r < brickRowCount; r++) {
-      const rand = Math.floor(Math.random() * 4) + 1; // 1~4
-      bricks[c][r] = { x: 0, y: 0, status: rand };
+      bricks[c][r] = {
+        x: 0,
+        y: 0,
+        status: statusList[index++] // 0~4
+      };
     }
   }
 }
@@ -318,88 +361,6 @@ function checkBricksAtBottom() {
   }
   return false;
 }
-
-// function draw() {
-//   if (isPaused) {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     return requestAnimationFrame(draw);
-//   }
-
-//   if (isHit) {
-//     return requestAnimationFrame(draw);
-//   }
-
-//   ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   drawBricks();
-//   drawBall();
-//   drawPaddle();
-//   collisionDetection();
-
-//   // 공 이동
-//   x += dx;
-//   y += dy;
-
-//   // 벽 반사
-//   if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) {
-//     wallSound.currentTime = 0;
-//     wallSound.play();
-//     dx = -dx;
-//   }
-//   if (y + dy < ballRadius) {
-//     wallSound.currentTime = 0;
-//     wallSound.play();
-//     dy = -dy;
-//   } else if (y + dy > canvas.height - ballRadius) {
-//     // 패들 충돌 판정
-//     const ballBottom = y + ballRadius;
-//     const ballTop = y - ballRadius;
-//     const ballLeft = x - ballRadius;
-//     const ballRight = x + ballRadius;
-
-//     const paddleHeight = 15; // 패들의 높이값 (실제 값에 맞춰 조정)
-//     const paddleTop = canvas.height - paddleHeight;
-//     const paddleBottom = paddleTop + paddleHeight;
-//     const paddleLeft = paddleX;
-//     const paddleRight = paddleX + paddleWidth;
-
-//     const isCollision =
-//       ballRight > paddleLeft &&
-//       ballLeft < paddleRight &&
-//       ballBottom > paddleTop &&
-//       ballTop < paddleBottom;
-
-//     if (isCollision) {
-//       batSound.currentTime = 0;
-//       batSound.play();
-
-//       const relativeIntersectX = (x - paddleX) / paddleWidth; // 0 (왼쪽 끝) ~ 1 (오른쪽 끝)
-//       const maxBounceAngle = (75 * Math.PI) / 180; // 최대 75도
-//       const bounceAngle = (relativeIntersectX - 0.5) * 2 * maxBounceAngle;
-
-//       const speed = Math.sqrt(dx * dx + dy * dy); // 기존 속도 유지
-//       dx = speed * Math.sin(bounceAngle);
-//       dy = -speed * Math.cos(bounceAngle);
-
-//       // 공 위치 조정 (패들에 박히지 않게)
-//       y = paddleTop - ballRadius;
-//     } else {
-//       // 공이 패들을 놓쳤을 때
-//       $("#out" + (4 - lives)).attr("src", "img/out.png");
-//       lives--;
-//       if (!lives) {
-//         location.href = "result.html";
-//       } else {
-//         resetBallAndPaddle();
-//       }
-//     }
-//   }
-
-//   // 패들 이동
-//   if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
-//   if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
-
-//   requestAnimationFrame(draw);
-// }
 
 function drawBall() {
   ctx.beginPath();
