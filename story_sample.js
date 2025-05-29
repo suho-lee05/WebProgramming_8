@@ -410,42 +410,100 @@ function drawBricks() {
   }
 }
 
+// function collisionDetection() {
+//   for (let c = 0; c < brickColumnCount; c++) {
+//     for (let r = 0; r < brickRowCount; r++) {
+//       const b = bricks[c][r];
+//       if (b.status >= 1 && b.status <= 4) {
+//         if (
+//             x + ballRadius > b.x &&
+//             x - ballRadius < b.x + brickWidth &&
+//             y + ballRadius > b.y &&
+//             y - ballRadius < b.y + brickHeight
+//           ) {
+//             // 충돌한 중심 거리 계산
+//             const overlapLeft = x + ballRadius - b.x;
+//             const overlapRight = b.x + brickWidth - (x - ballRadius);
+//             const overlapTop = y + ballRadius - b.y;
+//             const overlapBottom = b.y + brickHeight - (y - ballRadius);
+
+//             const minOverlapX = Math.min(overlapLeft, overlapRight);
+//             const minOverlapY = Math.min(overlapTop, overlapBottom);
+
+//             // 더 작은 쪽이 먼저 충돌한 방향
+//             if (minOverlapX < minOverlapY) {
+//               dx = -dx; // 좌우 반사
+//             } else {
+//               dy = -dy; // 상하 반사
+//             }
+
+//             if (nowHit < b.status) hitBlock(b.status);
+//             b.status = 0;
+//             totalBrick--;
+//             decreaseBar();
+//           }
+//       }
+//     }
+//   }
+// }
+
 function collisionDetection() {
-  for (let c = 0; c < brickColumnCount; c++) {
-    for (let r = 0; r < brickRowCount; r++) {
-      const b = bricks[c][r];
-      if (b.status >= 1 && b.status <= 4) {
-        if (
-            x + ballRadius > b.x &&
-            x - ballRadius < b.x + brickWidth &&
-            y + ballRadius > b.y &&
-            y - ballRadius < b.y + brickHeight
-          ) {
-            // 충돌한 중심 거리 계산
-            const overlapLeft = x + ballRadius - b.x;
-            const overlapRight = b.x + brickWidth - (x - ballRadius);
-            const overlapTop = y + ballRadius - b.y;
-            const overlapBottom = b.y + brickHeight - (y - ballRadius);
+  const steps = 5;
+  const stepDx = dx / steps;
+  const stepDy = dy / steps;
 
-            const minOverlapX = Math.min(overlapLeft, overlapRight);
-            const minOverlapY = Math.min(overlapTop, overlapBottom);
+  let tempX = x;
+  let tempY = y;
 
-            // 더 작은 쪽이 먼저 충돌한 방향
-            if (minOverlapX < minOverlapY) {
-              dx = -dx; // 좌우 반사
-            } else {
-              dy = -dy; // 상하 반사
-            }
+  for (let s = 0; s < steps; s++) {
+    tempX += stepDx;
+    tempY += stepDy;
 
-            if (nowHit < b.status) hitBlock(b.status);
-            b.status = 0;
-            totalBrick--;
-            decreaseBar();
-          }
+    let hit = false;
+    for (let c = 0; c < brickColumnCount; c++) {
+      for (let r = 0; r < brickRowCount; r++) {
+        const b = bricks[c][r];
+        if (b.status === 0) continue;
+
+        const brickLeft = b.x;
+        const brickRight = b.x + brickWidth;
+        const brickTop = b.y;
+        const brickBottom = b.y + brickHeight;
+
+        const closestX = Math.max(brickLeft, Math.min(tempX, brickRight));
+        const closestY = Math.max(brickTop, Math.min(tempY, brickBottom));
+
+        const distX = tempX - closestX;
+        const distY = tempY - closestY;
+        const distance = Math.sqrt(distX * distX + distY * distY);
+
+        if (distance <= ballRadius) {
+          // 충돌 반사
+          const overlapLeft = tempX + ballRadius - brickLeft;
+          const overlapRight = brickRight - (tempX - ballRadius);
+          const overlapTop = tempY + ballRadius - brickTop;
+          const overlapBottom = brickBottom - (tempY - ballRadius);
+          const minOverlapX = Math.min(overlapLeft, overlapRight);
+          const minOverlapY = Math.min(overlapTop, overlapBottom);
+
+          if (minOverlapX < minOverlapY) dx = -dx;
+          else dy = -dy;
+
+          if (nowHit < b.status) hitBlock(b.status);
+          b.status = 0;
+          totalBrick--;
+          decreaseBar();
+          hit = true;
+          break;
+        }
       }
+      if (hit) break;
     }
+    if (hit) break;
   }
 }
+
+
 
 function startGameLoopOnce() {
   if (!isDrawing) {
