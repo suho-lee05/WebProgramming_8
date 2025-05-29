@@ -803,4 +803,16 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
 
 });
 
+document.addEventListener("keydown", function (e) {
+  const key = e.key.toLowerCase();
+  if (isHit) {
+    if (key === "g") {
+      go();
+    } else if (key === "s") {
+      stop();
+    }
+  }
+});
+
+
 //
