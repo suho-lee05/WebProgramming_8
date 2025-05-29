@@ -400,7 +400,6 @@
   <script>
     window.onload = function () {
         const difficulty = localStorage.getItem("difficulty");
-        console.log("Difficulty level:", difficulty);
         switch (difficulty) {
             case "easy":
                 storyEasy();
@@ -411,16 +410,11 @@
             case "hard":
                 storyHard();
                 break;
-            case "endless":           
-                storyEndless();
-                break;
             default:
                 storyEasy(); // fallback
         }
 
-        const cheerSong = document.getElementById("cheerSong");
-            cheerSong.volume = 0.3;
-            cheerSong.play();
+        
     };
   </script>
 
@@ -435,7 +429,7 @@
         </div>
         <div id="barContainer">
           <div id="bar"></div>
-          <span id="barText">남은 블록 : 100%</span>
+          <span id="barText">블록 파괴 100%</span>
         </div>
         <div id="out">
           <span>OUT</span>
@@ -554,6 +548,8 @@
       </div>
     </div>
   </div>
+  <audio id = "brickSound" src = "sound/brick.mp3" preload = "auto"></audio>
+  <audio id = "scoreSound" src = "sound/score.mp3" preload = "auto"></audio>
 </body>
 <script src="story_sample.js"></script>
 </html>

@@ -45,6 +45,16 @@ let goCount = 0;
 let brickDy = 0;
 
 const bricks = [];
+const bricksImg = [new Image(), new Image(), new Image(), new Image()];
+bricksImg[0].src = "img/brick1.png";
+bricksImg[1].src = "img/brick2.png";
+bricksImg[2].src = "img/brick3.png";
+bricksImg[3].src = "img/brick4.png";
+
+const ballImg = new Image();
+ballImg.src = "img/ball.png";
+const paddleImg = new Image();
+paddleImg.src = "img/paddle.png";
 
 // ==== 난이도별 블록 개수 제한 전역 변수 선언 ====
 let blockCountByStatus = {
@@ -363,19 +373,22 @@ function checkBricksAtBottom() {
 }
 
 function drawBall() {
-  ctx.beginPath();
+  const size = ballRadius*2;
+  ctx.drawImage(ballImg, x - ballRadius, y - ballRadius, size, size);
+  /*ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
   ctx.fillStyle = "#0095DD";
   ctx.fill();
-  ctx.closePath();
+  ctx.closePath();*/
 }
 
 function drawPaddle() {
-  ctx.beginPath();
+  ctx.drawImage(paddleImg, paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  /*ctx.beginPath();
   ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
   ctx.fillStyle = "#0095DD";
   ctx.fill();
-  ctx.closePath();
+  ctx.closePath();*/
 }
 
 function drawBricks() {
@@ -400,11 +413,13 @@ function drawBricks() {
         const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
         b.x = brickX;
         b.y = brickY+brickDy;
-        ctx.beginPath();
+        let img = bricksImg[b.status-1];
+        ctx.drawImage(img, b.x, b.y, brickWidth, brickHeight);
+        /*ctx.beginPath();
         ctx.rect(brickX, b.y, brickWidth, brickHeight);
         ctx.fillStyle = ["#aaa", "red", "green", "blue"][b.status - 1];
         ctx.fill();
-        ctx.closePath();
+        ctx.closePath();*/
       }
     }
   }
@@ -478,6 +493,8 @@ function collisionDetection() {
         const distance = Math.sqrt(distX * distX + distY * distY);
 
         if (distance <= ballRadius) {
+          brickSound.currentTime = 0;
+          brickSound.play();
           // 충돌 반사
           const overlapLeft = tempX + ballRadius - brickLeft;
           const overlapRight = brickRight - (tempX - ballRadius);
@@ -539,6 +556,7 @@ function decreaseBar() {
 }
 
 function getOnBase() {
+  let temp = scores;
   for (let i = 0; i < runners.length; i++) {
     if (runners[i].pos > 0) {
       scores += runners[i].getOnBase(nowHit - 1);
@@ -549,7 +567,10 @@ function getOnBase() {
   scores += runners[runnerIndex].getOnBase(nowHit - 1);
   runnerIndex = (runnerIndex + 1) % 4;
   runners[runnerIndex].setImg();
-
+  if(temp != scores){
+    scoreSound.currentTime = 0;
+    scoreSound.play();
+  }
   $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
 }
 
@@ -716,6 +737,8 @@ document.querySelector("#close").addEventListener("click", () => {
 
 let volume = 0.3;
 const cheerSong = document.getElementById("cheerSong");
+const brickSound = document.getElementById("brickSound");
+const scoreSound = document.getElementById("scoreSound");
 
 $("#sound").on("click", function(){
     if($(this).attr("src") == "./img/UIBlock/sound.png"){
@@ -725,6 +748,9 @@ $("#sound").on("click", function(){
         clickSound.muted = true;
         batSound.muted = true;
         wallSound.muted = true;
+        brickSound.muted = true;
+        scoreSound.muted = true;
+        
     }else{
       clickSound.currentTime = 0;
       clickSound.play();
@@ -733,6 +759,8 @@ $("#sound").on("click", function(){
       clickSound.muted = false;
       batSound.muted = false;
       wallSound.muted = false;
+      brickSound.muted = false;
+      scoreSound.muted = false;
     }
 });
 
@@ -742,6 +770,8 @@ $("#volumeControl").on("input", function(){
     clickSound.volume = vol;
     batSound.volume = vol;
     wallSound.volume = vol;
+    brickSound.volume = vol;
+    scoreSound.volume = vol;
     volume = vol;
 
     if (vol === 0) {
@@ -752,6 +782,8 @@ $("#volumeControl").on("input", function(){
         clickSound.muted = false;
         batSound.muted = false;
         wallSound.muted = false;
+        brickSound.muted = false;
+        scoreSound.muted = false;
     }
 });
 
