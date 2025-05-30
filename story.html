@@ -414,7 +414,8 @@
     padding:5px;
   }
 
-  #pressMessage{
+  .pressMessage{
+    display: inline-block;
     color:black;
     font-size:15px;
     position:absolute;
@@ -478,7 +479,7 @@
                   <div onclick="stop()">STOP</div>
               </div>
             </div>
-            <p id = "pressMessage">Press 'G' to go, 'S' to stop.</p>
+            <p class = "pressMessage">Press 'G' to go, 'S' to stop.</p>
           </div>
           <div id="menu" style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button id="pauseBar" onclick="togglePause()">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>

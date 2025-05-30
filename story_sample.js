@@ -597,9 +597,9 @@ function hitBlock(stat) {
       nowHit = 4;
       break;
     case 5:
-      $("#hitImg1").attr("src", "img/homerun.png");
       nowHit = 5;
-      $("#gostop > div:first-child").hide(); // 고/스탑 버튼 숨기기
+      $("#hitImg1").attr("src", "img/homerun.png");
+      $("#gostop > div:first-child").hide(); // 고 버튼 숨기기
       break;
   }
 }
@@ -861,10 +861,18 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
 document.addEventListener("keydown", function (e) {
   const key = e.key.toLowerCase();
   if (isHit) {
-    if (key === "g") {
-      go();
-    } else if (key === "s") {
-      stop();
+
+    if(nowHit == 5){
+      if(key == "s"){
+          stop();
+      }
+    }
+    else{
+      if (key === "g") {
+        go();
+      } else if (key === "s") {
+        stop();
+      }
     }
   }
 });
