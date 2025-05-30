@@ -211,6 +211,8 @@ function storyEasy() {
   goCount=0;
   brickDy = 0;
   
+  let opponentScore = generateOpponentScore("easy");
+
   initGameState();
   startGameLoopOnce();
 }
@@ -229,6 +231,8 @@ function storyNormal() {
   goCount=0;
   brickDy = 0;
 
+  let opponentScore = generateOpponentScore("normal");
+
   initGameState();
   startGameLoopOnce();
 }
@@ -246,6 +250,8 @@ function storyHard() {
   hit4 = 0;
   goCount=0;
   brickDy = 0;
+
+  let opponentScore = generateOpponentScore("hard");
 
   initGameState();
   startGameLoopOnce();
@@ -702,6 +708,36 @@ function renewBestScore() {
 //   }
 
 // }
+
+function generateOpponentScore(difficulty) {
+  let inning = 0;
+  let maxScore = 0;
+
+  switch (difficulty) {
+    case "easy":
+      inning = 7;
+      maxScore = 2;
+      break;
+    case "normal":
+      inning = 8;
+      maxScore = 3;
+      break;
+    case "hard":
+      inning = 9;
+      maxScore = 4;
+      break;
+    default:
+      inning = 0;
+  }
+
+  const scores = Array.from({ length: inning }, () =>
+    Math.floor(Math.random() * (maxScore + 1))
+  );
+
+  const total = scores.reduce((acc, val) => acc + val, 0);
+  console.log(`[${difficulty.toUpperCase()}] 상대팀 점수 (${inning}이닝):`, scores, `=> 총점: ${total}`);
+  return { scoreByInning: scores, total };
+}
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
