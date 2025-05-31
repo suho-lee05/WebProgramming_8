@@ -134,16 +134,6 @@ function initPaddle() {
   paddleX = (canvas.width - paddleWidth) / 2;
 }
 
-// function initBricks() {
-//   for (let c = 0; c < brickColumnCount; c++) {
-//     bricks[c] = [];
-//     for (let r = 0; r < brickRowCount; r++) {
-//       const rand = Math.floor(Math.random() * 4) + 1; // 1~4
-//       bricks[c][r] = { x: 0, y: 0, status: rand };
-//     }
-//   }
-// }
-
 // ==== 블록 초기화 함수 수정 ====
 function initBricks() {
   const total = brickRowCount * brickColumnCount;
@@ -471,43 +461,6 @@ function drawBricks() {
   }
 }
 
-// function collisionDetection() {
-//   for (let c = 0; c < brickColumnCount; c++) {
-//     for (let r = 0; r < brickRowCount; r++) {
-//       const b = bricks[c][r];
-//       if (b.status >= 1 && b.status <= 4) {
-//         if (
-//             x + ballRadius > b.x &&
-//             x - ballRadius < b.x + brickWidth &&
-//             y + ballRadius > b.y &&
-//             y - ballRadius < b.y + brickHeight
-//           ) {
-//             // 충돌한 중심 거리 계산
-//             const overlapLeft = x + ballRadius - b.x;
-//             const overlapRight = b.x + brickWidth - (x - ballRadius);
-//             const overlapTop = y + ballRadius - b.y;
-//             const overlapBottom = b.y + brickHeight - (y - ballRadius);
-
-//             const minOverlapX = Math.min(overlapLeft, overlapRight);
-//             const minOverlapY = Math.min(overlapTop, overlapBottom);
-
-//             // 더 작은 쪽이 먼저 충돌한 방향
-//             if (minOverlapX < minOverlapY) {
-//               dx = -dx; // 좌우 반사
-//             } else {
-//               dy = -dy; // 상하 반사
-//             }
-
-//             if (nowHit < b.status) hitBlock(b.status);
-//             b.status = 0;
-//             totalBrick--;
-//             decreaseBar();
-//           }
-//       }
-//     }
-//   }
-// }
-
 function collisionDetection() {
   const steps = 5;
   const stepDx = dx / steps;
@@ -720,34 +673,6 @@ function renewBestScore() {
     }
   }
 }
-
-// function togglePause() {
-//   clickSound.currentTime = 0;
-//   clickSound.play();
-//   isPaused = !isPaused;
-//   const pauseBtn = document.getElementById('pauseBtn');
-//   const pauseMenu = document.getElementById('pause');
-
-//   if (pauseBtn) {
-//     pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
-//   }
-
-//   if (pauseMenu) {
-//     pauseMenu.classList.toggle('hidden', !isPaused);
-//   }
-
-//   document.querySelectorAll('.optionImg').forEach(img => {
-//     img.classList.toggle('hidden', !isPaused);
-//     $("#pauseSetting").css("display","none");
-//   });
-
-//   if (isPaused) {
-//     $("#hitContainer").hide();
-//     isHit = false;
-    
-//   }
-
-// }
 
 function generateOpponentScore(difficulty) {
   let inning = 0;
