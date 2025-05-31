@@ -368,6 +368,26 @@ function draw() {
     }
   }
   if (checkBricksAtBottom()) {
+    isPaused = true;
+      $("#outEvent").show();
+      outSound.setTime = 0;
+      outSound.play();
+      let s1 = $("#blink1").animate({ top: 0 }, 800).promise();
+      let s2 = $("#blink2").animate({ bottom: 0 }, 800).promise();
+      let s3 = $("#outEvent p").slideDown(800).promise();
+
+      $.when(s1, s2, s3).then(() => {
+        setTimeout(() => {
+          let h1 = $("#blink1").animate({ top: "-150px" }, 500).promise();
+          let h2 = $("#blink2").animate({ bottom: "-150px" }, 500).promise();
+          let h3 = $("#outEvent p").fadeOut(500).promise();
+          $.when(h1, h2, h3).then(() => {
+            $("#outEvent").hide();
+            isPaused = false;
+          });
+        }, 800);
+      });
+
     $("#out" + (4 - lives)).attr("src", "img/out.png");
     lives--;
     if (!lives) {
