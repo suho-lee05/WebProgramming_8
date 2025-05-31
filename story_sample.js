@@ -358,6 +358,8 @@ function draw() {
 
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
+      $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
+      addPlayer();                           // 3. 다음 타자 배치
       if (!lives) {
         renewBestScore();
         location.href = "result.html";
@@ -391,6 +393,8 @@ function draw() {
 
     $("#out" + (4 - lives)).attr("src", "img/out.png");
     lives--;
+    $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거 
+    addPlayer();                           // 3. 다음 타자 배치
     if (!lives) {
         renewBestScore();
         location.href = "result.html";
@@ -647,7 +651,7 @@ function stop() {
     $(this).css({ bottom: "600px", left: "0px" });
   }
   
-);
+  );
   getOnBase();                           // 1. 주자 진루
   $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
   addPlayer();                           // 3. 다음 타자 배치
