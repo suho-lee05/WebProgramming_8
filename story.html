@@ -87,7 +87,7 @@
     }
 
     #bar{
-      width: 100%; 
+      width: 0%; 
       background-color: orange; 
       height: 100%; 
       border-radius: 8px;
@@ -104,6 +104,14 @@
     font-weight: bold;
     color: black;
     }
+    .barLine {
+      position: absolute;
+      top: 0;
+      left: 70%;
+      height: 100%;
+      color: red;
+    }
+
     #out {
       display: flex;
       align-items: center;
@@ -565,7 +573,8 @@
         </div>
         <div id="barContainer">
           <div id="bar"></div>
-          <span id="barText">블록 파괴 100%</span>
+          <span id="barText">홈런 까지 100%</span>
+          <span class="barLine">|</span>
         </div>
         <div id="out">
           <span>OUT</span>

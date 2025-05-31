@@ -5,7 +5,7 @@ let ctx = canvas.getContext("2d");
 
 let x, y, dx, dy;
 let paddleX;
-let bar = 100;
+let bar = 0;
 let lives = 3;  //아웃 카운트 사용용
 let score = 0;
 let nowHit = 0;
@@ -37,8 +37,8 @@ let nowPlayer = 0;
 let isDrawing = false;
 
 let hit1 = 50;
-let hit2 = 30;
-let hit3 = 10;
+let hit2 = 70;
+let hit3 = 90;
 let hit4 = 0;
 
 let goCount = 0;
@@ -185,9 +185,9 @@ function initPlayer() {
 }
 
 function initBar() {
-  bar = 100;
+  bar = 0;
   $("#bar").css("width", bar + "%");
-  $("#barText").html("남은 블록 : " + bar + "%");
+  $("#barText").html("홈런까지 : " + bar + "%");
   totalBrick = brickColumnCount * brickRowCount;
 }
 
@@ -558,7 +558,7 @@ function resetBallAndPaddle() {
 
 function decreaseBar() {
   const rate = (1 / (brickColumnCount * brickRowCount)) * 100;
-  bar -= rate;
+  bar += rate;
 
   if (bar < hit1 && nowHit < 2) hitBlock(2);
   else if (bar < hit2 && nowHit < 3) hitBlock(3);
@@ -566,7 +566,7 @@ function decreaseBar() {
   else if (totalBrick == 0 ) hitBlock(5);
 
   $("#bar").css("width", bar.toFixed(1) + "%");
-  $("#barText").html("남은 블록 : " + bar.toFixed(1) + "%");
+  $("#barText").html("홈런까지 : " + bar.toFixed(1) + "%");
 }
 
 function getOnBase() {
