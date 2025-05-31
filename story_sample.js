@@ -335,6 +335,26 @@ function draw() {
       // 공 위치 조정 (패들에 박히지 않게)
       y = paddleTop - ballRadius;
     }else {
+      isPaused = true;
+      $("#outEvent").show();
+      outSound.setTime = 0;
+      outSound.play();
+      let s1 = $("#blink1").animate({ top: 0 }, 800).promise();
+      let s2 = $("#blink2").animate({ bottom: 0 }, 800).promise();
+      let s3 = $("#outEvent p").slideDown(800).promise();
+
+      $.when(s1, s2, s3).then(() => {
+        setTimeout(() => {
+          let h1 = $("#blink1").animate({ top: "-150px" }, 500).promise();
+          let h2 = $("#blink2").animate({ bottom: "-150px" }, 500).promise();
+          let h3 = $("#outEvent p").fadeOut(500).promise();
+          $.when(h1, h2, h3).then(() => {
+            $("#outEvent").hide();
+            isPaused = false;
+          });
+        }, 800);
+      });
+
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
       if (!lives) {
@@ -779,6 +799,7 @@ let volume = 0.3;
 const cheerSong = document.getElementById("cheerSong");
 const brickSound = document.getElementById("brickSound");
 const scoreSound = document.getElementById("scoreSound");
+const outSound = document.getElementById("outSound");
 
 $("#sound").on("click", function(){
     if($(this).attr("src") == "./img/UIBlock/sound.png"){
@@ -790,6 +811,7 @@ $("#sound").on("click", function(){
         wallSound.muted = true;
         brickSound.muted = true;
         scoreSound.muted = true;
+        outSound.muted = true;
         
     }else{
       clickSound.currentTime = 0;
@@ -801,10 +823,12 @@ $("#sound").on("click", function(){
       wallSound.muted = false;
       brickSound.muted = false;
       scoreSound.muted = false;
+      outSound.muted = false;
     }
 });
 
 $("#volumeControl").on("input", function(){
+  updateSliderBackground(this);
     const vol = parseFloat($(this).val());
     cheerSong.volume = vol;
     clickSound.volume = vol;
@@ -812,6 +836,7 @@ $("#volumeControl").on("input", function(){
     wallSound.volume = vol;
     brickSound.volume = vol;
     scoreSound.volume = vol;
+    outSound.volume = vol;''
     volume = vol;
 
     if (vol === 0) {
@@ -824,8 +849,22 @@ $("#volumeControl").on("input", function(){
         wallSound.muted = false;
         brickSound.muted = false;
         scoreSound.muted = false;
+        outSound.muted = false;
     }
 });
+
+const volumeControl = document.getElementById("volumeControl");
+
+function updateSliderBackground(el) {
+  const value = el.value;
+  const min = el.min || 0;
+  const max = el.max || 100;
+  const percent = ((value - min) / (max - min)) * 100;
+
+  el.style.background = `linear-gradient(to right, brown ${percent}%, #ddd ${percent}%)`;
+}
+
+updateSliderBackground(volumeControl);
 
 let musicTitle = ["무적의 엘지", "사랑한다 엘지", "승리를 위하여", "서울의 아리아", "라인업 송", "깃발 응원", "우리의 함성", "승리의 포효", "포에버 엘지", "최후의 결투", "승리의 노래", "아파트"];
 let musicMP3 = [];

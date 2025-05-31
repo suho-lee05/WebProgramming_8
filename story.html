@@ -367,7 +367,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%,-50%);
-      width: 250px;
+      width: 450px;
       height:250px;
       background-color: white;
       border-radius:10px;
@@ -386,20 +386,52 @@
     }
 
     #volumeControl{
+      -webkit-appearance: none;
+      width:120px;
+      height:6px;
       position:absolute;
-      top:42px;
+      top:46px;
       left: 75px;
+      border-radius:4px;
+      background: linear-gradient(to right, brown 50%, #ddd 50%);
+      outline:none;
+    }
+
+    #volumeControl::-webkit-slider-runnable-track{
+      height:6px;
+      background:transparent;
+    }
+
+    #volumeControl::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      appearance:none;
+      width:17px;
+      height:17px;
+      background: url("img/volumeHandler.png");
+      border-radius:50%;
+      margin-top: -6px;
     }
 
   .musicSel {
     display: none;
   }
-  .musicSel:checked + label {
-    color: blue;
+  .musicSel:checked + label div{
+    background-color:white;
+    color:brown;
     font-weight: bold;
-    border: 1px solid blue;
-    width:150px;
+    border: 2px solid black;
+    border-radius: 8px;
     padding: 0 2px;
+  }
+
+  label div{
+    width:150px;
+    color:white;
+    border:2px solid brown;;
+    background-color: brown;
+    border-radius:8px;
+    padding: 0 2px;
+    margin:5px;
   }
 
   #musicListBox{
@@ -408,8 +440,7 @@
     height:150px;
     text-align: center;
     position:absolute;
-    left:50%;
-    transform:translateX(-50%);
+    left:25px;
     top:80px;
     padding:5px;
   }
@@ -422,6 +453,83 @@
     top:435px;
     left:50%;
     transform:translateX(-50%);
+  }
+
+  #backgroundSetting{
+    width:180px;
+    height:150px;
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    left:250px;
+    background-color:#ddd;
+    border-radius:8px;
+  }
+
+  #previous{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+  }
+
+  #next{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    right:0px;
+  }
+
+  #backgroundBox{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height:80px;
+    border:1px solid black;
+    border-radius:8px;
+  }
+
+  #outEvent{
+    width: 100%;
+    height: 506px;
+    background-color: transparent;
+    display:none;
+    position:absolute;
+    bottom:4px;
+    z-index:11px;
+    border-radius: 16px;
+    overflow:hidden;
+  }
+
+  #outEvent p{
+    display:none;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    color:red;
+    font-size:100px;
+    font-weight:bold;
+  }
+
+  #blink1{
+    width:100%;
+    height:150px;
+    background-color:black;
+    position:absolute;
+    top:-150px;
+    border-radius:16px 16px 0px 0px;
+
+  }
+
+  #blink2{
+    width:100%;
+    height:150px;
+    background-color:black;
+    position:absolute;
+    bottom:-150px;
+    border-radius:0px 0px 16px 16px;
   }
 
   </style>
@@ -481,6 +589,12 @@
             </div>
             <p class = "pressMessage">Press 'G' to go, 'S' to stop.</p>
           </div>
+
+          <div id = "outEvent">
+            <div id = "blink1"></div>
+            <P>OUT!</P>
+            <div id = "blink2"></div>
+          </div>
           <div id="menu" style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button id="pauseBar" onclick="togglePause()">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>
           </div>
@@ -508,45 +622,53 @@
             <audio id = "bat" src = "sound/bat.mp3" preload = "auto"></audio>
             <audio id = "wall" src = "sound/wall.mp3" preload = "auto"></audio>
             <audio id = "cheerSong" src = "sound/music0.mp3" preload = "auto" loop></audio>
+            <audio id = "outSound" src = "sound/out.mp3" preload = "auto"></audio>
             <img src = "./img/UIBlock/sound.png" alt = "SOUND" id = "sound">     
             <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
             <img src = "./img/UIBlock/close.png" alt = "CLOSE" id = "close">      
             <div id = "musicListBox">
                 <input class="musicSel" type="radio" id="music0" name="musicList" value="0" checked = "checked">
-                <label for= "music0">무적의 엘지</label><br>
+                <label for= "music0"><div>무적의 엘지</div></label>
 
                 <input class="musicSel" type="radio" id="music1" name="musicList" value="1">
-                <label for="music1">사랑한다 엘지</label><br>
+                <label for="music1"><div>사랑한다 엘지</div></label>
 
                 <input class="musicSel" type="radio" id="music2" name="musicList" value="2">
-                <label for="music2">승리를 위하여</label><br>
+                <label for="music2"><div>승리를 위하여</div></label>
 
                 <input class="musicSel" type="radio" id="music3" name="musicList" value="3">
-                <label for="music3">서울의 아리아</label><br>
+                <label for="music3"><div>서울의 아리아</div></label>
 
                 <input class="musicSel" type="radio" id="music4" name="musicList" value="4">
-                <label for="music4">라인업 송</label><br>
+                <label for="music4"><div>라인업 송</div></label>
 
                 <input class="musicSel" type="radio" id="music5" name="musicList" value="5">
-                <label for="music5">깃발 응원</label><br>
+                <label for="music5"><div>깃발 응원</div></label>
 
                 <input class="musicSel" type="radio" id="music6" name="musicList" value="6">
-                <label for="music6">우리의 함성</label><br>
+                <label for="music6"><div>우리의 함성</div></label>
 
                 <input class="musicSel" type="radio" id="music7" name="musicList" value="7">
-                <label for="music7">승리의 포효</label><br>
+                <label for="music7"><div>승리의 포효</div></label>
 
                 <input class="musicSel" type="radio" id="music8" name="musicList" value="8">
-                <label for="music8">포에버 엘지</label><br>
+                <label for="music8"><div>포에버 엘지</div></label>
 
                 <input class="musicSel" type="radio" id="music9" name="musicList" value="9">
-                <label for="music9">최후의 결투</label><br>
+                <label for="music9"><div>최후의 결투</div></label>
 
                 <input class="musicSel" type="radio" id="music10" name="musicList" value="10">
-                <label for="music10">승리의 노래</label><br>
+                <label for="music10"><div>승리의 노래</div></label>
 
                 <input class="musicSel" type="radio" id="music11" name="musicList" value="11">
-                <label for="music11">아파트</label><br>
+                <label for="music11"><div>아파트</div></label>
+            </div>
+            <div id = "backgroundSetting">
+              <img id = "previous" src = "img/UIBlock/previous.png">
+              <div id = "backgroundBox">
+                <img>
+              </div>
+              <img id = "next" src = "img/UIBlock/next.png">
             </div>
           </div>
 
