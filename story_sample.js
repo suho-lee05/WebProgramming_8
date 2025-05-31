@@ -44,6 +44,10 @@ let hit4 = 0;
 let goCount = 0;
 let brickDy = 0;
 
+//2025-06-01 작업
+
+let opponentScore = 0;
+
 const bricks = [];
 const bricksImg = [new Image(), new Image(), new Image(), new Image()];
 bricksImg[0].src = "img/brick1.png";
@@ -201,7 +205,11 @@ function storyEasy() {
   goCount=0;
   brickDy = 0;
   
-  let opponentScore = generateOpponentScore("easy");
+  let result = generateOpponentScore("easy");
+
+  opponentScore = result.total;
+
+
 
   initGameState();
   startGameLoopOnce();
@@ -221,7 +229,9 @@ function storyNormal() {
   goCount=0;
   brickDy = 0;
 
-  let opponentScore = generateOpponentScore("normal");
+  let result = generateOpponentScore("normal");
+
+  opponentScore = result.total;
 
   initGameState();
   startGameLoopOnce();
@@ -241,7 +251,8 @@ function storyHard() {
   goCount=0;
   brickDy = 0;
 
-  let opponentScore = generateOpponentScore("hard");
+  let result = generateOpponentScore("hard");
+  opponentScore = result.total;
 
   initGameState();
   startGameLoopOnce();
@@ -571,6 +582,23 @@ function getOnBase() {
     scoreSound.play();
   }
   $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+
+  //이 조건문을 어따 배치해야 할지 모르겠어요 ㅠ
+  if (scores > opponentScore) {
+    setTimeout(() => {
+      if (currentDifficulty === "easy") {
+        alert("NORMAL 모드로 진입합니다!");
+        storyNormal();
+      } else if (currentDifficulty === "normal") {
+        alert("HARD 모드로 진입합니다!");
+        storyHard();
+      } else if (currentDifficulty === "hard") {
+        alert("축하합니다! 최종 난이도 클리어!");
+        location.href = "win.html";
+      }
+    }, 1000);
+  }
+
 }
 
 function hitBlock(stat) {
@@ -618,6 +646,7 @@ function stop() {
   { bottom: "4px", left: "800px"},500,function () {
     $(this).css({ bottom: "600px", left: "0px" });
   }
+  
 );
   getOnBase();                           // 1. 주자 진루
   $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
