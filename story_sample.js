@@ -8,7 +8,7 @@ let paddleX;
 let bar = 0;
 let lives = 3;  //아웃 카운트 사용용
 let score = 0;
-let nowHit = 0;
+let nowHit = 1;
 let isPaused = false;
 let isHit = false;
 let runnerIndex = 0;
@@ -119,7 +119,7 @@ function initGameState() {
   initBricks();
   initPlayer();
   initBar();
-  nowHit = 0;
+  nowHit = 1;
   isHit = false;
   runnerIndex = 0;
   OnBaseCount = 0;
@@ -198,10 +198,10 @@ function storyEasy() {
   lives = 3;
   dx = 2;
   dy = -2;
-  hit1 = 60;
-  hit2 = 40;
-  hit3 = 20;
-  hit4 = 0;
+
+  hit1 = 40;
+  hit2 = 60;
+  hit3 = 80;
   goCount=0;
   brickDy = 0;
   
@@ -223,9 +223,8 @@ function storyNormal() {
   dx = 3;
   dy = -3;
   hit1 = 50;
-  hit2 = 30;
-  hit3 = 10;
-  hit4 = 0;
+  hit2 = 70;
+  hit3 = 90;
   goCount=0;
   brickDy = 0;
 
@@ -244,10 +243,10 @@ function storyHard() {
   lives = 3;
   dx = 4;
   dy = -4;
-  hit1 = 40;
-  hit2 = 25;
-  hit3 = 10;
-  hit4 = 0;
+  hit1 = 60;
+  hit2 = 75;
+  hit3 = 90;
+
   goCount=0;
   brickDy = 0;
 
@@ -264,9 +263,8 @@ function storyEndless() {
   dx = 5;
   dy = -5;
   hit1 = 50;
-  hit2 = 30;
-  hit3 = 10;
-  hit4 = 0;
+  hit2 = 70;
+  hit3 = 90;
 
   initGameState();
   startGameLoopOnce();
@@ -364,6 +362,7 @@ function draw() {
         renewBestScore();
         location.href = "result.html";
       } else { 
+        nowHit=1;
         goCount=0;
         brickDy=0;
         resetBallAndPaddle();
@@ -399,6 +398,7 @@ function draw() {
         renewBestScore();
         location.href = "result.html";
       } else {
+        nowHit=1;
         goCount=0;
         brickDy=0;
         resetBallAndPaddle();
@@ -520,7 +520,9 @@ function collisionDetection() {
           if (minOverlapX < minOverlapY) dx = -dx;
           else dy = -dy;
 
-          if (nowHit < b.status) hitBlock(b.status);
+          if (nowHit < b.status){
+            hitBlock(b.status);
+          }
           b.status = 0;
           totalBrick--;
           decreaseBar();
@@ -560,9 +562,9 @@ function decreaseBar() {
   const rate = (1 / (brickColumnCount * brickRowCount)) * 100;
   bar += rate;
 
-  if (bar < hit1 && nowHit < 2) hitBlock(2);
-  else if (bar < hit2 && nowHit < 3) hitBlock(3);
-  else if (bar < hit3 && nowHit < 4) hitBlock(4);
+  if (bar > hit1 && nowHit < 2) hitBlock(2);
+  else if (bar > hit2 && nowHit < 3) hitBlock(3);
+  else if (bar > hit3 && nowHit < 4) hitBlock(4);
   else if (totalBrick == 0 ) hitBlock(5);
 
   $("#bar").css("width", bar.toFixed(1) + "%");
@@ -655,7 +657,7 @@ function stop() {
   getOnBase();                           // 1. 주자 진루
   $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
   addPlayer();                           // 3. 다음 타자 배치
-  nowHit = 0;
+  nowHit = 1;
 
   initBall();
   initPaddle();
@@ -885,6 +887,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
   scores = 0;
   lives = 3;
   nowPlayer = 0;
+  nowHit=1;
   OnBaseCount = 0;
   runnerIndex = 0;
   isPaused = false;
