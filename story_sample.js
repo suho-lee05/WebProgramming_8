@@ -99,6 +99,11 @@ const homerunSounds = [ //홈런 음원
 
 let isMuted = false;
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 class Runner {
   constructor(num) {
     this.num = num;
@@ -124,6 +129,40 @@ class Runner {
     $("#batterImg").attr("src", `img/${num}uniform.png`);
   }
 }
+
+// class Runner {
+//   constructor(num) {
+//     this.num = num;
+//     this.pos = 0;
+//   }
+
+//   async getOnBase(h) {
+//     for (let i = 0; i < h; i++) {
+//       this.pos++;
+
+//       if (this.pos > 3) {
+//         await sleep(300); // 마지막 움직임도 살짝 보여주기 위해 잠깐 대기
+//         $(`#runner${this.num}`).hide();
+//         OnBaseCount--;
+//         this.pos = 0;
+//         return 1;
+//       }
+
+//       $(`#runner${this.num}`).css(positions[this.pos]).show();
+//       await sleep(500); // 각 이동 사이 간격
+//     }
+
+//     OnBaseCount++;
+//     return 0;
+//   }
+
+//   setImg() {
+//     const num = playerList[nowPlayer].split(",")[0];
+//     $(`#runner${this.num}`).attr("src", `img/${num}piece.png`);
+//     $("#batterImg").attr("src", `img/${num}uniform.png`);
+//   }
+// }
+
 
 const runners = [new Runner(1), new Runner(2), new Runner(3), new Runner(4)];
 
