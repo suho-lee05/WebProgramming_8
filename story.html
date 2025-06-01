@@ -581,7 +581,18 @@
     right:-500px;
     overflow:hidden;
   }
-
+  #countDisplay {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background-color: rgba(255, 255, 255, 0.8);
+      font-family: 'Bangers';
+      font-size: 30px;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 20;
+  }
   </style>
   <script>
     window.onload = function () {
@@ -745,6 +756,8 @@
             <p>OPPONENT: 0</p>
             <p>     YOU: 0</p>
           </div> 
+          <div id="countDisplay">S: 0 | B: 0</div>
+
         <div id="player">
           <div id="batter">
             CURRENT<br>BATTER<br>

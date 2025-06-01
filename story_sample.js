@@ -883,6 +883,7 @@ function generateOpponentScore(difficulty) {
 
 function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수입니다.
 
+  $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
   if (strikes >= 3) {
     console.log("삼진 아웃!");
     strikeOutSound.currentTime = 0;
@@ -890,6 +891,7 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     strikes = 0;
     balls = 0;
     handleOut();
+    $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
     return;
   }
 
@@ -898,8 +900,10 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     walkSound.currentTime = 0;
     walkSound.play();
     walk(); // ← 기존 로직 대신 함수 호출
+    $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
     return;
   }
+  
 }
 
 function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지 업데이트 해주는 함수입니다.
