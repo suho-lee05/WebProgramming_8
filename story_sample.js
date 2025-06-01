@@ -89,6 +89,10 @@ let currentDifficulty = "easy";
 const clickSound = $("#click")[0];
 const batSound = $("#bat")[0];
 const wallSound = $("#wall")[0];
+
+const walkSound = document.getElementById("walkSound");
+const strikeOutSound = document.getElementById("strikeOutSound");
+
 let isMuted = false;
 
 class Runner {
@@ -833,6 +837,8 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
 
   if (strikes >= 3) {
     console.log("삼진 아웃!");
+    strikeOutSound.currentTime = 0;
+    strikeOutSound.play();
     strikes = 0;
     balls = 0;
     handleOut();
@@ -841,6 +847,8 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
 
   if (balls >= 4) {
     console.log("볼넷 출루!");
+    walkSound.currentTime = 0;
+    walkSound.play();
     walk(); // ← 기존 로직 대신 함수 호출
     return;
   }
