@@ -47,13 +47,19 @@ let brickDy = 0;
 //2025-06-01 작업
 
 let opponentScore = 0;
+let strikes = 0;  //스트라이크 판정 변수
+let balls = 0;    //볼 판정 변수
+
 
 const bricks = [];
-const bricksImg = [new Image(), new Image(), new Image(), new Image()];
+const bricksImg = [new Image(), new Image(), new Image(), new Image(), new Image(), new Image()];
 bricksImg[0].src = "img/brick1.png";
 bricksImg[1].src = "img/brick2.png";
 bricksImg[2].src = "img/brick3.png";
 bricksImg[3].src = "img/brick4.png";
+bricksImg[4].src = "img/brick1.png";  //현재 이미지가 없어서 brick1 이미지로 대체합니다
+bricksImg[5].src = "img/brick1.png";  //현재 이미지가 없어서 brick1 이미지로 대체합니다
+
 
 const ballImg = new Image();
 ballImg.src = "img/ball.png";
@@ -62,9 +68,9 @@ paddleImg.src = "img/paddle.png";
 
 // ==== 난이도별 블록 개수 제한 전역 변수 선언 ====
 let blockCountByStatus = {
-  easy:   { 2: 5, 3: 3, 4: 2 }, // 2~4만 루타 블록
-  normal: { 2: 7, 3: 5, 4: 3 },
-  hard:   { 2: 7, 3: 5, 4: 3 }
+  easy:   { 2: 5, 3: 3, 4: 2, 5: 0, 6: 0}, // 2~4만 루타 블록
+  normal: { 2: 7, 3: 5, 4: 3, 5: 6, 6: 6},  //status 5 : 스트라이크 6 : 볼
+  hard:   { 2: 7, 3: 5, 4: 3, 5: 8, 6: 8}
 };
 
 const playerList = [
@@ -83,6 +89,14 @@ let currentDifficulty = "easy";
 const clickSound = $("#click")[0];
 const batSound = $("#bat")[0];
 const wallSound = $("#wall")[0];
+
+const walkSound = document.getElementById("walkSound"); //볼넷 음원
+const strikeOutSound = document.getElementById("strikeOutSound"); //삼진 음원
+const homerunSounds = [ //홈런 음원
+  document.getElementById("homerunSound1"),
+  document.getElementById("homerunSound2")
+];
+
 let isMuted = false;
 
 class Runner {
@@ -140,20 +154,64 @@ function initPaddle() {
 }
 
 // ==== 블록 초기화 함수 수정 ====
-function initBricks() {
+// function initBricks() {
+//   const total = brickRowCount * brickColumnCount;
+
+//   const statusCounts = blockCountByStatus[currentDifficulty];
+//   const totalSpecial = statusCounts[2] + statusCounts[3] + statusCounts[4];
+//   const remaining = total - totalSpecial;
+
+//   // status 배열 구성 (주의: 1은 일반 블록, 2~4는 루타 블록)
+//   const statusList = [];
+
+//   for (let i = 0; i < statusCounts[2]; i++) statusList.push(2); // 1루타
+//   for (let i = 0; i < statusCounts[3]; i++) statusList.push(3); // 2루타
+//   for (let i = 0; i < statusCounts[4]; i++) statusList.push(4); // 3루타
+//   for (let i = 0; i < statusCounts[5]; i++) statusList.push(5); // 3루타
+//   for (let i = 0; i < statusCounts[6]; i++) statusList.push(6); // 3루타
+//   for (let i = 0; i < remaining; i++)     statusList.push(1); // 일반 블록
+
+//   // 셔플
+//   for (let i = statusList.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [statusList[i], statusList[j]] = [statusList[j], statusList[i]];
+//   }
+
+//   // 블록 생성
+//   let index = 0;
+//   for (let c = 0; c < brickColumnCount; c++) {
+//     bricks[c] = [];
+//     for (let r = 0; r < brickRowCount; r++) {
+//       bricks[c][r] = {
+//         x: 0,
+//         y: 0,
+//         status: statusList[index++] // 0~4
+//       };
+//     }
+//   }
+// }
+
+function initBricks() { //2025-06-02 브릭 status 6까지 추가 해서 수정한 함수
   const total = brickRowCount * brickColumnCount;
 
   const statusCounts = blockCountByStatus[currentDifficulty];
-  const totalSpecial = statusCounts[2] + statusCounts[3] + statusCounts[4];
+  const totalSpecial = 
+    (statusCounts[2] || 0) + 
+    (statusCounts[3] || 0) + 
+    (statusCounts[4] || 0) + 
+    (statusCounts[5] || 0) + 
+    (statusCounts[6] || 0);
+
   const remaining = total - totalSpecial;
 
-  // status 배열 구성 (주의: 1은 일반 블록, 2~4는 루타 블록)
   const statusList = [];
 
-  for (let i = 0; i < statusCounts[2]; i++) statusList.push(2); // 1루타
-  for (let i = 0; i < statusCounts[3]; i++) statusList.push(3); // 2루타
-  for (let i = 0; i < statusCounts[4]; i++) statusList.push(4); // 3루타
-  for (let i = 0; i < remaining; i++)     statusList.push(1); // 일반 블록
+  for (let i = 0; i < (statusCounts[2] || 0); i++) statusList.push(2); // 1루타
+  for (let i = 0; i < (statusCounts[3] || 0); i++) statusList.push(3); // 2루타
+  for (let i = 0; i < (statusCounts[4] || 0); i++) statusList.push(4); // 3루타
+  for (let i = 0; i < (statusCounts[5] || 0); i++) statusList.push(5); // 스트라이크
+  for (let i = 0; i < (statusCounts[6] || 0); i++) statusList.push(6); // 볼
+  for (let i = 0; i < remaining; i++)          statusList.push(1); // 일반 블록
 
   // 셔플
   for (let i = statusList.length - 1; i > 0; i--) {
@@ -169,7 +227,7 @@ function initBricks() {
       bricks[c][r] = {
         x: 0,
         y: 0,
-        status: statusList[index++] // 0~4
+        status: statusList[index++] // 1~6까지 가능
       };
     }
   }
@@ -197,8 +255,8 @@ function storyEasy() {
   brickRowCount = 4;
   brickColumnCount = 5;
   lives = 3;
-  dx = 2;
-  dy = -2;
+  dx = 3;
+  dy = -3;
 
   hit1 = 40;
   hit2 = 60;
@@ -462,7 +520,7 @@ function drawBricks() {
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
       const b = bricks[c][r];
-      if (b.status >= 1 && b.status <= 4) {
+      if (b.status >= 1 && b.status <= 6) { //status 6까지 추가 2025-06-02
         const brickX = c * (brickWidth + brickPadding) + offsetX;
         const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
         b.x = brickX;
@@ -523,9 +581,18 @@ function collisionDetection() {
           if (minOverlapX < minOverlapY) dx = -dx;
           else dy = -dy;
 
-          if (nowHit < b.status){
-            hitBlock(b.status);
+          if (b.status === 5) {     //스트라이크 판정 추가 2025-06-02
+            strikes++;
+            console.log("스트라이크: " + strikes);
+            updateStrikeBallDisplay();
+          } else if (b.status === 6) {  //볼넷 판정 추가 2025-06-02
+            balls++;
+            console.log("볼: " + balls);
+            updateStrikeBallDisplay();
+          } else if (nowHit < b.status) {
+            hitBlock(b.status); // 2~4: 루타 처리
           }
+
           b.status = 0;
           totalBrick--;
           decreaseBar();
@@ -538,7 +605,6 @@ function collisionDetection() {
     if (hit) break;
   }
 }
-
 
 
 function startGameLoopOnce() {
@@ -570,11 +636,16 @@ function decreaseBar() {
   else if (bar > hit3 && nowHit < 4) hitBlock(4);
   else if (totalBrick == 0 ){
     isPaused = true;
+    const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
+      selectedHomerunSound.currentTime = 0;
+      selectedHomerunSound.play();
       $("#homerunEvent").slideDown(400, function() {  // slideDown 끝난 후 실행
     let h2 = $("#band1").animate({ left: 0 }, 1800).promise();
     let h3 = $("#band2").animate({ right: 0 }, 1800).promise();
 
     $.when(h2, h3).then(function(){
+      
+
       isPaused = false;
       isHit = false;
       goCount = 0;
@@ -671,6 +742,9 @@ function go() {
 }
 
 function stop() {
+  updateStrikeBallDisplay();//stop으로 출루했을 때 스트라이크, 볼넷 관련
+  strikes = 0;  //선수가 출루했을 떄 스트라이크랑 볼 카운트 0 만들어주기
+  balls = 0;
   isHit = false;
   goCount=0;
   brickDy = 0;
@@ -698,6 +772,8 @@ function addPlayer() {
   $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
 
   nowPlayer = (nowPlayer + 1) % 9;
+
+  runnerIndex = runnerIndex % runners.length;  // ← 추가!
 
   const runner = runners[runnerIndex];
   runner.pos = 0;
@@ -765,6 +841,115 @@ function generateOpponentScore(difficulty) {
   console.log(`[${difficulty.toUpperCase()}] 상대팀 점수 (${inning}이닝):`, scores, `=> 총점: ${total}`);
   return { scoreByInning: scores, total };
 }
+
+function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수입니다.
+
+  if (strikes >= 3) {
+    console.log("삼진 아웃!");
+    strikeOutSound.currentTime = 0;
+    strikeOutSound.play();
+    strikes = 0;
+    balls = 0;
+    handleOut();
+    return;
+  }
+
+  if (balls >= 4) {
+    console.log("볼넷 출루!");
+    walkSound.currentTime = 0;
+    walkSound.play();
+    walk(); // ← 기존 로직 대신 함수 호출
+    return;
+  }
+}
+
+function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지 업데이트 해주는 함수입니다.
+  isPaused = true;
+  $("#outEvent").show();
+  outSound.currentTime = 0;
+  outSound.play();
+
+  let s1 = $("#blink1").animate({ top: 0 }, 800).promise();
+  let s2 = $("#blink2").animate({ bottom: 0 }, 800).promise();
+  let s3 = $("#outEvent p").slideDown(800).promise();
+
+  $.when(s1, s2, s3).then(() => {
+    setTimeout(() => {
+      let h1 = $("#blink1").animate({ top: "-150px" }, 500).promise();
+      let h2 = $("#blink2").animate({ bottom: "-150px" }, 500).promise();
+      let h3 = $("#outEvent p").fadeOut(500).promise();
+
+      $.when(h1, h2, h3).then(() => {
+        $("#outEvent").hide();
+        isPaused = false;
+      });
+    }, 800);
+  });
+
+  $("#out" + (4 - lives)).attr("src", "img/out.png");
+  lives--;
+  $("#playerList li").eq(0).remove();
+  addPlayer();
+
+  if (!lives) {
+    renewBestScore();
+    location.href = "result.html";
+  } else {
+    nowHit = 1;
+    goCount = 0;
+    brickDy = 0;
+    resetBallAndPaddle();
+    initBall();
+    initPaddle();
+    initBricks();
+    initBar();
+  }
+}
+//볼넷 진루 관련 함수
+function walk() {
+  //showBlockMessage("볼넷 출루!", "block-blue");
+
+  // 기존 주자들을 모두 한 루씩 밀어냄
+  let tempScore = scores;
+  for (let i = 0; i < runners.length; i++) {
+    if (runners[i].pos > 0) {
+      scores += runners[i].getOnBase(1); // 1루씩 진루
+    }
+  }
+
+  // 새 주자 출루
+  //if (runnerIndex >= runners.length) runnerIndex = 0;
+  // 2. 출루 주자 처리
+  runnerIndex = runnerIndex % runners.length;
+  const runner = runners[runnerIndex];
+  runner.setImg();
+  scores += runner.getOnBase(1);
+  runnerIndex++;
+
+  //점수 업데이트
+  if (scores > tempScore) {
+    scoreSound.currentTime = 0;
+    scoreSound.play();
+    $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+  }
+
+  //스트라이크/볼 카운트 증가
+  strikes = 0;
+  balls = 0;
+  updateStrikeBallDisplay();
+
+  // 타자 교체 처리
+  $("#playerList li").eq(0).remove(); // 현재 타자 제거
+  addPlayer();                        // 다음 타자 추가
+  // 6. 게임 요소 초기화
+  initBall();
+  initPaddle();
+  initBar();
+  initBricks();
+  nowHit = 1;  // ← 이거 반드시 필요!
+
+}
+
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
