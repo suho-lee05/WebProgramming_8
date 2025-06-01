@@ -760,6 +760,8 @@ function addPlayer() {
 
   nowPlayer = (nowPlayer + 1) % 9;
 
+  runnerIndex = runnerIndex % runners.length;  // ← 추가!
+
   const runner = runners[runnerIndex];
   runner.pos = 0;
   runner.setImg();
@@ -899,17 +901,22 @@ function walk() {
   }
 
   // 새 주자 출루
-  if (runnerIndex >= runners.length) runnerIndex = 0;
-  const runner = runners[runnerIndex++];
+  //if (runnerIndex >= runners.length) runnerIndex = 0;
+  // 2. 출루 주자 처리
+  runnerIndex = runnerIndex % runners.length;
+  const runner = runners[runnerIndex];
   runner.setImg();
-  scores += runner.getOnBase(1); // 1루 출루
+  scores += runner.getOnBase(1);
+  runnerIndex++;
 
+  //점수 업데이트
   if (scores > tempScore) {
     scoreSound.currentTime = 0;
     scoreSound.play();
     $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
   }
 
+  //스트라이크/볼 카운트 증가
   strikes = 0;
   balls = 0;
   updateStrikeBallDisplay();
@@ -917,6 +924,13 @@ function walk() {
   // 타자 교체 처리
   $("#playerList li").eq(0).remove(); // 현재 타자 제거
   addPlayer();                        // 다음 타자 추가
+  // 6. 게임 요소 초기화
+  initBall();
+  initPaddle();
+  initBar();
+  initBricks();
+  nowHit = 1;  // ← 이거 반드시 필요!
+
 }
 
 
