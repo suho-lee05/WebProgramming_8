@@ -125,6 +125,7 @@ function initGameState() {
   OnBaseCount = 0;
   score = 0;
   scores = 0;
+  $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
 }
 
 function initBall() {
@@ -613,7 +614,7 @@ function getOnBase() {
     scoreSound.play();
   }
   $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
-  $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
+  
 
   //이 조건문을 어따 배치해야 할지 모르겠어요 ㅠ
   if (scores > opponentScore) {
