@@ -90,8 +90,12 @@ const clickSound = $("#click")[0];
 const batSound = $("#bat")[0];
 const wallSound = $("#wall")[0];
 
-const walkSound = document.getElementById("walkSound");
-const strikeOutSound = document.getElementById("strikeOutSound");
+const walkSound = document.getElementById("walkSound"); //볼넷 음원
+const strikeOutSound = document.getElementById("strikeOutSound"); //삼진 음원
+const homerunSounds = [ //홈런 음원
+  document.getElementById("homerunSound1"),
+  document.getElementById("homerunSound2")
+];
 
 let isMuted = false;
 
@@ -251,8 +255,8 @@ function storyEasy() {
   brickRowCount = 4;
   brickColumnCount = 5;
   lives = 3;
-  dx = 2;
-  dy = -2;
+  dx = 3;
+  dy = -3;
 
   hit1 = 40;
   hit2 = 60;
@@ -632,11 +636,16 @@ function decreaseBar() {
   else if (bar > hit3 && nowHit < 4) hitBlock(4);
   else if (totalBrick == 0 ){
     isPaused = true;
+    const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
+      selectedHomerunSound.currentTime = 0;
+      selectedHomerunSound.play();
       $("#homerunEvent").slideDown(400, function() {  // slideDown 끝난 후 실행
     let h2 = $("#band1").animate({ left: 0 }, 1800).promise();
     let h3 = $("#band2").animate({ right: 0 }, 1800).promise();
 
     $.when(h2, h3).then(function(){
+      
+
       isPaused = false;
       isHit = false;
       goCount = 0;
