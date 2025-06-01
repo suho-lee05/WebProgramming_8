@@ -182,7 +182,7 @@ function initPlayer() {
     $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
   });
   $("#batterImg").attr("src", `img/51uniform.png`);
-  $("#runner1").attr("src", `img/51piece.png`);
+  $("#runner1").attr("src", `img/51piece.png`).css({ top: positions[0].top, left: positions[0].left }).show();
 }
 
 function initBar() {
@@ -922,7 +922,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
   for (let i = 1; i <= 3; i++) {
     $(`#out${i}`).attr("src", "img/noOut.png");
   }
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 2; i <= 4; i++) {
     $(`#runner${i}`).hide();
   }
 
