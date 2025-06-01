@@ -353,11 +353,13 @@ function draw() {
           });
         }, 800);
       });
-
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
       $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
-      addPlayer();                           // 3. 다음 타자 배치
+      addPlayer();                           //3. 다음 타자 배치치
+      initBricks();
+      initBar();  
+      initBall();                         
       if (!lives) {
         renewBestScore();
         location.href = "result.html";
@@ -565,7 +567,30 @@ function decreaseBar() {
   if (bar > hit1 && nowHit < 2) hitBlock(2);
   else if (bar > hit2 && nowHit < 3) hitBlock(3);
   else if (bar > hit3 && nowHit < 4) hitBlock(4);
-  else if (totalBrick == 0 ) hitBlock(5);
+  else if (totalBrick == 0 ){
+    isPaused = true;
+      $("#homerunEvent").slideDown(400, function() {  // slideDown 끝난 후 실행
+    let h2 = $("#band1").animate({ left: 0 }, 1800).promise();
+    let h3 = $("#band2").animate({ right: 0 }, 1800).promise();
+
+    $.when(h2, h3).then(function(){
+      isPaused = false;
+      isHit = false;
+      goCount = 0;
+      brickDy = 0;
+      nowHit = 5;
+      getOnBase();                        // 1. 주자 진루
+      $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+      addPlayer();                        // 3. 다음 타자 배치
+      initBall();
+      initPaddle();
+      initBar();
+      initBricks();
+      nowHit=0;
+      $("#homerunEvent").slideUp();
+    });
+  });
+  }
 
   $("#bar").css("width", bar.toFixed(1) + "%");
   $("#barText").html("홈런까지 : " + bar.toFixed(1) + "%");
