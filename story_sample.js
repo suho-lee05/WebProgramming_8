@@ -468,6 +468,7 @@ function draw() {
       });
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
+      $("#O").append("●");
       $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
       addPlayer();                           //3. 다음 타자 배치치
       initBricks();
@@ -507,6 +508,7 @@ function draw() {
 
     $("#out" + (4 - lives)).attr("src", "img/out.png");
     lives--;
+    $("#O").append("●");
     $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거 
     addPlayer();                           // 3. 다음 타자 배치
     if (!lives) {
@@ -557,6 +559,7 @@ function updateItems() {
       if (item.type === 6) {
         // ✋ 글러브 아이템을 먹음 → 볼 증가
         balls++;
+        $("#B").append("●");
         updateStrikeBallDisplay();
       }
       // status 5 (트로피)는 먹어도 아무 효과 없음
@@ -565,6 +568,7 @@ function updateItems() {
       if (item.type === 5) {
         // 🏆 트로피를 못 먹음 → 스트라이크 증가
         strikes++;
+        $("#S").append("●");
         updateStrikeBallDisplay();
       }
       // status 6 (글러브)는 놓쳐도 아무 일 없음
@@ -996,6 +1000,8 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     strikeOutSound.play();
     strikes = 0;
     balls = 0;
+    $("#B").empty();
+    $("#S").empty();
     handleOut();
     $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
     return;
@@ -1037,6 +1043,7 @@ function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지
 
   $("#out" + (4 - lives)).attr("src", "img/out.png");
   lives--;
+  $("#O").append("●");
   $("#playerList li").eq(0).remove();
   addPlayer();
 
@@ -1086,6 +1093,8 @@ function walk() {
   //스트라이크/볼 카운트 증가
   strikes = 0;
   balls = 0;
+  $("#B").empty();
+  $("#S").empty();
   updateStrikeBallDisplay();
 
   // 타자 교체 처리
@@ -1260,6 +1269,10 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
   for (let i = 2; i <= 4; i++) {
     $(`#runner${i}`).hide();
   }
+
+  $("#B").empty();
+  $("#S").empty();
+  $("#O").empty();
 
   // $("#stadium-container p:nth-of-type(2)").html("YOU: 0");
   $("#you").html(0);
