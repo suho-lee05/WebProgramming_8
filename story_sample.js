@@ -8,7 +8,7 @@ let paddleX;
 let bar = 0;
 let lives = 3;  //아웃 카운트 사용용
 let score = 0;
-let nowHit = 1;
+let nowHit = 1
 let isPaused = false;
 let isHit = false;
 let runnerIndex = 0;
@@ -327,7 +327,7 @@ function storyEasy() {
 
   opponentScore = result.total;
 
-
+  $("#number").html("7");
 
   initGameState();
   startGameLoopOnce();
@@ -349,7 +349,7 @@ function storyNormal() {
   let result = generateOpponentScore("normal");
 
   opponentScore = result.total;
-
+  $("#number").html("8");
   initGameState();
   startGameLoopOnce();
 }
@@ -368,6 +368,7 @@ function storyHard() {
   goCount=0;
   brickDy = 0;
 
+  $("#number").html("9");
   let result = generateOpponentScore("hard");
   opponentScore = result.total;
 
