@@ -596,7 +596,7 @@ function updateItems() {
         // ✋ 글러브 아이템을 먹음 → 볼 증가
         balls++;
         $("#B").append("●");
-        
+        updateStrikeBallDisplay();
       }
       // status 5 (트로피)는 먹어도 아무 효과 없음
       items.splice(i, 1);
