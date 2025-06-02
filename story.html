@@ -141,7 +141,67 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 10px;
+    }
+    #scoreBoard{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #scoreLeft{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 3열 */
+      grid-template-rows: repeat(3, auto);   /* 2행 */
+      gap: 3px;
+    }
+
+    .bso{
+      padding-left: 6px;
+      background-color: black;
+      color: white;
+      text-align: center;
+    }
+
+    #B{
+      text-align: left;
+      width: 60px;
+      color: green;
+    }
+    #S{
+      text-align: left;
+      width: 60px;
+      color: yellow;
+    }
+    #O{
+      text-align: left ;
+      width: 60px;
+      color: red;
+    }
+
+    #scoreRight{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 3열 */
+      grid-template-rows: repeat(2, auto);   /* 2행 */
+      margin-left: 20px;
+    }
+    .lg{
+      width: 35px;
+      height: 35px;
+      background-color: black;
+      color: white;
+      text-align: center;
+      line-height: 37px;
+      border-bottom: 3px solid white;
+    }
+    .lg2{
+      width: 35px;
+      height: 35px;
+      background-color: gray;
+      color: white;
+      text-align: center;
+      line-height: 37px;
+      border-bottom: 3px solid white;
     }
     #stadium-container {
       position: relative;
@@ -181,7 +241,6 @@
       display: flex;
       justify-content: center;
       gap: 20px; /* 유니폼과 리스트 사이 간격 */
-      padding: 10px;
       align-items: center;
     }
 
@@ -756,16 +815,29 @@
             <p>OPPONENT: 0</p>
             <p>     YOU: 0</p>
           </div> 
-          <div id="countDisplay">S: 0 | B: 0</div>
-
-        <div id="player">
-          <div id="batter">
+          <div id="countDisplay">
+          S: 0 | B: 0
+          </div>
+          
+          <div id="scoreBoard">
+            <div id="scoreLeft">
+              <div class="bso">B</div><div class="bso" id="B">●●●</div>
+              <div class="bso">S</div><div class="bso" id="S">●●●</div>
+              <div class="bso">O</div><div class="bso" id="O" >●●●</div>
+            </div>
+            <div id="scoreRight">
+              <div class="lg">LG</div> <div class="lg2">0</div>
+              <div class="lg">KT</div> <div class="lg2">0</div>
+            </div>
+          </div>
+          <div id="player">
+            <div id="batter">
             CURRENT<br>BATTER<br>
             <img id="batterImg" src="img/51uniform.png">
+            </div>
+            <ul id="playerList">
+            </ul>
           </div>
-          <ul id="playerList">
-          </ul>
-        </div>
       </div>
     </div>
   </div>
