@@ -889,9 +889,11 @@ function go() {
 }
 
 function stop() {
-  updateStrikeBallDisplay();//stop으로 출루했을 때 스트라이크, 볼넷 관련
   strikes = 0;  //선수가 출루했을 떄 스트라이크랑 볼 카운트 0 만들어주기
   balls = 0;
+  updateStrikeBallDisplay();//stop으로 출루했을 때 스트라이크, 볼넷 관련
+  $("#B").empty();
+  $("#S").empty();
   isHit = false;
   goCount=0;
   brickDy = 0;
@@ -994,6 +996,7 @@ function generateOpponentScore(difficulty) {
 function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수입니다.
 
   $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
+
   if (strikes >= 3) {
     console.log("삼진 아웃!");
     strikeOutSound.currentTime = 0;
