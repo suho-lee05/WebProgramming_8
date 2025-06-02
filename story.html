@@ -130,6 +130,8 @@
       border-radius: 16px;
       flex-grow: 1;
       margin-top: 20px;
+      background-image: url("img/background1.png");
+      background-size:cover;
     }
 
     #board {
@@ -308,6 +310,7 @@
       flex-direction: column;
       gap: 10px;
       align-items: center;
+      background-color: transparent;
     }
 
     /* 버튼 이미지 공통 스타일 */
@@ -438,7 +441,7 @@
       transform: translate(-50%,-50%);
       width: 450px;
       height:250px;
-      background-color: white;
+      background-color: rgba(255, 255, 255, 0.8);
       border-radius:10px;
     }
 
@@ -794,9 +797,7 @@
             </div>
             <div id = "backgroundSetting">
               <img id = "previous" src = "img/UIBlock/previous.png">
-              <div id = "backgroundBox">
-                <img>
-              </div>
+                <img id = "backgroundBox" src = "img/backgroundBox1.png">
               <img id = "next" src = "img/UIBlock/next.png">
             </div>
           </div>

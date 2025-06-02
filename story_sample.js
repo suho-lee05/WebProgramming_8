@@ -112,6 +112,12 @@ let items = []; // 블록에서 떨어지는 아이템들을 저장하는 배열
 
 let isMuted = false;
 
+const backgroundImg = ["img/background1.png", "img/background2.png", "img/background3.png"];
+const backgroundBoxImg = ["img/backgroundBox1.png", "img/backgroundBox2.png", "img/backgroundBox3.png"]
+let backgroundImage = new Image();
+backgroundImage.src = backgroundImg[0];
+let backgroundIdx = 0;
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -386,6 +392,7 @@ function storyEndless() {
 function draw() {
   if (isPaused) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     return requestAnimationFrame(draw);
   }
 
@@ -394,6 +401,7 @@ function draw() {
   }
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
   drawBricks();
   drawBall();
   drawPaddle();
@@ -1237,6 +1245,22 @@ $("label").on("click", function(){
   cheerSong.src = `sound/music${musicIndex}.mp3`; 
   cheerSong.currentTime = 0;
   cheerSong.play();
+});
+
+$("#previous").on("click", function(){
+  if(backgroundIdx == 0){
+    backgroundIdx = 2;
+  }else{
+    backgroundIdx--;
+  }
+  $("#backgroundBox").attr({src: backgroundBoxImg[backgroundIdx]});
+  backgroundImage.src = backgroundImg[backgroundIdx];
+});
+
+$("#next").on("click", function(){
+  backgroundIdx = (backgroundIdx+1)%3;
+  $("#backgroundBox").attr({src: backgroundBoxImg[backgroundIdx]});
+  backgroundImage.src = backgroundImg[backgroundIdx];
 });
 
 document.querySelector(".resumeBtn").addEventListener("click", () => {
