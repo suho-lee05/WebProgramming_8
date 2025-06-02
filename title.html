@@ -104,7 +104,7 @@
             });
         }
         setHoverEffect(".story");
-        setHoverEffect(".endless");
+        setHoverEffect("#endless");
         setHoverEffect(".settings");
         setHoverEffect(".mute");
         const clickSound = $("#click")[0];
@@ -121,7 +121,7 @@
             });
         });
 
-        $(".endless").click(function() {
+        $("#endless").click(function() {
             clickSound.currentTime = 0;
             clickSound.play().then(() => {
                 const difficulty = "endless"; // easy, normal, hard, enless
@@ -184,7 +184,7 @@
             <ul class="menu">
                 <li class="listTitle">Endless</li>
                 <li id="bestScore">Your Best : </li>
-                <li class="endless">Play Ball!</li>
+                <li id="endless">Play Ball!</li>
                 <!-- <li class="settings">Settings</li> -->
                 <li class="mute">Title BGM</li>
                 <audio id="bgm" src="sound/hitNrun.mp3"></audio>

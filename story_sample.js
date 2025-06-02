@@ -70,7 +70,8 @@ paddleImg.src = "img/paddle.png";
 let blockCountByStatus = {
   easy:   { 2: 5, 3: 3, 4: 2, 5: 0, 6: 0}, // 2~4만 루타 블록
   normal: { 2: 7, 3: 5, 4: 3, 5: 6, 6: 6},  //status 5 : 스트라이크 6 : 볼
-  hard:   { 2: 7, 3: 5, 4: 3, 5: 8, 6: 8}
+  hard:   { 2: 7, 3: 5, 4: 3, 5: 8, 6: 8},
+  endless: { 2: 10, 3: 8, 4: 6, 5: 10, 6: 10} //엔드리스 모드
 };
 
 const playerList = [
@@ -84,7 +85,8 @@ const positions = [
   { top: '125px', left: '30px'  }  // 3: third
 ];
 
-let currentDifficulty = "easy";
+let currentDifficulty = localStorage.getItem("difficulty") || "easy"; // 로컬 스토리지에서 난이도 가져오기
+console.log("현재 난이도: " + currentDifficulty);
 
 const clickSound = $("#click")[0];
 const batSound = $("#bat")[0];
@@ -375,7 +377,8 @@ function storyEndless() {
   hit1 = 50;
   hit2 = 70;
   hit3 = 90;
-
+  generateOpponentScore("endless");
+  
   initGameState();
   startGameLoopOnce();
 }
@@ -980,6 +983,10 @@ function generateOpponentScore(difficulty) {
       inning = 9;
       maxScore = 4;
       break;
+    case "endless":
+      inning = 10; // 무한 모드에서는 10이닝으로 설정
+      maxScore = 5; // 최대 점수는 5점
+      break;
     default:
       inning = 0;
   }
@@ -1090,7 +1097,7 @@ function walk() {
     scoreSound.currentTime = 0;
     scoreSound.play();
     // $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
-    $("#you").html(socres);
+    $("#you").html(scores);
   }
 
   //스트라이크/볼 카운트 증가
@@ -1286,7 +1293,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     case "easy": storyEasy(); break;
     case "normal": storyNormal(); break;
     case "hard": storyHard(); break;
-    case "endlesss": storyEndless(); break;
+    case "endless": storyEndless(); break;
   }
 
   musicNum=0;
@@ -1315,3 +1322,11 @@ document.addEventListener("keydown", function (e) {
 
 
 //
+window.onload = function() {
+  switch (currentDifficulty) {
+    case "easy": storyEasy(); break;
+    case "normal": storyNormal(); break;
+    case "hard": storyHard(); break;
+    case "endless": storyEndless(); break;
+  }
+};
