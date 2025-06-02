@@ -329,6 +329,12 @@ function storyEasy() {
 
   $("#number").html("7");
 
+
+  $("#O").empty();
+  $("#S").empty();
+  $("#B").empty();
+
+
   initGameState();
   startGameLoopOnce();
 }
@@ -350,6 +356,11 @@ function storyNormal() {
 
   opponentScore = result.total;
   $("#number").html("8");
+
+  $("#O").empty();
+  $("#S").empty();
+  $("#B").empty();
+
   initGameState();
   startGameLoopOnce();
 }
@@ -369,6 +380,11 @@ function storyHard() {
   brickDy = 0;
 
   $("#number").html("9");
+  
+  $("#O").empty();
+  $("#S").empty();
+  $("#B").empty();
+  
   let result = generateOpponentScore("hard");
   opponentScore = result.total;
 
