@@ -189,7 +189,8 @@ function initGameState() {
   OnBaseCount = 0;
   score = 0;
   scores = 0;
-  $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
+  // $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
+  $("#opponent").html(opponentScore);
 }
 
 function initBall() {
@@ -825,7 +826,8 @@ function getOnBase() {
     scoreSound.currentTime = 0;
     scoreSound.play();
   }
-  $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+  // $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+  $("#you").html(scores);
   
 
   //이 조건문을 어따 배치해야 할지 모르겠어요 ㅠ
@@ -1077,7 +1079,8 @@ function walk() {
   if (scores > tempScore) {
     scoreSound.currentTime = 0;
     scoreSound.play();
-    $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+    // $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+    $("#you").html(socres);
   }
 
   //스트라이크/볼 카운트 증가
@@ -1258,7 +1261,9 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
     $(`#runner${i}`).hide();
   }
 
-  $("#stadium-container p:nth-of-type(2)").html("YOU: 0");
+  // $("#stadium-container p:nth-of-type(2)").html("YOU: 0");
+  $("#you").html(0);
+
   document.getElementById("pause").classList.add("hidden");
 
   switch (currentDifficulty) {
