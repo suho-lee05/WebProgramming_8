@@ -596,7 +596,7 @@ function updateItems() {
         // ✋ 글러브 아이템을 먹음 → 볼 증가
         balls++;
         $("#B").append("●");
-        updateStrikeBallDisplay();
+        
       }
       // status 5 (트로피)는 먹어도 아무 효과 없음
       items.splice(i, 1);
@@ -612,6 +612,7 @@ function updateItems() {
     }
   }
 }
+
 
 // function updateItems() {
 //   const itemSpeed = 3;
@@ -821,15 +822,21 @@ function decreaseBar() {
     const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
       selectedHomerunSound.currentTime = 0;
       selectedHomerunSound.play();
-      $("#homerunEvent").slideDown(400, function() {  // slideDown 끝난 후 실행
-    let h2 = $("#band1").animate({ left: 0 }, 1800).promise();
-    let h3 = $("#band2").animate({ right: 0 }, 1800).promise();
+      $("#homerunEvent").slideDown(500, function() { // slideDown 끝난 후 실행
+        blinkInterval = setInterval(() => {
+          $(".band").each(function () {
+            let currentColor = $(this).css("color");
+            if (currentColor === "rgb(255, 0, 0)") {
+              $(this).css("color", "yellow");
+            } else {
+              $(this).css("color", "red");
+            }
+          });
+        }, 200);
+    let h2 = $("#band1").animate({ left: 0 }, 8000).promise();
+    let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
 
     $.when(h2, h3).then(function(){
-      
-
-      isPaused = false;
-      isHit = false;
       goCount = 0;
       brickDy = 0;
       nowHit = 5;
@@ -841,7 +848,11 @@ function decreaseBar() {
       initBar();
       initBricks();
       nowHit=0;
-      $("#homerunEvent").slideUp();
+      $("#homerunEvent").slideUp(function(){
+        clearInterval(blinkInterval);
+      });
+      isPaused = false;
+      isHit = false;
     });
   });
   }
@@ -1052,10 +1063,26 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
 
   if (balls >= 4) {
     console.log("볼넷 출루!");
+    isPaused = true;
     walkSound.currentTime = 0;
     walkSound.play();
+    $("#ballEvent").show();
+        requestAnimationFrame(() => {
+          let b1 = $("#ballEvent img").animate({"top":"270px", "right":"370px"},1000).promise();
+         $("#ballEvent img").css({"transform": "scale(3)"});
+         $.when(b1).then(()=>{
+          $("#ballEvent div").slideDown(2000);
+          setTimeout(() => {
+            $("#ballEvent").hide();
+            $("#ballEvent img").css({"top": "70px", "right": "70px", "transform": "scale(0.333)"});
+            $("#ballEvent div").hide();
+            updateStrikeBallDisplay();
+            }, 1000);
+         });
+        });
     walk(); // ← 기존 로직 대신 함수 호출
     $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
+    isPaused = false;
     return;
   }
   
