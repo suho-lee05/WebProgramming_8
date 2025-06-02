@@ -1062,28 +1062,37 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
   }
 
   if (balls >= 4) {
-    console.log("볼넷 출루!");
-    isPaused = true;
-    walkSound.currentTime = 0;
+    walkSound.playTime = 0;
     walkSound.play();
+    $("#ballEvent img").css({ top: "70px", right: "70px", transform: "scale(1)" });
+    $("#ballEvent div").hide();
     $("#ballEvent").show();
-        requestAnimationFrame(() => {
-          let b1 = $("#ballEvent img").animate({"top":"270px", "right":"370px"},1000).promise();
-         $("#ballEvent img").css({"transform": "scale(3)"});
-         $.when(b1).then(()=>{
-          $("#ballEvent div").slideDown(2000);
-          setTimeout(() => {
-            $("#ballEvent").hide();
-            $("#ballEvent img").css({"top": "70px", "right": "70px", "transform": "scale(0.333)"});
-            $("#ballEvent div").hide();
-            updateStrikeBallDisplay();
-            }, 1000);
-         });
-        });
-    walk(); // ← 기존 로직 대신 함수 호출
-    $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
-    isPaused = false;
-    return;
+    isPaused = true; 
+
+requestAnimationFrame(() => {
+  const $img = $("#ballEvent img");
+  const $div = $("#ballEvent div");
+
+  const b1 = $img.animate({ top: "270px", right: "370px" }, 1000).promise();
+
+  $img.css("transform", "scale(3)");
+
+  $.when(b1).then(() => {
+    $div.slideDown(500, () => {
+      setTimeout(() => {
+        $("#ballEvent").hide();
+        $div.hide();
+        isPaused = false;
+        walk();
+        $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
+        
+      }, 2000);
+        
+        return;
+    });
+  });
+});
+
   }
   
 }
