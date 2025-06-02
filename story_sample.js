@@ -97,6 +97,17 @@ const homerunSounds = [ //홈런 음원
   document.getElementById("homerunSound2")
 ];
 
+//떨어지는 아이템 소스
+const itemImages = {
+  5: new Image(), // 스트라이크 아이템
+  6: new Image()  // 볼 아이템
+};
+itemImages[5].src = "img/hand.png";     // ← ✋ 손 이미지 경로
+itemImages[6].src = "img/trophy.png";   // ← 🏆 트로피 이미지 경로
+
+let items = []; // 블록에서 떨어지는 아이템들을 저장하는 배열
+
+
 let isMuted = false;
 
 function sleep(ms) {
@@ -432,6 +443,9 @@ function draw() {
       // 공 위치 조정 (패들에 박히지 않게)
       y = paddleTop - ballRadius;
     }else {
+      strikes = 0;
+      balls = 0;
+      updateStrikeBallDisplay();
       isPaused = true;
       $("#outEvent").show();
       outSound.setTime = 0;
@@ -509,8 +523,53 @@ function draw() {
   if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
   if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
 
+  drawItems();
+  updateItems();
+
   requestAnimationFrame(draw);
 }
+
+function drawItems() {
+  items.forEach(item => {
+    const img = itemImages[item.type];  // 기존에 미리 선언한 이미지
+    if (img.complete && img.naturalWidth > 0) {
+      ctx.drawImage(img, item.x - 15, item.y - 15, 30, 30);
+    }
+  });
+}
+function updateItems() {
+  const itemSpeed = 3;
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i];
+    item.y += itemSpeed;
+
+    // 패들과 충돌
+    if (
+      item.y >= canvas.height - paddleHeight &&
+      item.x > paddleX &&
+      item.x < paddleX + paddleWidth
+    ) {
+      handleItemEffect(6);  //볼 판정정
+      items.splice(i, 1);
+    }
+    // 바닥에 닿았을 때
+    else if (item.y > canvas.height) {
+      handleItemEffect(5);  // 스트라이크 판정 
+      items.splice(i, 1);
+    }
+  }
+}
+
+function handleItemEffect(type) {
+  if (type === 5) {  // 스트라이크
+    strikes++;
+  } else if (type === 6) {  // 볼
+    balls++;
+  }
+  updateStrikeBallDisplay();
+}
+
 
 function checkBricksAtBottom() {
   for (let c = 0; c < brickColumnCount; c++) {
@@ -620,17 +679,25 @@ function collisionDetection() {
           if (minOverlapX < minOverlapY) dx = -dx;
           else dy = -dy;
 
-          if (b.status === 5) {     //스트라이크 판정 추가 2025-06-02
-            strikes++;
-            console.log("스트라이크: " + strikes);
-            updateStrikeBallDisplay();
-          } else if (b.status === 6) {  //볼넷 판정 추가 2025-06-02
-            balls++;
-            console.log("볼: " + balls);
-            updateStrikeBallDisplay();
-          } else if (nowHit < b.status) {
+          // if (b.status === 5) {     //스트라이크 판정 추가 2025-06-02
+          //   strikes++;
+          //   console.log("스트라이크: " + strikes);
+          //   updateStrikeBallDisplay();
+          // } else if (b.status === 6) {  //볼넷 판정 추가 2025-06-02
+          //   balls++;
+          //   console.log("볼: " + balls);
+          //   updateStrikeBallDisplay();
+          if(b.status === 5 || b.status ===6){
+            items.push({
+              x: b.x + brickWidth / 2,
+              y: b.y,
+              type: b.status
+            });
+          }else if (nowHit < b.status) {
             hitBlock(b.status); // 2~4: 루타 처리
           }
+
+          
 
           b.status = 0;
           totalBrick--;
@@ -787,6 +854,8 @@ function stop() {
   isHit = false;
   goCount=0;
   brickDy = 0;
+
+  items = [];
   $("#gostop > div:first-child").show();
   $("#hitContainer").animate(
   { bottom: "4px", left: "800px"},500,function () {
