@@ -47,6 +47,7 @@ let brickDy = 0;
 //2025-06-01 작업
 
 let opponentScore = 0;
+let totalOpponentScore = 0;
 let strikes = 0;  //스트라이크 판정 변수
 let balls = 0;    //볼 판정 변수
 
@@ -195,10 +196,10 @@ function initGameState() {
   isHit = false;
   runnerIndex = 0;
   OnBaseCount = 0;
-  score = 0;
-  scores = 0;
+  score += 0;
+  scores += 0;
   // $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
-  $("#opponent").html(opponentScore);
+  $("#opponent").html(totalOpponentScore);
 }
 
 function initBall() {
@@ -326,6 +327,8 @@ function storyEasy() {
   let result = generateOpponentScore("easy");
 
   opponentScore = result.total;
+  totalOpponentScore += opponentScore;
+
 
   $("#number").html("7");
 
@@ -355,6 +358,8 @@ function storyNormal() {
   let result = generateOpponentScore("normal");
 
   opponentScore = result.total;
+  totalOpponentScore += opponentScore;
+
   $("#number").html("8");
 
   $("#O").empty();
@@ -387,6 +392,7 @@ function storyHard() {
   
   let result = generateOpponentScore("hard");
   opponentScore = result.total;
+  totalOpponentScore += opponentScore;
 
   initGameState();
   startGameLoopOnce();
@@ -865,7 +871,7 @@ function getOnBase() {
   
 
   //이 조건문을 어따 배치해야 할지 모르겠어요 ㅠ
-  if (scores > opponentScore) {
+  if (scores > totalOpponentScore) {
     setTimeout(() => {
       if (currentDifficulty === "easy") {
         alert("NORMAL 모드로 진입합니다!");
