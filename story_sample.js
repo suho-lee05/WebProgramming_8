@@ -537,6 +537,7 @@ function drawItems() {
     }
   });
 }
+
 function updateItems() {
   const itemSpeed = 3;
 
@@ -544,31 +545,65 @@ function updateItems() {
     const item = items[i];
     item.y += itemSpeed;
 
-    // 패들과 충돌
-    if (
+    const isCaught =
       item.y >= canvas.height - paddleHeight &&
       item.x > paddleX &&
-      item.x < paddleX + paddleWidth
-    ) {
-      handleItemEffect(6);  //볼 판정정
+      item.x < paddleX + paddleWidth;
+
+    const isMissed = item.y > canvas.height;
+
+    if (isCaught) {
+      if (item.type === 6) {
+        // ✋ 글러브 아이템을 먹음 → 볼 증가
+        balls++;
+        updateStrikeBallDisplay();
+      }
+      // status 5 (트로피)는 먹어도 아무 효과 없음
       items.splice(i, 1);
-    }
-    // 바닥에 닿았을 때
-    else if (item.y > canvas.height) {
-      handleItemEffect(5);  // 스트라이크 판정 
+    } else if (isMissed) {
+      if (item.type === 5) {
+        // 🏆 트로피를 못 먹음 → 스트라이크 증가
+        strikes++;
+        updateStrikeBallDisplay();
+      }
+      // status 6 (글러브)는 놓쳐도 아무 일 없음
       items.splice(i, 1);
     }
   }
 }
 
-function handleItemEffect(type) {
-  if (type === 5) {  // 스트라이크
-    strikes++;
-  } else if (type === 6) {  // 볼
-    balls++;
-  }
-  updateStrikeBallDisplay();
-}
+// function updateItems() {
+//   const itemSpeed = 3;
+
+//   for (let i = items.length - 1; i >= 0; i--) {
+//     const item = items[i];
+//     item.y += itemSpeed;
+
+//     // 패들과 충돌
+//     if (
+//       item.y >= canvas.height - paddleHeight &&
+//       item.x > paddleX &&
+//       item.x < paddleX + paddleWidth
+//     ) {
+//       handleItemEffect(6);  //볼 판정정
+//       items.splice(i, 1);
+//     }
+//     // 바닥에 닿았을 때
+//     else if (item.y > canvas.height) {
+//       handleItemEffect(5);  // 스트라이크 판정 
+//       items.splice(i, 1);
+//     }
+//   }
+// }
+
+// function handleItemEffect(type) {
+//   if (type === 5) {  // 스트라이크
+//     strikes++;
+//   } else if (type === 6) {  // 볼
+//     balls++;
+//   }
+//   updateStrikeBallDisplay();
+// }
 
 
 function checkBricksAtBottom() {
