@@ -891,8 +891,7 @@ function getOnBase() {
         alert("HARD 모드로 진입합니다!");
         storyHard();
       } else if (currentDifficulty === "hard") {
-        alert("축하합니다! 최종 난이도 클리어!");
-        location.href = "win.html";
+        location.href = "final.html";
       }
     }, 1000);
   }

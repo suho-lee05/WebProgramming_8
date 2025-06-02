@@ -1,0 +1,268 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scene</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin:0 auto;
+            padding:0;
+            font-family: "Hahmlet", "sans-seif";
+        }
+
+        body,html{
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #layout{
+            width:960px;
+            height:600px;
+            border: 5px solid black;
+            background-color: black;
+            position:relative;
+        }
+
+        #layout>p{
+            color:white;
+            font-size:30px;
+            position:absolute;
+            bottom:10px;
+            right:10px;
+        }
+
+        #layout2{
+            width:960px;
+            height:600px;
+            background-color: black;
+            position:relative;
+            overflow:hidden;
+            display:none;
+        }
+
+        #panoramaBar{
+            height:210px;
+            width: 3500px;
+            position:absolute;
+            top:25px;
+            left:0px;
+            font-size:0;
+            display:flex;
+            gap:0;
+        }        
+
+        .panorama{
+            width:280px;
+            height:210px;
+            margin:0;
+            padding:0;
+        }
+
+        #caption{
+            height: 195px;
+            width:100%;
+            position: absolute;
+            top:235px;
+        }
+
+        #caption p{
+            line-height:195px;
+            text-align: center;
+            color: white;
+            font-size:30px;
+        }
+
+        #bottom{
+            height:170px;
+            width:100%;
+            background-color: rgba(255,255,255,0.3);
+            position:absolute;
+            bottom:0;
+            left:0;
+        }
+
+        #logo{
+            height:150px;
+            width:140px;
+            position:absolute;
+            left:50px;
+            top:10px;
+        }
+
+        #bottom p{
+            color:white;
+            font-size:50px;
+            text-align:center;
+            line-height: 75px;
+            font-weight: bold;
+        }
+
+        #skip{
+            width:70px;
+            height:50px;
+            position: absolute;
+            right:20px;
+            bottom:10px;
+            z-index:2;
+        }
+
+        #sound{
+            border-radius:50%;
+            background-color:white;
+            position: absolute;
+                right:20px;
+                bottom:60px;
+                z-index:3;
+        }
+
+        #winner{
+            width:500px;
+            height:500px;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            display:none;
+        }
+
+    </style>
+    <script>
+        $(document).ready(() => {
+            let vol = 0.3;
+            const finalSound = $("#finalSound")[0];
+            finalSound.volume = vol;
+            let isMuted = true;
+            finalSound.play();
+            finalSound.muted = true;
+
+            finalSound.addEventListener("ended", function() {
+                $("#panoramaBar").hide();
+                $("#caption").hide();
+                $("#bottom").hide();
+                $("#winner").fadeIn(2000);
+                setTimeout(() => {
+                    location.href = "title.html";
+                }, 5000); 
+            });
+
+            const captions = $("#caption p");
+            const timings = [6000, 3000, 2500, 2500, 2500, 3500, 1500, 2000, 3000, 4000];
+            let current = 0;
+
+            $("#layout").on("click", function () { // 자막이랑 음향 맞추고 싶어서 클릭 눌렀을 때 layout2나오면서 해설 나오게
+                $("#layout p").hide();
+                $("#bottom p").show();
+                $("#layout2").show();
+
+                isMuted = false;
+                finalSound.muted = false;
+                finalSound.currentTime = 0;
+                finalSound.play();
+
+                captions.hide();
+                showNextCaption();
+                
+                $("#layout").off("click");                
+            });
+
+
+
+            $("#sound").on("click", function () {
+                isMuted = !isMuted;
+                finalSound.muted = isMuted;
+                if (isMuted) {
+                    $(this).attr("src", "img/UIBlock/mute.png");
+                } else {
+                    $(this).attr("src", "img/UIBlock/sound.png");
+                }
+            });
+
+            let panoramaBar = document.getElementById("panoramaBar");
+            let currentLeft = 0;
+            const imageWidth = 280;
+            panoramaBar.style.left = currentLeft + "px";
+
+            function panoramaAni() {
+                currentLeft -= 1;
+                panoramaBar.style.left = currentLeft + "px";
+
+                const firstImg = panoramaBar.children[0];
+                const firstImgRight = firstImg.offsetLeft + imageWidth;
+
+                if (firstImgRight + currentLeft <= 0) {
+                    panoramaBar.appendChild(firstImg);
+                    currentLeft += imageWidth;
+                    panoramaBar.style.left = currentLeft + "px";
+                }
+            }
+
+            setInterval(panoramaAni, 10);
+            
+
+
+            function showNextCaption() {
+                if (current >= captions.length) return;
+
+                captions.hide(); 
+                $(captions[current]).show();
+
+                setTimeout(() => {
+                    current++;
+                    showNextCaption();
+                }, timings[current]);
+            }
+
+            $("#skip").click(() => {
+                    window.location.href = "title.html";
+            });          
+            
+        });
+    </script>
+</head>
+<body>
+    <div id = "layout">
+        <p>click to show...</p>
+        <div id = "layout2">
+        <img id = "winner" src = "img/winner.png">    
+        <img id = "sound" src = "img/UIBlock/sound.png">
+        <audio id = "finalSound" src = "sound/final.mp3" preload = "auto"></audio>
+        <div id = "panoramaBar">
+            <img class = "panorama" id = "final1" src = "img/final1.png">
+            <img class = "panorama" id = "final2" src = "img/final2.png">
+            <img class = "panorama" id = "final3" src = "img/final3.png">
+            <img class = "panorama" id = "final4" src = "img/final4.png">
+            <img class = "panorama" id = "final5" src = "img/final5.png">
+            <img class = "panorama" id = "final6" src = "img/final6.png">
+            <img class = "panorama" id = "final7" src = "img/final7.png">
+            <img class = "panorama" id = "final8" src = "img/final8.png">
+            <img class = "panorama" id = "final9" src = "img/final9.png">
+            <img class = "panorama" id = "final10" src = "img/final10.png">
+            <img class = "panorama" id = "final11" src = "img/final11.png">
+            <img class = "panorama" id = "final12" src = "img/final12.png">
+        </div>
+        <div id = "caption">
+            <p>때렸습니다, 이 타구 잡힙니다!</p>
+            <p>오늘도 어김없이 졌다던 눈물의 시간</p>
+            <p>트윈스 팬들이 그토록 오래 걱정했던 내일은</p>
+            <p>드디어 챔피언이 된 오늘이 됩니다!</p>
+            <p>서울의 신바람이 어김없이 승리,</p>
+            <p>이변 없이 챔피언, 이견 없는 무적LG로!</p>
+            <p>아직 거기에 계십니까?</p>
+            <p>1994년을 추억으로 보내며</p>
+            <p>29년 만에 마음껏 외칩니다!</p>
+            <p>LG 우승!</p>
+        </div>
+        <div id = "bottom">
+            <img id = "logo" src = "img/logo.png">
+            <p>LG 트윈스 29년만의<br>한국 시리즈 우승!</p>
+        </div>
+        <img id = "skip" src = "img/skip.png">
+        </div>
+    </div>
+    
+</body> 
+</html>
