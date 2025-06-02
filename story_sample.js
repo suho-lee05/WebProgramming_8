@@ -479,6 +479,8 @@ function draw() {
       });
       $("#out" + (4 - lives)).attr("src", "img/out.png");
       lives--;
+      $("#B").empty();
+      $("#S").empty();
       $("#O").append("●");
       $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
       addPlayer();                           //3. 다음 타자 배치치
