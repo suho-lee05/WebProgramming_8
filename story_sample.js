@@ -509,7 +509,8 @@ function draw() {
       addPlayer();                           //3. 다음 타자 배치치
       initBricks();
       initBar();  
-      initBall();                         
+      initBall();          
+      initPaddle();               
       if (!lives) {
         renewBestScore();
         location.href = "result.html";
