@@ -117,6 +117,7 @@
                 $("#menuPlane").animate({left: "0px"},700);
                 $("#easy").click(()=>{
                     clickSound.currentTime = 0;
+                    localStorage.setItem("difficulty", "easy");
                     clickSound.play().then(() => {
                         setTimeout(() => {
                             window.location.href = "scene.html";
@@ -125,6 +126,7 @@
                 });
                 $("#normal").click(()=>{
                     clickSound.currentTime = 0;
+                    localStorage.setItem("difficulty", "normal");
                     clickSound.play().then(() => {
                         setTimeout(() => {
                             window.location.href = "scene.html";
@@ -133,6 +135,7 @@
                 });
                 $("#hard").click(()=>{
                     clickSound.currentTime = 0;
+                    localStorage.setItem("difficulty", "hard");
                     clickSound.play().then(() => {
                         setTimeout(() => {
                             window.location.href = "scene.html";
