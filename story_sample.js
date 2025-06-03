@@ -43,6 +43,7 @@ let hit4 = 0;
 
 let goCount = 0;
 let brickDy = 0;
+let stopCount = 0;
 
 //2025-06-01 작업
 
@@ -324,6 +325,7 @@ function storyEasy() {
   hit3 = 80;
   goCount=0;
   brickDy = 0;
+  stopCount=0;
   
   let result = generateOpponentScore("easy");
 
@@ -355,6 +357,7 @@ function storyNormal() {
   hit2 = 70;
   hit3 = 90;
   goCount=0;
+  stopCount=0;
   brickDy = 0;
 
   let result = generateOpponentScore("normal");
@@ -385,6 +388,7 @@ function storyHard() {
   hit3 = 90;
 
   goCount=0;
+  stopCount=0;
   brickDy = 0;
 
   $("#number").html("9");
@@ -886,7 +890,7 @@ function getOnBase() {
   
 
   //이 조건문을 어따 배치해야 할지 모르겠어요 ㅠ
-  if (scores > totalOpponentScore) {
+  /*if (scores > totalOpponentScore) {
     setTimeout(() => {
       if (currentDifficulty === "easy") {
         localStorage.setItem("storyStep","afterEasy");
@@ -900,7 +904,7 @@ function getOnBase() {
         location.href = "final.html";
       }
     }, 1000);
-  }
+  }*/
 
 }
 
@@ -943,6 +947,7 @@ function go() {
 function stop() {
   strikes = 0;  //선수가 출루했을 떄 스트라이크랑 볼 카운트 0 만들어주기
   balls = 0;
+  stopCount++;
   updateStrikeBallDisplay();//stop으로 출루했을 때 스트라이크, 볼넷 관련
   $("#B").empty();
   $("#S").empty();
@@ -958,7 +963,28 @@ function stop() {
   }
   
   );
-  getOnBase();                           // 1. 주자 진루
+  getOnBase();
+  if(stopCount==9){
+    if (scores > totalOpponentScore) {
+    setTimeout(() => {
+      if (currentDifficulty === "easy") {
+        localStorage.setItem("storyStep","afterEasy");
+        location.href = "scene.html";
+        storyNormal();
+      } else if (currentDifficulty === "normal") {
+        localStorage.setItem("storyStep","afterNormal");
+        location.href = "scene.html";
+        storyHard();
+      } else if (currentDifficulty === "hard") {
+        location.href = "final.html";
+      }
+    }, 1000);
+  }else{
+    setTimeout(()=>{
+    location.href = "result.html";
+    },1000);
+  }
+  }                           // 1. 주자 진루
   $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
   addPlayer();                           // 3. 다음 타자 배치
   nowHit = 1;
