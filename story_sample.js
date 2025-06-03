@@ -886,11 +886,11 @@ function getOnBase() {
   if (scores > totalOpponentScore) {
     setTimeout(() => {
       if (currentDifficulty === "easy") {
-        alert("NORMAL 모드로 진입합니다!");
-        storyNormal();
+        localStorage.setItem("storyStep","afterEasy");
+        location.href = "scene.html";
       } else if (currentDifficulty === "normal") {
-        alert("HARD 모드로 진입합니다!");
-        storyHard();
+        localStorage.setItem("storyStep","afterNormal");
+        location.href = "scene.html";
       } else if (currentDifficulty === "hard") {
         location.href = "final.html";
       }
