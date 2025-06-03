@@ -311,6 +311,7 @@ function initBar() {
 }
 
 function storyEasy() {
+  localStorage.setItem("difficulty", "easy");
   currentDifficulty = "easy";
   brickRowCount = 4;
   brickColumnCount = 5;
@@ -343,6 +344,7 @@ function storyEasy() {
 }
 
 function storyNormal() {
+  localStorage.setItem("difficulty", "normal");
   currentDifficulty = "normal";
   brickRowCount = 5;
   brickColumnCount = 6;
@@ -371,6 +373,7 @@ function storyNormal() {
 }
 
 function storyHard() {
+  localStorage.setItem("difficulty", "hard");
   currentDifficulty = "hard";
   brickRowCount = 5;
   brickColumnCount = 8;
@@ -888,9 +891,11 @@ function getOnBase() {
       if (currentDifficulty === "easy") {
         localStorage.setItem("storyStep","afterEasy");
         location.href = "scene.html";
+        storyNormal();
       } else if (currentDifficulty === "normal") {
         localStorage.setItem("storyStep","afterNormal");
         location.href = "scene.html";
+        storyHard();
       } else if (currentDifficulty === "hard") {
         location.href = "final.html";
       }

@@ -208,7 +208,7 @@
                     }
                     else {
                         $(cuts.join(", ")).stop(true,true).fadeOut(800, () => {
-                            nextLevel();
+                            //nextLevel();
                             window.location.href = "story.html";
                         });
                     }
@@ -227,20 +227,20 @@
             $("#skip").click(() => {
                 $(cuts.slice(current).join(",")).stop(true,true).show();
                 $(cuts.join(",")).fadeOut(800,()=>{
-                    nextLevel();
+                    // nextLevel();
                     window.location.href = "story.html";
                 });
             });
 
-            function nextLevel() {
-                if (step == "afterEasy") {
-                    localStorage.setItem("difficulty", "normal");
-                } else if (step == "afterNormal") {
-                    localStorage.setItem("difficulty", "hard");
-                } else {
-                    localStorage.setItem("difficulty","easy");
-                }
-            }
+            // function nextLevel() {
+            //     if (step == "afterEasy") {
+            //         localStorage.setItem("difficulty", "normal");
+            //     } else if (step == "afterNormal") {
+            //         localStorage.setItem("difficulty", "hard");
+            //     } else {
+            //         localStorage.setItem("difficulty","easy");
+            //     }
+            // }
         });
     </script>
 </head>
