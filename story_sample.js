@@ -112,7 +112,43 @@ itemImages[5].src = "img/hand.png";     // ← ✋ 손 이미지 경로
 itemImages[6].src = "img/trophy.png";   // ← 🏆 트로피 이미지 경로
 
 let items = []; // 블록에서 떨어지는 아이템들을 저장하는 배열
+function drawObstacles() {
+  obstacles.forEach(obs => {
+    obs.x += obs.dx;
+    if (obs.x < 0 || obs.x + obs.width > canvas.width) {
+      obs.dx *= -1; // 화면 벗어나면 반전
+    }
+    ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
+  });
+}
 
+//장애물
+const outfieldImg = new Image();
+outfieldImg.src = "img/외야수.png";
+const infieldImg = new Image();
+infieldImg.src = "img/내야수.png";
+let obstacles = [];
+
+function initObstacles() {
+  obstacles = [
+    {
+      x: 50,
+      y: canvas.height / 2,
+      dx: 3,
+      width: 45,
+      height: 45,
+      img: outfieldImg
+    },
+    {
+      x: canvas.width - 90,
+      y: canvas.height / 2 + 60,
+      dx: -3,
+      width: 45,
+      height: 45,
+      img: infieldImg
+    }
+  ];
+}
 
 let isMuted = false;
 
@@ -414,6 +450,7 @@ function storyHard() {
   totalOpponentScore += opponentScore;
 
   initGameState();
+  initObstacles();
   startGameLoopOnce();
 }
 
@@ -448,6 +485,7 @@ function draw() {
   drawBricks();
   drawBall();
   drawPaddle();
+  drawObstacles();
   collisionDetection();
 
   // 공 이동
@@ -808,6 +846,71 @@ function collisionDetection() {
     }
     if (hit) break;
   }
+  // 장애물 충돌
+  obstacles.forEach(obs => {
+    const obsLeft = obs.x;
+    const obsRight = obs.x + obs.width;
+    const obsTop = obs.y;
+    const obsBottom = obs.y + obs.height;
+
+    const ballNextX = x + dx;
+    const ballNextY = y + dy;
+    const ballLeft = ballNextX - ballRadius;
+    const ballRight = ballNextX + ballRadius;
+    const ballTop = ballNextY - ballRadius;
+    const ballBottom = ballNextY + ballRadius;
+
+    const isCollision = (
+      ballRight > obsLeft &&
+      ballLeft < obsRight &&
+      ballBottom > obsTop &&
+      ballTop < obsBottom
+    );
+
+    if (isCollision) {
+      // 장애물 전용 효과음
+      const obstacleSound = new Audio("sound/obstacle.mp3");
+      obstacleSound.play();
+
+      const prevLeft = x - ballRadius;
+      const prevRight = x + ballRadius;
+      const prevTop = y - ballRadius;
+      const prevBottom = y + ballRadius;
+
+      let hitFrom = "";
+
+      if (prevBottom <= obsTop) hitFrom = "top";
+      else if (prevTop >= obsBottom) hitFrom = "bottom";
+      else if (prevRight <= obsLeft) hitFrom = "left";
+      else if (prevLeft >= obsRight) hitFrom = "right";
+
+      // 튕김 처리 및 위치 보정
+      if (hitFrom === "top" || hitFrom === "bottom") {
+        dy = -dy;
+        y = hitFrom === "top"
+          ? obsTop - ballRadius - 1
+          : obsBottom + ballRadius + 1;
+      } else if (hitFrom === "left" || hitFrom === "right") {
+        // 각도 기반 반사
+        const angle = (45 * Math.PI) / 180; // 45도 대각선
+        const speed = Math.sqrt(dx * dx + dy * dy);
+        dx = hitFrom === "left" ? speed * Math.cos(angle) : -speed * Math.cos(angle);
+        dy = -speed * Math.sin(angle);
+
+        // 위치 보정: 장애물 옆으로 안전하게 밀어냄
+        x = hitFrom === "left"
+          ? obsLeft - ballRadius - 2
+          : obsRight + ballRadius + 2;
+
+        // y 보정도 살짝
+        y -= 1;
+      } else {
+        // 대각선 불명확한 경우: 둘 다 반전
+        dx = -dx;
+        dy = -dy;
+      }
+    }
+  });
 }
 
 
