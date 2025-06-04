@@ -309,7 +309,7 @@ function initBar() {
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
   totalBrick = brickColumnCount * brickRowCount;
-   $("#barContainer").css({backgroundColor : "#A7DFFF"})
+  $("#bar").css({backgroundColor : "#A7DFFF"});
 }
 
 function storyEasy() {
@@ -356,7 +356,7 @@ function storyNormal() {
   dx = 3;
   dy = -3;
   var tmp = brickColumnCount * brickRowCount / 4 ;
-  hit1 = tmp * 3;
+ hit1 = tmp * 3;
   hit2 = tmp * 2;
   hit3 = tmp * 1;
   goCount=0;
@@ -848,22 +848,23 @@ function decreaseBar() {
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
 
     $.when(h2, h3).then(function(){
-      goCount = 0;
-      brickDy = 0;
-      nowHit = 5;
-      getOnBase();                        // 1. 주자 진루
-      $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-      addPlayer();                        // 3. 다음 타자 배치
-      initBall();
-      initPaddle();
-      initBar();
-      initBricks();
-      nowHit=0;
+      hitBlock(5);
+      // goCount = 0;
+      // brickDy = 0;
+      // nowHit = 5;
+      // getOnBase();                        // 1. 주자 진루
+      // $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+      // addPlayer();                        // 3. 다음 타자 배치
+      // initBall();
+      // initPaddle();
+      // initBar();
+      // initBricks();
+      // nowHit=0;
       $("#homerunEvent").slideUp(function(){
         clearInterval(blinkInterval);
       });
-      isPaused = false;
-      isHit = false;
+      // isPaused = false;
+      // isHit = false;
     });
   });
   }
@@ -872,6 +873,7 @@ function decreaseBar() {
   $("#barText").html("홈런까지 : " + bar.toFixed(1) + "%");
 }
 
+//출루 관련 내부 로직
 function getOnBase() {
   let temp = scores;
   for (let i = 0; i < runners.length; i++) {
@@ -889,18 +891,17 @@ function getOnBase() {
     scoreSound.play();
   }
   // $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+
   if(totalBrick == hit2){
     scores +=1;
     $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
-    $("#barContainer").css({backgroundColor : "#5CE1E6"})
   }else if(totalBrick == hit3){
     score+=2;
     $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
     $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
-    $("#barContainer").css({backgroundColor : "#FF9F1C"})
   }else if(totalBrick == 0){
     score+=3;
         $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
@@ -909,7 +910,6 @@ function getOnBase() {
     addPlayer();                        // 3. 다음 타자 배치
         $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
-    $("#barContainer").css({backgroundColor : "#E63946"})
   }
 
   $("#you").html(scores);
@@ -959,8 +959,13 @@ function hitBlock(stat) {
     case 5:
       nowHit = 5;
       $("#hitImg1").attr("src", "img/homerun.png");
+      break;
+    case 6:
+       nowHit = 5;
+      $("#hitImg1").attr("src", "img/homerun.png");
       $("#gostop > div:first-child").hide(); // 고 버튼 숨기기
       break;
+    
   }
 }
 
@@ -968,6 +973,26 @@ function go() {
   isHit = false;
   goCount++;
   $("#hitContainer").animate({bottom:"600px"},500);
+  isPaused= false;
+
+  if(totalBrick == hit1){
+     $("#bar").css({backgroundColor : "#006D77"});
+       bar = 0;
+  $("#bar").css("width", bar + "%");
+  $("#barText").html("홈런까지 : " + bar + "%");
+  }
+  else if(totalBrick == hit2){
+    $("#bar").css({backgroundColor : "#FF9F1C"});
+           bar = 0;
+  $("#bar").css("width", bar + "%");
+  $("#barText").html("홈런까지 : " + bar + "%");
+  }else if(totalBrick == hit3){
+        $("#bar").css({backgroundColor : "#E63946"});
+              bar = 0;
+  $("#bar").css("width", bar + "%");
+  $("#barText").html("홈런까지 : " + bar + "%");
+  }
+
 }
 
 function stop() {
@@ -980,7 +1005,7 @@ function stop() {
   isHit = false;
   goCount=0;
   brickDy = 0;
-
+  isPaused = false;
   items = [];
   $("#gostop > div:first-child").show();
   $("#hitContainer").animate(
@@ -1447,7 +1472,7 @@ document.addEventListener("keydown", function (e) {
   const key = e.key.toLowerCase();
   if (isHit) {
 
-    if(nowHit == 5){
+    if(nowHit == 6){
       if(key == "s"){
           stop();
       }
