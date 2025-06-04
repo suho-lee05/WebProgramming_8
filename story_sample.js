@@ -10,6 +10,7 @@ let lives = 3;  //아웃 카운트 사용용
 let score = 0;
 let nowHit = 1
 let isPaused = false;
+let isEffecting = false;
 let isHit = false;
 let runnerIndex = 0;
 let scores = 0;
@@ -540,6 +541,7 @@ function draw() {
       balls = 0;
       updateStrikeBallDisplay();
       isPaused = true;
+      isEffecting = true;
       $("#outEvent").show();
       outSound.setTime = 0;
       outSound.play();
@@ -555,6 +557,7 @@ function draw() {
           $.when(h1, h2, h3).then(() => {
             $("#outEvent").hide();
             isPaused = false;
+            isEffecting = false;
           });
         }, 800);
       });
@@ -582,6 +585,7 @@ function draw() {
   }
   if (checkBricksAtBottom()) {
     isPaused = true;
+    isEffecting = true;
       $("#outEvent").show();
       outSound.setTime = 0;
       outSound.play();
@@ -597,6 +601,7 @@ function draw() {
           $.when(h1, h2, h3).then(() => {
             $("#outEvent").hide();
             isPaused = false;
+            isEffecting = false;
           });
         }, 800);
       });
@@ -942,6 +947,7 @@ function decreaseBar() {
   }
   if (totalBrick == 0 || totalBrick == hit1 || totalBrick == hit2 || totalBrick == hit3 ){
     isPaused = true;
+    isEffecting = true;
     const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
       selectedHomerunSound.currentTime = 0;
       selectedHomerunSound.play();
@@ -980,7 +986,8 @@ function decreaseBar() {
       $("#homerunEvent").slideUp(function(){
         clearInterval(blinkInterval);
         $("#band1").css({left:"-2000px"});
-        $("#band2").css({right:"-2000px"});
+        $("#band2").css({right:"-2000px"})
+        isEffecting = false;
       });
       // isPaused = false;
       // isHit = false;
@@ -1278,6 +1285,7 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     $("#ballEvent div").hide();
     $("#ballEvent").show();
     isPaused = true; 
+    isEffecting = true;
 
 requestAnimationFrame(() => {
   const $img = $("#ballEvent img");
@@ -1293,6 +1301,7 @@ requestAnimationFrame(() => {
         $("#ballEvent").hide();
         $div.hide();
         isPaused = false;
+        isEffecting = false;
         walk();
         $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
         
@@ -1309,6 +1318,7 @@ requestAnimationFrame(() => {
 
 function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지 업데이트 해주는 함수입니다.
   isPaused = true;
+  isEffecting = true;
   $("#outEvent").show();
   outSound.currentTime = 0;
   outSound.play();
@@ -1326,6 +1336,7 @@ function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지
       $.when(h1, h2, h3).then(() => {
         $("#outEvent").hide();
         isPaused = false;
+        isEffecting = false;
       });
     }, 800);
   });
@@ -1400,12 +1411,14 @@ function walk() {
 
 
 document.addEventListener("keydown", (e) => {
+  if(isEffecting) return;
   if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
   else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
   else if (e.key === "Escape") togglePause();
 });
 
 document.addEventListener("keyup", (e) => {
+  if(isEffecting) return;
   if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
   else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
 });
@@ -1597,6 +1610,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
 });
 
 document.addEventListener("keydown", function (e) {
+  if(isEffecting) return;
   const key = e.key.toLowerCase();
   if (isHit) {
 
