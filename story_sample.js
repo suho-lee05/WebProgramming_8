@@ -862,6 +862,8 @@ function decreaseBar() {
       // nowHit=0;
       $("#homerunEvent").slideUp(function(){
         clearInterval(blinkInterval);
+        $("#band1").css({left:"-2000px"});
+        $("#band2").css({right:"-2000px"});
       });
       // isPaused = false;
       // isHit = false;
