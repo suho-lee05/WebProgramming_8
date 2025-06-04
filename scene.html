@@ -115,9 +115,66 @@
             text-align:center;
         }
 
-        #cut1, #cut2, #cut3, #cut4, #cut5 {
+        #cut6, #cut10{
+            width:500px;
+            height:600px;
+            position:absolute;
+            top:0px;
+            left:0px;
+        }
+
+        #cut6{
+            background-image: url("img/cut6.png");
+        }
+
+        #cut10{
+            background-image: url("img/cut10.png");
+        }
+
+        #cut7, #cut11{
+            width: 400px;
+            height:250px;
+            position:absolute;
+            margin:20px 30px;
+            right:0;
+        }
+
+        #cut7{
+            background-image:url("img/cut7.png");
+        }
+
+        #cut11{
+            background-image:url("img/cut11.png");
+        }
+
+        #cut8, #cut12{
+            width:200px;
+            height:280px;
+            position:absolute;
+            left: 530px;
+            top:290px;
+            background-color: white;
+            font-size:20px;
+            text-align: center;
+        }
+
+        #cut9, #cut13{
+            width: 180px;
+            height: 240px;
+            position:absolute;
+            right:30px;
+            top:290px;
+            background-image:url("img/cut9.png");
+            color:red;
+            font-size:19px;
+            font-weight: bold;
+            text-align:center;
+        }
+
+        #cut1, #cut2, #cut3, #cut4, #cut5, #cut6, #cut7, #cut8, #cut9, #cut10, #cut11, #cut12, #cut13{
             display: none;
         }
+
 
         #skip{
             width:70px;
@@ -129,7 +186,17 @@
     </style>
     <script>
         $(document).ready(()=>{
-            let cuts = ["#cut1", "#cut2", "#cut3", "#cut4", "#cut5"];
+            const step = localStorage.getItem("storyStep") || "beginning"; //기본 beginning
+            let cuts = [];
+
+            if (step === "beginning") {
+                cuts = ["#cut1", "#cut2", "#cut3", "#cut4", "#cut5"];
+            } else if (step === "afterEasy") {
+                cuts = ["#cut6", "#cut7", "#cut8", "#cut9"];
+            } else if (step === "afterNormal") {
+                cuts = ["#cut10", "#cut11", "#cut12", "#cut13"];
+            }
+
             let current = 0;
 
             function showNextCut() {
@@ -141,6 +208,7 @@
                     }
                     else {
                         $(cuts.join(", ")).stop(true,true).fadeOut(800, () => {
+                            //nextLevel();
                             window.location.href = "story.html";
                         });
                     }
@@ -159,9 +227,20 @@
             $("#skip").click(() => {
                 $(cuts.slice(current).join(",")).stop(true,true).show();
                 $(cuts.join(",")).fadeOut(800,()=>{
+                    // nextLevel();
                     window.location.href = "story.html";
                 });
             });
+
+            // function nextLevel() {
+            //     if (step == "afterEasy") {
+            //         localStorage.setItem("difficulty", "normal");
+            //     } else if (step == "afterNormal") {
+            //         localStorage.setItem("difficulty", "hard");
+            //     } else {
+            //         localStorage.setItem("difficulty","easy");
+            //     }
+            // }
         });
     </script>
 </head>
@@ -196,6 +275,36 @@
             우승 신화를<br><br>
             함께<br><br>
             만들어주세요!
+        </div>
+        <div id = "cut6"></div>
+        <div id = "cut7"></div>
+        <div id = "cut8">
+            <br>
+            정말 잘하고 있어요!!<br><br>
+            LG의 우승이<br><br>
+            한 발 더 다가온<br><br>
+            7이닝이었어요!
+        </div>
+        <div id = "cut9">
+            <br><br>
+            다시 한 번,<br><br>
+            지금처럼!<br><br>
+            8이닝도 고!
+        </div>
+        <div id = "cut10"></div>
+        <div id = "cut11"></div>
+        <div id = "cut12">
+            <br>
+            앞으로 딱 한 이닝!!<br><br>
+            LG의 우승을<br><br>
+            이견도 이변도 없이<br><br>
+            굳혀주세요!
+        </div>
+        <div id = "cut13">
+            <br><br>
+            마지막으로,<br><br>
+            지금처럼!<br><br>
+            우승을 향해!
         </div>
         <img id = "skip" src = "img/skip.png">
     </div>

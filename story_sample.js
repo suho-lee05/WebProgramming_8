@@ -43,6 +43,7 @@ let hit4;
 
 let goCount = 0;
 let brickDy = 0;
+let stopCount = 0;
 
 //2025-06-01 작업
 
@@ -312,6 +313,7 @@ function initBar() {
 }
 
 function storyEasy() {
+  localStorage.setItem("difficulty", "easy");
   currentDifficulty = "easy";
   brickRowCount = 4;
   brickColumnCount = 5;
@@ -325,6 +327,7 @@ function storyEasy() {
   hit3 = tmp * 1;
   goCount=0;
   brickDy = 0;
+  stopCount=0;
   
   let result = generateOpponentScore("easy");
 
@@ -345,6 +348,7 @@ function storyEasy() {
 }
 
 function storyNormal() {
+  localStorage.setItem("difficulty", "normal");
   currentDifficulty = "normal";
   brickRowCount = 5;
   brickColumnCount = 6;
@@ -356,6 +360,7 @@ function storyNormal() {
   hit2 = tmp * 2;
   hit3 = tmp * 1;
   goCount=0;
+  stopCount=0;
   brickDy = 0;
 
   let result = generateOpponentScore("normal");
@@ -374,6 +379,7 @@ function storyNormal() {
 }
 
 function storyHard() {
+  localStorage.setItem("difficulty", "hard");
   currentDifficulty = "hard";
   brickRowCount = 5;
   brickColumnCount = 8;
@@ -385,6 +391,7 @@ function storyHard() {
   hit2 = tmp * 2;
   hit3 = tmp * 1;
   goCount=0;
+  stopCount=0;
   brickDy = 0;
 
   $("#number").html("9");
@@ -909,19 +916,21 @@ function getOnBase() {
   
 
   //이 조건문을 어따 배치해야 할지 모르겠어요 ㅠ
-  if (scores > totalOpponentScore) {
+  /*if (scores > totalOpponentScore) {
     setTimeout(() => {
       if (currentDifficulty === "easy") {
-        alert("NORMAL 모드로 진입합니다!");
+        localStorage.setItem("storyStep","afterEasy");
+        location.href = "scene.html";
         storyNormal();
       } else if (currentDifficulty === "normal") {
-        alert("HARD 모드로 진입합니다!");
+        localStorage.setItem("storyStep","afterNormal");
+        location.href = "scene.html";
         storyHard();
       } else if (currentDifficulty === "hard") {
         location.href = "final.html";
       }
     }, 1000);
-  }
+  }*/
 
 }
 
@@ -964,6 +973,7 @@ function go() {
 function stop() {
   strikes = 0;  //선수가 출루했을 떄 스트라이크랑 볼 카운트 0 만들어주기
   balls = 0;
+  stopCount++;
   updateStrikeBallDisplay();//stop으로 출루했을 때 스트라이크, 볼넷 관련
   $("#B").empty();
   $("#S").empty();
@@ -979,7 +989,28 @@ function stop() {
   }
   
   );
-  getOnBase();                           // 1. 주자 진루
+  getOnBase();
+  if(stopCount==9){
+    if (scores > totalOpponentScore) {
+    setTimeout(() => {
+      if (currentDifficulty === "easy") {
+        localStorage.setItem("storyStep","afterEasy");
+        location.href = "scene.html";
+        storyNormal();
+      } else if (currentDifficulty === "normal") {
+        localStorage.setItem("storyStep","afterNormal");
+        location.href = "scene.html";
+        storyHard();
+      } else if (currentDifficulty === "hard") {
+        location.href = "final.html";
+      }
+    }, 1000);
+  }else{
+    setTimeout(()=>{
+    location.href = "result.html";
+    },1000);
+  }
+  }                           // 1. 주자 진루
   $("#playerList li").eq(0).remove();    // 2. 현재 타자 제거
   addPlayer();                           // 3. 다음 타자 배치
   nowHit = 1;
