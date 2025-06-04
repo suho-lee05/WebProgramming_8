@@ -36,10 +36,10 @@ let totalBrick;
 let nowPlayer = 0;
 let isDrawing = false;
 
-let hit1 = 50;
-let hit2 = 70;
-let hit3 = 90;
-let hit4 = 0;
+let hit1;
+let hit2;
+let hit3;
+let hit4;
 
 let goCount = 0;
 let brickDy = 0;
@@ -308,6 +308,7 @@ function initBar() {
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
   totalBrick = brickColumnCount * brickRowCount;
+   $("#barContainer").css({backgroundColor : "#A7DFFF"})
 }
 
 function storyEasy() {
@@ -318,9 +319,10 @@ function storyEasy() {
   dx = 3;
   dy = -3;
 
-  hit1 = 40;
-  hit2 = 60;
-  hit3 = 80;
+  var tmp = brickColumnCount * brickRowCount / 4 ;
+ hit1 = tmp * 3;
+  hit2 = tmp * 2;
+  hit3 = tmp * 1;
   goCount=0;
   brickDy = 0;
   
@@ -349,9 +351,10 @@ function storyNormal() {
   lives = 3;
   dx = 3;
   dy = -3;
-  hit1 = 50;
-  hit2 = 70;
-  hit3 = 90;
+  var tmp = brickColumnCount * brickRowCount / 4 ;
+  hit1 = tmp * 3;
+  hit2 = tmp * 2;
+  hit3 = tmp * 1;
   goCount=0;
   brickDy = 0;
 
@@ -377,10 +380,10 @@ function storyHard() {
   lives = 3;
   dx = 4;
   dy = -4;
-  hit1 = 60;
-  hit2 = 75;
-  hit3 = 90;
-
+  var tmp = brickColumnCount * brickRowCount / 4 ;
+ hit1 = tmp * 3;
+  hit2 = tmp * 2;
+  hit3 = tmp * 1;
   goCount=0;
   brickDy = 0;
 
@@ -403,9 +406,10 @@ function storyEndless() {
   lives = 3;
   dx = 5;
   dy = -5;
-  hit1 = 50;
-  hit2 = 70;
-  hit3 = 90;
+  var tmp = brickColumnCount * brickRowCount / 4 ;
+  hit1 = tmp * 3;
+  hit2 = tmp * 2;
+  hit3 = tmp * 1;
   generateOpponentScore("endless");
   
   initGameState();
@@ -813,12 +817,11 @@ function resetBallAndPaddle() {
 
 function decreaseBar() {
   const rate = (1 / (brickColumnCount * brickRowCount)) * 100;
-  bar += rate;
-
-  if (bar > hit1 && nowHit < 2) hitBlock(2);
-  else if (bar > hit2 && nowHit < 3) hitBlock(3);
-  else if (bar > hit3 && nowHit < 4) hitBlock(4);
-  else if (totalBrick == 0 ){
+  bar += rate * 4;
+  // if (bar > hit1 && nowHit < 2) hitBlock(2);
+  // else if (bar > hit2 && nowHit < 3) hitBlock(3);
+  // else if (bar > hit3 && nowHit < 4) hitBlock(4);
+  if (totalBrick == 0 || totalBrick == hit1 || totalBrick == hit2 || totalBrick == hit3 ){
     isPaused = true;
     const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
       selectedHomerunSound.currentTime = 0;
@@ -879,6 +882,29 @@ function getOnBase() {
     scoreSound.play();
   }
   // $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
+  if(totalBrick == hit2){
+    scores +=1;
+    $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+    addPlayer();                        // 3. 다음 타자 배치
+    $("#barContainer").css({backgroundColor : "#5CE1E6"})
+  }else if(totalBrick == hit3){
+    score+=2;
+    $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+    addPlayer();                        // 3. 다음 타자 배치
+    $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+    addPlayer();                        // 3. 다음 타자 배치
+    $("#barContainer").css({backgroundColor : "#FF9F1C"})
+  }else if(totalBrick == 0){
+    score+=3;
+        $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+    addPlayer();                        // 3. 다음 타자 배치
+        $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+    addPlayer();                        // 3. 다음 타자 배치
+        $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
+    addPlayer();                        // 3. 다음 타자 배치
+    $("#barContainer").css({backgroundColor : "#E63946"})
+  }
+
   $("#you").html(scores);
   
 
