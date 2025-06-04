@@ -14,7 +14,9 @@ let isHit = false;
 let runnerIndex = 0;
 let scores = 0;
 let OnBaseCount = 0;
-
+let rate1;
+let rate2 ;
+let homerunCount = 0;
 // 키 입력
 let rightPressed = false;
 let leftPressed = false;
@@ -199,6 +201,8 @@ function initGameState() {
   OnBaseCount = 0;
   score += 0;
   scores += 0;
+  rate1 = (1 / (brickColumnCount * brickRowCount)) * 100 * 4 * 100;
+  rate2 = rate1;
   // $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
   $("#opponent").html(totalOpponentScore);
 }
@@ -322,7 +326,7 @@ function storyEasy() {
   dy = -3;
 
   var tmp = brickColumnCount * brickRowCount / 4 ;
- hit1 = tmp * 3;
+  hit1 = tmp * 3;
   hit2 = tmp * 2;
   hit3 = tmp * 1;
   goCount=0;
@@ -356,9 +360,9 @@ function storyNormal() {
   dx = 3;
   dy = -3;
   var tmp = brickColumnCount * brickRowCount / 4 ;
- hit1 = tmp * 3;
-  hit2 = tmp * 2;
-  hit3 = tmp * 1;
+  hit1 = 22 ;
+  hit2 =  15;
+  hit3 =  7;
   goCount=0;
   stopCount=0;
   brickDy = 0;
@@ -376,6 +380,11 @@ function storyNormal() {
 
   initGameState();
   startGameLoopOnce();
+
+  
+  rate1 = 1250; // 12.5 * 100
+  rate2 = Math.round((1.0 / 7) * 10000); // 1429 (소수점 2자리까지 유지, 14.29%)
+
 }
 
 function storyHard() {
@@ -823,11 +832,11 @@ function resetBallAndPaddle() {
 }
 
 function decreaseBar() {
-  const rate = (1 / (brickColumnCount * brickRowCount)) * 100;
-  bar += rate * 4;
-  // if (bar > hit1 && nowHit < 2) hitBlock(2);
-  // else if (bar > hit2 && nowHit < 3) hitBlock(3);
-  // else if (bar > hit3 && nowHit < 4) hitBlock(4);
+  if (homerunCount % 2 == 0) {
+    bar += rate1; // 정수 1250
+  } else {
+    bar += rate2; // 정수 1429
+  }
   if (totalBrick == 0 || totalBrick == hit1 || totalBrick == hit2 || totalBrick == hit3 ){
     isPaused = true;
     const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
@@ -848,7 +857,12 @@ function decreaseBar() {
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
 
     $.when(h2, h3).then(function(){
+      if(totalBrick!=0){
       hitBlock(5);
+      }
+      else{
+        hitBlock(6);
+      }
       // goCount = 0;
       // brickDy = 0;
       // nowHit = 5;
@@ -869,8 +883,13 @@ function decreaseBar() {
   });
   }
 
-  $("#bar").css("width", bar.toFixed(1) + "%");
-  $("#barText").html("홈런까지 : " + bar.toFixed(1) + "%");
+   if (bar > 10000) {
+    bar = 10000;
+  }
+
+  let displayBar = (bar / 100).toFixed(1);
+  $("#bar").css("width", displayBar + "%");
+  $("#barText").html("홈런까지 : " + displayBar + "%");
 }
 
 //출루 관련 내부 로직
@@ -912,6 +931,7 @@ function getOnBase() {
     addPlayer();                        // 3. 다음 타자 배치
   }
 
+  console.log(scores);
   $("#you").html(scores);
   
 
@@ -961,7 +981,7 @@ function hitBlock(stat) {
       $("#hitImg1").attr("src", "img/homerun.png");
       break;
     case 6:
-       nowHit = 5;
+       nowHit = 6;
       $("#hitImg1").attr("src", "img/homerun.png");
       $("#gostop > div:first-child").hide(); // 고 버튼 숨기기
       break;
@@ -980,17 +1000,20 @@ function go() {
        bar = 0;
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
+  homerunCount++;
   }
   else if(totalBrick == hit2){
     $("#bar").css({backgroundColor : "#FF9F1C"});
            bar = 0;
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
+  homerunCount++;
   }else if(totalBrick == hit3){
         $("#bar").css({backgroundColor : "#E63946"});
               bar = 0;
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
+  homerunCount++;
   }
 
 }
