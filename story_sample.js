@@ -185,8 +185,30 @@ class Runner {
 
   setImg() {
     const num = playerList[nowPlayer].split(",")[0];
+    let nextNum = playerList[(nowPlayer+1)%9].split(",")[0];
+    let nextnextNum = playerList[(nowPlayer+2)%9].split(",")[0];
+    let prev = nowPlayer-1;
+    if(prev<0){
+      prev = 8;
+    }
+    let prevNum = playerList[prev%9].split(",")[0];
     $(`#runner${this.num}`).attr("src", `img/${num}piece.png`);
-    $("#batterImg").attr("src", `img/${num}uniform.png`);
+
+    let b1 = $("#previousBatter").animate({"left":"170px", "marginTop":"0px", "width":"100px", "height":"100px", "borderColor":"gray", "zIndex" :"1"},500).promise();
+    let b2 = $("#nextBatter").animate({"left":"75px", "marginTop":"20px", "width":"140px", "height":"140px", "borderColor":"purple", "zIndex" :"2"},500).promise();
+    let b3 = $("#batterImg").animate({"left":"20px", "marginTop":"0px", "width":"100px", "height":"100px", "borderColor":"gray","zIndex" :"1"},500).promise();
+
+    Promise.all([b1, b2, b3]).then(() => {
+        // 위치 초기화
+        $("#previousBatter").css({"left":"20px", "marginTop":"0px", "width":"100px", "height":"100px", "borderColor":"gray","zIndex" :"1"});
+        $("#nextBatter").css({ "left":"170px", "marginTop":"0px", "width":"100px", "height":"100px", "borderColor":"gray","zIndex" :"1"});
+        $("#batterImg").css({ "left":"75px", "marginTop":"20px", "width":"140px", "height":"140px", "borderColor":"purple" ,"zIndex" :"2"});
+
+        // 이미지 교체
+        $("#previousBatter").attr("src", `img/${prevNum}uniform.png`);
+        $("#batterImg").attr("src", `img/${num}uniform.png`);
+        $("#nextBatter").attr("src", `img/${nextNum}uniform.png`);
+    }); 
   }
 }
 
@@ -961,7 +983,7 @@ function decreaseBar() {
               $(this).css("color", "red");
             }
           });
-        }, 200);
+        }, 100);
     let h2 = $("#band1").animate({ left: 0 }, 8000).promise();
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
 
