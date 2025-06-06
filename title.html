@@ -109,12 +109,45 @@
         setHoverEffect(".mute");
         const clickSound = $("#click")[0];
 
-        $(".story").click(function() {
+        /*$(".story").click(function() {
 
             clickSound.currentTime = 0;
             clickSound.play().then(() => {
                 const difficulty = $(this).text().toLowerCase(); // easy, normal, hard, endless
                 localStorage.setItem("difficulty", difficulty);
+                setTimeout(() => {
+                    window.location.href = "scene.html";
+                }, 100);
+            });
+        });*/
+
+        $("#easy").click(function() {
+            clickSound.currentTime = 0;
+            clickSound.play().then(() => {
+                localStorage.setItem("difficulty", "easy");
+                localStorage.setItem("storyStep", "beginning");
+                setTimeout(() => {
+                    window.location.href = "scene.html";
+                }, 100);
+            });
+        });
+
+        $("#normal").click(function() {
+            clickSound.currentTime = 0;
+            clickSound.play().then(() => {
+                localStorage.setItem("difficulty", "normal");
+                localStorage.setItem("storyStep", "afterEasy");
+                setTimeout(() => {
+                    window.location.href = "scene.html";
+                }, 100);
+            });
+        });
+
+        $("#hard").click(function() {
+            clickSound.currentTime = 0;
+            clickSound.play().then(() => {
+                localStorage.setItem("difficulty", "hard");
+                localStorage.setItem("storyStep", "afterNormal");
                 setTimeout(() => {
                     window.location.href = "scene.html";
                 }, 100);
@@ -177,9 +210,9 @@
         <div id="lists">
             <ul class="menu">
                 <li class="listTitle">Story</li>
-                <li class="story">Easy</li>
-                <li class="story">Normal</li>
-                <li class="story">Hard</li>
+                <li id ="easy" class="story">Easy</li>
+                <li id = "normal" class="story">Normal</li>
+                <li id = "hard" class="story">Hard</li>
             </ul>
             <ul class="menu">
                 <li class="listTitle">Endless</li>

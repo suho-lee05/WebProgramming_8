@@ -118,6 +118,7 @@
                 $("#easy").click(()=>{
                     clickSound.currentTime = 0;
                     localStorage.setItem("difficulty", "easy");
+                    localStorage.setItem("storyStep", "beginning");
                     clickSound.play().then(() => {
                         setTimeout(() => {
                             window.location.href = "scene.html";
@@ -127,6 +128,7 @@
                 $("#normal").click(()=>{
                     clickSound.currentTime = 0;
                     localStorage.setItem("difficulty", "normal");
+                    localStorage.setItem("storyStep", "afterEasy");
                     clickSound.play().then(() => {
                         setTimeout(() => {
                             window.location.href = "scene.html";
@@ -136,6 +138,7 @@
                 $("#hard").click(()=>{
                     clickSound.currentTime = 0;
                     localStorage.setItem("difficulty", "hard");
+                    localStorage.setItem("storyStep", "afterNormal");
                     clickSound.play().then(() => {
                         setTimeout(() => {
                             window.location.href = "scene.html";
