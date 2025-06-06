@@ -564,6 +564,8 @@ function draw() {
       balls = 0;
       updateStrikeBallDisplay();
       isPaused = true;
+      rightPressed = false;
+      leftPressed = false;
       isEffecting = true;
       $("#outEvent").show();
       outSound.setTime = 0;
@@ -608,6 +610,8 @@ function draw() {
   }
   if (checkBricksAtBottom()) {
     isPaused = true;
+    rightPressed = false;
+    leftPressed = false;
     isEffecting = true;
       $("#outEvent").show();
       outSound.setTime = 0;
