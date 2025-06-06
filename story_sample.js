@@ -855,6 +855,7 @@ function collisionDetection() {
           //   balls++;
           //   console.log("볼: " + balls);
           //   updateStrikeBallDisplay();
+          decreaseBar();
           if(b.status === 5 || b.status ===6){
             items.push({
               x: b.x + brickWidth / 2,
@@ -864,12 +865,8 @@ function collisionDetection() {
           }else if (nowHit < b.status) {
             hitBlock(b.status); // 2~4: 루타 처리
           }
-
-          
-
           b.status = 0;
           totalBrick--;
-          decreaseBar();
           hit = true;
           break;
         }
@@ -968,7 +965,6 @@ function decreaseBar() {
         }, 100);
     let h2 = $("#band1").animate({ left: 0 }, 8000).promise();
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
-
     $.when(h2, h3).then(function(){
       if(totalBrick!=0){
       hitBlock(5);
