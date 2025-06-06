@@ -135,7 +135,7 @@ function initObstacles() {
     {
       x: 50,
       y: canvas.height / 2,
-      dx: 3,
+      dx: 2,
       width: 45,
       height: 45,
       img: outfieldImg
@@ -143,7 +143,7 @@ function initObstacles() {
     {
       x: canvas.width - 90,
       y: canvas.height / 2 + 60,
-      dx: -3,
+      dx: -2,
       width: 45,
       height: 45,
       img: infieldImg
@@ -970,6 +970,8 @@ function decreaseBar() {
   if (totalBrick == 0 || totalBrick == hit1 || totalBrick == hit2 || totalBrick == hit3 ){
     isPaused = true;
     isEffecting = true;
+    rightPressed = false; //홈런이펙트 시작하면 패들 못 움직이게
+    leftPressed = false;
     const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
       selectedHomerunSound.currentTime = 0;
       selectedHomerunSound.play();
@@ -1661,3 +1663,8 @@ window.onload = function() {
     case "endless": storyEndless(); break;
   }
 };
+
+window.addEventListener("blur",()=>{
+  rightPressed = false;
+  leftPressed = false;
+});
