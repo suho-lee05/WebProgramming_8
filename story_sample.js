@@ -1069,6 +1069,9 @@ function getOnBase() {
 function hitBlock(stat) {
   if (stat === 1) return;
 
+  rightPressed = false;
+  leftPressed = false;
+
   isHit = true;
   $("#hitContainer").animate({"bottom":"4px"},500);
 
@@ -1286,6 +1289,8 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     $("#ballEvent").show();
     isPaused = true; 
     isEffecting = true;
+    rightPressed = false;
+    leftPressed = false;
 
 requestAnimationFrame(() => {
   const $img = $("#ballEvent img");
@@ -1319,6 +1324,8 @@ requestAnimationFrame(() => {
 function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지 업데이트 해주는 함수입니다.
   isPaused = true;
   isEffecting = true;
+  rightPressed = false;
+  leftPressed = false;
   $("#outEvent").show();
   outSound.currentTime = 0;
   outSound.play();
@@ -1424,6 +1431,7 @@ document.addEventListener("keyup", (e) => {
 });
 
 function togglePause() { //togglePause 두개인데 지금 이거 쓰이고 있어요!
+
   clickSound.currentTime = 0;
   clickSound.play();
   isPaused = !isPaused;
@@ -1433,6 +1441,10 @@ function togglePause() { //togglePause 두개인데 지금 이거 쓰이고 있�
   $("#pauseSetting").css("display","none");
   if (pauseBtn) {
     pauseBtn.src = isPaused ? "img/UIBlock/resume.png" : "img/UIBlock/pause.png";
+  }
+  if (!isPaused) {
+    rightPressed = false;
+    leftPressed = false;
   }
 }
 
