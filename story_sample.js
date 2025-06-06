@@ -1608,7 +1608,10 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
   }
 
   musicNum=0;
-    $("#music").html(musicTitle[musicNum]);
+  $("#music").html(musicTitle[musicNum]);
+  $("#hitContainer").hide();
+  $("#hitContainer").css({ bottom: "600px", left: "0px" });
+  $("#hitContainer").show();
 
 });
 
