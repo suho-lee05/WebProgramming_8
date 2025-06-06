@@ -776,13 +776,13 @@ function drawBricks() {
   const offsetX = (canvas.width - totalWidth) / 2;
   if(currentDifficulty === "hard"){
           if(goCount===1){
-            brickDy += 0.1;
+            brickDy += 0.025;
           }
           else if(goCount===2){
-            brickDy += 0.4;
+            brickDy += 0.1;
           }
           else if(goCount===3){
-            brickDy += 0.7;
+            brickDy += 0.175;
           }
   }
   for (let c = 0; c < brickColumnCount; c++) {
