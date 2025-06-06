@@ -510,6 +510,7 @@ function draw() {
   drawPaddle();
   drawObstacles();
   collisionDetection();
+  detectObstacleCollision();
 
   // 공 이동
   x += dx;
@@ -873,73 +874,48 @@ function collisionDetection() {
     }
     if (hit) break;
   }
-  // 장애물 충돌
+  
+  
+}
+
+function detectObstacleCollision() {
   obstacles.forEach(obs => {
+    // 공의 현재 위치와 장애물의 경계
     const obsLeft = obs.x;
     const obsRight = obs.x + obs.width;
     const obsTop = obs.y;
     const obsBottom = obs.y + obs.height;
 
-    const ballNextX = x + dx;
-    const ballNextY = y + dy;
-    const ballLeft = ballNextX - ballRadius;
-    const ballRight = ballNextX + ballRadius;
-    const ballTop = ballNextY - ballRadius;
-    const ballBottom = ballNextY + ballRadius;
+    const ballLeft = x - ballRadius;
+    const ballRight = x + ballRadius;
+    const ballTop = y - ballRadius;
+    const ballBottom = y + ballRadius;
 
-    const isCollision = (
+    const isColliding = (
       ballRight > obsLeft &&
       ballLeft < obsRight &&
       ballBottom > obsTop &&
       ballTop < obsBottom
     );
 
-    if (isCollision) {
-      // 장애물 전용 효과음
-      const obstacleSound = new Audio("sound/obstacle.mp3");
-      obstacleSound.play();
-
-      const prevLeft = x - ballRadius;
-      const prevRight = x + ballRadius;
-      const prevTop = y - ballRadius;
-      const prevBottom = y + ballRadius;
-
-      let hitFrom = "";
-
-      if (prevBottom <= obsTop) hitFrom = "top";
-      else if (prevTop >= obsBottom) hitFrom = "bottom";
-      else if (prevRight <= obsLeft) hitFrom = "left";
-      else if (prevLeft >= obsRight) hitFrom = "right";
-
-      // 튕김 처리 및 위치 보정
-      if (hitFrom === "top" || hitFrom === "bottom") {
+    if (isColliding) {
+      // 단순히 dx 또는 dy만 반전 (우선 dy부터 처리)
+      if ((y < obsTop && dy > 0) || (y > obsBottom && dy < 0)) {
         dy = -dy;
-        y = hitFrom === "top"
-          ? obsTop - ballRadius - 1
-          : obsBottom + ballRadius + 1;
-      } else if (hitFrom === "left" || hitFrom === "right") {
-        // 각도 기반 반사
-        const angle = (45 * Math.PI) / 180; // 45도 대각선
-        const speed = Math.sqrt(dx * dx + dy * dy);
-        dx = hitFrom === "left" ? speed * Math.cos(angle) : -speed * Math.cos(angle);
-        dy = -speed * Math.sin(angle);
-
-        // 위치 보정: 장애물 옆으로 안전하게 밀어냄
-        x = hitFrom === "left"
-          ? obsLeft - ballRadius - 2
-          : obsRight + ballRadius + 2;
-
-        // y 보정도 살짝
-        y -= 1;
       } else {
-        // 대각선 불명확한 경우: 둘 다 반전
         dx = -dx;
-        dy = -dy;
       }
+
+      // 위치 보정: 공이 완전히 밖으로 밀리게
+      if (x < obsLeft) x = obsLeft - ballRadius;
+      if (x > obsRight) x = obsRight + ballRadius;
+      if (y < obsTop) y = obsTop - ballRadius;
+      if (y > obsBottom) y = obsBottom + ballRadius;
+
+    
     }
   });
 }
-
 
 function startGameLoopOnce() {
   if (!isDrawing) {
@@ -1664,7 +1640,7 @@ window.onload = function() {
   }
 };
 
-window.addEventListener("blur",()=>{
-  rightPressed = false;
-  leftPressed = false;
-});
+// window.addEventListener("blur",()=>{
+//   rightPressed = false;
+//   leftPressed = false;
+// });
