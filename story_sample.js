@@ -570,6 +570,7 @@ function draw() {
       $("#outEvent").show();
       outSound.setTime = 0;
       outSound.play();
+      stopCount++;
       let s1 = $("#blink1").animate({ top: 0 }, 800).promise();
       let s2 = $("#blink2").animate({ bottom: 0 }, 800).promise();
       let s3 = $("#outEvent p").slideDown(800).promise();
@@ -616,6 +617,7 @@ function draw() {
       $("#outEvent").show();
       outSound.setTime = 0;
       outSound.play();
+      stopCount++;
       let s1 = $("#blink1").animate({ top: 0 }, 800).promise();
       let s2 = $("#blink2").animate({ bottom: 0 }, 800).promise();
       let s3 = $("#outEvent p").slideDown(800).promise();
@@ -1089,6 +1091,7 @@ function hitBlock(stat) {
        nowHit = 6;
       $("#hitImg1").attr("src", "img/homerun.png");
       $("#gostop > div:first-child").hide(); // 고 버튼 숨기기
+      stopCount++;
       break;
     
   }
@@ -1277,6 +1280,7 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     $("#ballEvent img").css({ top: "70px", right: "70px", transform: "scale(1)" });
     $("#ballEvent div").hide();
     $("#ballEvent").show();
+    stopCount++;
     isPaused = true; 
     isEffecting = true;
     rightPressed = false;
@@ -1319,7 +1323,7 @@ function handleOut() {  //삼진아웃일때 아웃카운트 변경과 이미지
   $("#outEvent").show();
   outSound.currentTime = 0;
   outSound.play();
-
+  stopCount++;
   let s1 = $("#blink1").animate({ top: 0 }, 800).promise();
   let s2 = $("#blink2").animate({ bottom: 0 }, 800).promise();
   let s3 = $("#outEvent p").slideDown(800).promise();
