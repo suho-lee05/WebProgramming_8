@@ -772,17 +772,17 @@ function drawPaddle() {
 function drawBricks() {
   const totalWidth = brickColumnCount * (brickWidth + brickPadding) - brickPadding;
   const offsetX = (canvas.width - totalWidth) / 2;
-  // if(currentDifficulty === "hard"){
-  //         if(goCount===1){
-  //           brickDy += 0.1;
-  //         }
-  //         else if(goCount===2){
-  //           brickDy += 0.4;
-  //         }
-  //         else if(goCount===3){
-  //           brickDy += 0.7;
-  //         }
-  // }
+  if(currentDifficulty === "hard"){
+          if(goCount===1){
+            brickDy += 0.1;
+          }
+          else if(goCount===2){
+            brickDy += 0.4;
+          }
+          else if(goCount===3){
+            brickDy += 0.7;
+          }
+  }
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
       const b = bricks[c][r];
@@ -855,6 +855,8 @@ function collisionDetection() {
           //   balls++;
           //   console.log("볼: " + balls);
           //   updateStrikeBallDisplay();
+
+            totalBrick--;
           decreaseBar();
           if(b.status === 5 || b.status ===6){
             items.push({
@@ -866,7 +868,6 @@ function collisionDetection() {
             hitBlock(b.status); // 2~4: 루타 처리
           }
           b.status = 0;
-          totalBrick--;
           hit = true;
           break;
         }
@@ -965,6 +966,7 @@ function decreaseBar() {
         }, 100);
     let h2 = $("#band1").animate({ left: 0 }, 8000).promise();
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
+
     $.when(h2, h3).then(function(){
       if(totalBrick!=0){
       hitBlock(5);
@@ -1028,13 +1030,13 @@ function getOnBase() {
     $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
   }else if(totalBrick == hit3){
-    score+=2;
+    scores+=2;
     $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
     $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
   }else if(totalBrick == 0){
-    score+=3;
+    scores+=3;
         $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
     addPlayer();                        // 3. 다음 타자 배치
         $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
