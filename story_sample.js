@@ -929,7 +929,7 @@ function resetBallAndPaddle() {
   y = canvas.height - 30;
   // 난이도에 맞게 공 dx, dy 설정.
   switch (currentDifficulty) {
-    case "easy": dx = 2; dy = -2; break;
+    case "easy": dx = 3; dy = -3; break;
     case "normal": dx = 3; dy = -3; break;
     case "hard": dx = 4; dy = -4; break;
     case "endless": dx = 5; dy = -5; break;
