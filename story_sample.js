@@ -1587,6 +1587,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
   clickSound.play();
   scores = 0;
   lives = 3;
+  totalOpponentScore = 0;
   nowPlayer = 0;
   nowHit=1;
   OnBaseCount = 0;
