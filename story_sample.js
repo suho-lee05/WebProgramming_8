@@ -1027,22 +1027,10 @@ function getOnBase() {
 
   if(totalBrick == hit2){
     scores +=1;
-    $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-    addPlayer();                        // 3. 다음 타자 배치
   }else if(totalBrick == hit3){
     scores+=2;
-    $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-    addPlayer();                        // 3. 다음 타자 배치
-    $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-    addPlayer();                        // 3. 다음 타자 배치
   }else if(totalBrick == 0){
     scores+=3;
-        $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-    addPlayer();                        // 3. 다음 타자 배치
-        $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-    addPlayer();                        // 3. 다음 타자 배치
-        $("#playerList li").eq(0).remove(); // 2. 현재 타자 제거
-    addPlayer();                        // 3. 다음 타자 배치
   }
 
   console.log(scores);
