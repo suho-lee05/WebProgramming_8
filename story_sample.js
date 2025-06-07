@@ -135,7 +135,7 @@ function initObstacles() {
     {
       x: 50,
       y: canvas.height / 2,
-      dx: 2,
+      dx: 2.5,
       width: 45,
       height: 45,
       img: outfieldImg
@@ -143,7 +143,7 @@ function initObstacles() {
     {
       x: canvas.width - 90,
       y: canvas.height / 2 + 60,
-      dx: -2,
+      dx: -2.5,
       width: 45,
       height: 45,
       img: infieldImg
@@ -423,8 +423,8 @@ function storyNormal() {
   brickRowCount = 5;
   brickColumnCount = 6;
   lives = 3;
-  dx = 3;
-  dy = -3;
+  dx = 4;
+  dy = -4;
   var tmp = brickColumnCount * brickRowCount / 4 ;
   hit1 = 22 ;
   hit2 =  15;
