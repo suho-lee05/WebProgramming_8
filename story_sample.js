@@ -275,6 +275,19 @@ function initGameState() {
 }
 
 function initBall() {
+  if(currentDifficulty=="easy"){
+    dx = 3;
+    dy = -3;
+  }else if(currentDifficulty=="normal"){
+    dx = 4;
+    dy = -4;
+  }else if(currentDifficulty=="hard"){
+    dx = 3;
+    dy = -3;
+  }else{
+    dx = 4;
+    dy = -4;
+  }
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
   x = canvas.width / 2;
