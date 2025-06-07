@@ -1576,7 +1576,9 @@ document.querySelector(".resumeBtn").addEventListener("click", () => {
   clickSound.currentTime = 0;
   clickSound.play();
   isPaused = false;
+  isEscLocked = false;
   document.getElementById('pause').classList.add('hidden');
+  
 });
 
 document.querySelector(".homeBtn").addEventListener("click", () => {
