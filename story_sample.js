@@ -135,7 +135,7 @@ function initObstacles() {
     {
       x: 50,
       y: canvas.height / 2,
-      dx: 2,
+      dx: 2.5,
       width: 45,
       height: 45,
       img: outfieldImg
@@ -143,7 +143,7 @@ function initObstacles() {
     {
       x: canvas.width - 90,
       y: canvas.height / 2 + 60,
-      dx: -2,
+      dx: -2.5,
       width: 45,
       height: 45,
       img: infieldImg
@@ -486,8 +486,8 @@ function storyHard() {
 function storyEndless() {
   currentDifficulty = "endless";
   lives = 3;
-  dx = 3;
-  dy = -3;
+  dx = 4;
+  dy = -4;
   var tmp = brickColumnCount * brickRowCount / 4 ;
   hit1 = tmp * 3;
   hit2 = tmp * 2;
@@ -940,9 +940,9 @@ function resetBallAndPaddle() {
   // 난이도에 맞게 공 dx, dy 설정.
   switch (currentDifficulty) {
     case "easy": dx = 3; dy = -3; break;
-    case "normal": dx = 3; dy = -3; break;
-    case "hard": dx = 4; dy = -4; break;
-    case "endless": dx = 5; dy = -5; break;
+    case "normal": dx = 4; dy = -4; break;
+    case "hard": dx = 3; dy = -3; break;
+    case "endless": dx = 4; dy = -4; break;
   }
   paddleX = (canvas.width - paddleWidth) / 2;
 }
