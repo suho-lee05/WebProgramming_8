@@ -150,6 +150,8 @@ function initObstacles() {
     }
   ];
 }
+//2025-06-07 작업
+let isEscLocked = false; // ESC 눌렀는지 여부
 
 let isMuted = false;
 
@@ -1429,6 +1431,7 @@ function togglePause() { //togglePause 두개인데 지금 이거 쓰이고 있�
   clickSound.currentTime = 0;
   clickSound.play();
   isPaused = !isPaused;
+  isEscLocked = isPaused; // 일시정지 상태면 ESC 락 활성화
   const pauseMenu = document.getElementById('pause');
   const pauseBtn = document.getElementById('pauseBtn');
   pauseMenu.classList.toggle('hidden', !isPaused);
@@ -1619,24 +1622,50 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
 
 });
 
-document.addEventListener("keydown", function (e) {
-  if(isEffecting) return;
-  const key = e.key.toLowerCase();
-  if (isHit) {
 
-    if(nowHit == 6){
-      if(key == "s"){
-          stop();
-      }
+// document.addEventListener("keydown", function (e) {
+//   if(isEffecting) return;
+//   const key = e.key.toLowerCase();
+//   if (isHit) {
+
+//     if(nowHit == 6){
+//       if(key == "s"){
+//           stop();
+//       }
+//     }
+//     else{
+//       if (key === "g") {
+//         go();
+//       } else if (key === "s") {
+//         stop();
+//       }
+//     }
+//   }
+// });
+
+document.addEventListener("keydown", function (e) {
+  if (isEffecting) return;
+
+  const key = e.key.toLowerCase();
+
+  if (isHit) {
+    if (isEscLocked && (key === "g" || key === "s")) {
+      e.preventDefault();
+      return;
     }
-    else{
-      if (key === "g") {
-        go();
-      } else if (key === "s") {
-        stop();
-      }
+
+    if (nowHit === 6 && key === "s") {
+      stop();
+    } else if (key === "g") {
+      go();
+    } else if (key === "s") {
+      stop();
     }
   }
+
+  // if (key === "escape") {
+  //   togglePause(); // ← 메뉴 열기
+  // }
 });
 
 
@@ -1648,7 +1677,33 @@ window.onload = function() {
     case "hard": storyHard(); break;
     case "endless": storyEndless(); break;
   }
+  $("#goBtn").on("click", function (e) {
+    if (isEscLocked || isEffecting) {
+      e.preventDefault();
+      return;
+    }
+    go();
+  });
+
+  $("#stopBtn").on("click", function (e) {
+    if (isEscLocked || isEffecting) {
+      e.preventDefault();
+      return;
+    }
+    stop();
+  });
+
+  $("#pauseBtn").on("click", function (e) {
+    if (isEffecting) {
+      console.log("ESC 버튼 클릭 차단됨: 이펙트 중");
+      e.preventDefault();
+      return;
+    }
+    togglePause();
+  });
 };
+
+
 
 // window.addEventListener("blur",()=>{
 //   rightPressed = false;

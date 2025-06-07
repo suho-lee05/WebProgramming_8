@@ -803,8 +803,8 @@
               <img id="hitImg1" src="img/1basehit.png" >
               <img id="hitImg2" src="img/17profile.png">
               <div id="gostop">
-                  <div onclick="go()">GO</div>
-                  <div onclick="stop()">STOP</div>
+                  <div id = "goBtn">GO</div>
+                  <div id = "stopBtn">STOP</div>
               </div>
             </div>
             <p class = "pressMessage">Press 'G' to go, 'S' to stop.</p>
@@ -828,7 +828,7 @@
           </div>
 
           <div id="menu" style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 10;">
-            <button id="pauseBar" onclick="togglePause()">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>
+            <button id="pauseBar">ESC : <img src="img\UIBlock\pause.png" width="30px" id="pauseBtn"></button>
           </div>
 
           <div id="pause" class="hidden pauseset pause-menu">
