@@ -116,7 +116,7 @@ let items = []; // 블록에서 떨어지는 아이템들을 저장하는 배열
 function drawObstacles() {
   obstacles.forEach(obs => {
     obs.x += obs.dx;
-    if (obs.x < 0 || obs.x + obs.width > canvas.width) {
+    if (obs.x < 25 || obs.x + obs.width > canvas.width-25) {
       obs.dx *= -1; // 화면 벗어나면 반전
     }
     ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
