@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         *{
@@ -34,7 +35,7 @@
         #left{
             height:580px;
             width: 300px;
-            background-color: blue;
+            background-color: #a6224e;
             position:absolute;
             left:0;
             padding:10px;
@@ -59,10 +60,31 @@
             height: 260px;
             background-color: green;
             border-radius: 10px;
+            position:relative;
+        }
+
+        #stadiumFront{
+            width: 260px;
+            height: 260px;
+            z-index:2;
+            position:absolute;
+            border-radius: 10px;
+            top:0px;
+            right:0px;
+        }
+
+        #stadiumBack{
+            width: 260px;
+            height: 260px;
+            z-index:1; 
+            position:absolute;
+            border-radius: 10px;
+            top:0px;
+            right:0px; 
         }
 
         #showResult{
-            font-family: 'Bangers';
+            font-family: 'Oswald';
             width:260px;
             height:300px;
             border-top:4px solid red;
@@ -93,20 +115,27 @@
         #menu{
             width: 200px;;
             align-items: center;
-            color:blue;
+            color:black;
+        }
+        ul{
+            margin: 30px 0;
         }
         .header{
-            font-family: 'Bangers';
-            font-size:50px;
+            font-family: 'Oswald';
+            font-size:35px;
             margin-bottom: 10px;
         }
         .header~li{
-            font-family: 'Bangers';
-            font-size:30px;
+            font-family: 'Oswald';
+            font-size:27px;
         }
         li {
             height: 40px;
             width: 200px;
+        }
+        #exit,#main{
+            font-family: 'Oswald';
+            font-size:27px;
         }
     </style>
     <script>
@@ -171,8 +200,7 @@
                 function setHoverEffect(selector) {
                 $(selector).mouseover(function() {
                     $(this).css({
-                        "color": "red",
-                        "font-size": "40px",
+                        "color": "blue",
                         "cursor": "pointer"
                     });
                 }).mouseout(function() {
@@ -196,7 +224,10 @@
     <div class = "container">
         <div id="left">
             <div id="board">
-                <img id="stadium" src="img/stadium.png">
+                <div id = "stadium">
+                    <img class = "stadium" id="stadiumFront" src="img/stadium.png" alt="stadium">
+                    <img class = "stadium" id = "stadiumBack" src = "img/stadiumBack.png">
+                </div>
                 <div id = "showResult">
                     <p>You</p>
                     <p>Lose!</p>
@@ -219,7 +250,6 @@
                     <li id = "arcade">PLAY BALL!</li>
                 </ul>
                 <ul>
-                    <li class = "header"><br></li>
                     <li id = "main">MAIN</li>
                     <li id = "exit">EXIT</li>
                 </ul>
