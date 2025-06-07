@@ -5,6 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
@@ -23,7 +24,7 @@
             height: 600px;
             border: 1px solid black;
             overflow: hidden;
-            background-image: url("img/mainBackground2.png");
+            background-image: url("img/mainBackground3.png");
             background-size: cover;
             background-position: center;
         }
@@ -39,19 +40,27 @@
             margin-top : 170px;
             width: 450px;
             display: flex;
+            position:absolute;
+            bottom:200px;
         }
         .listTitle {
-            font-family: 'Bangers';
+            font-family: 'Oswald';
             font-size: 50px;
-            color: blue;
+            color: white;
+            margin-bottom: 20px;
         }
         .menu {
-            font-family: 'Bangers';
+            font-family: 'Oswald';
             font-size: 30px;
-            color: blue;
+            color: white;
+            position: relative;
+            width:200px;
+            height:200px;
         }
         .mute {
-            color: gray;
+            background-color: white;
+            border-radius:50%;
+            margin-top:7px;
         }
         #settingScreen {
             display: none;
@@ -73,11 +82,38 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         #title {
-            font-family: 'Bangers';
-            font-size: 80px;
-            color: black;
+            font-family: 'Oswald';
+            font-size: 100px;
+            font-weight:bold;
+            color: white;
             text-align: center;
             margin-top: 20px;
+        }
+        #volumeControl{
+            -webkit-appearance: none;
+            width:150px;
+            height:10px;
+            border-radius:4px;
+            background: linear-gradient(to right, white 0%, #ddd 50%);
+            outline:none;
+            position:absolute;
+            top:195px;
+            right:0px;
+        }
+
+        #volumeControl::-webkit-slider-runnable-track{
+            height:10px;
+            background:transparent;
+        }
+
+        #volumeControl::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            appearance:none;
+            width:20px;
+            height:20px;
+            background: url("img/noOut.png");
+            border-radius:50%;
+            margin-top: -5px;
         }
     </style>
     <script>
@@ -85,8 +121,8 @@
         function setHoverEffect(selector) {
             $(selector).mouseover(function() {
                 $(this).css({
-                    "color": "red",
-                    "font-size": "40px",
+                    "color": "blue",
+                    //"font-size": "40px",
                     "cursor": "pointer"
                 });
             }).mouseout(function() {
@@ -176,24 +212,37 @@
             }
         });
         let isMuted = true;
-        $(".mute").click(function() {
+
+        $(".mute").on("click", function(){
+            if($(this).attr("src") == "./img/UIBlock/sound.png"){
+                $(this).attr("src","./img/UIBlock/mute.png");
+                volume = $("#volumeControl").val();
+                bgm.muted = true;
+            }else{
             clickSound.currentTime = 0;
             clickSound.play();
-            isMuted = !isMuted;
-            if (!isMuted) {
-                $(".mute").css("color", "blue");
-                $("#bgm").prop("muted", false);
-                $("#bgm")[0].play();
-            } else {
-                $(".mute").css("color", "gray");
-                $("#bgm").prop("muted", true);
-                $("#bgm")[0].pause();
+            $(this).attr("src","./img/UIBlock/sound.png");
+            bgm.muted = false;
+            bgm.play();
+            clickSound.muted = false;
             }
         });
         const bgm = $("#bgm")[0];
-        $("#volumeControl").on("input", function() {
-            bgm.volume = $(this).val();
-        });
+    $("#volumeControl").on("input", function(){
+        updateSliderBackground(this);
+            const vol = parseFloat($(this).val());
+            bgm.volume = vol;
+            clickSound.volume = vol;
+
+            if (vol === 0) {
+                $(".mute").attr("src", "./img/UIBlock/mute.png");
+            } else {
+                $(".mute").attr("src", "./img/UIBlock/sound.png");
+                bgm.muted = false;
+                bgm.play();
+                clickSound.muted = false;
+            }
+    });
     });
         window.onload = function() {
             const bgm = document.getElementById("bgm");
@@ -202,6 +251,17 @@
             const bestScore = localStorage.getItem("bestScore") || "0";
             $("#bestScore").text("Your Best : " + bestScore);
         };
+
+    function updateSliderBackground(el) {
+        const value = el.value;
+        const min = el.min || 0;
+        const max = el.max || 100;
+        const percent = ((value - min) / (max - min)) * 100;
+
+        el.style.background = `linear-gradient(to right, white ${percent}%, #ddd ${percent}%)`;
+    }
+
+    updateSliderBackground(volumeSlider);
     </script>
 </head>
 <body>
@@ -219,11 +279,13 @@
                 <li id="bestScore">Your Best : </li>
                 <li id="endless">Play Ball!</li>
                 <!-- <li class="settings">Settings</li> -->
-                <li class="mute">Title BGM</li>
+                 <!--<div class="mute">Title BGM</div>-->
                 <audio id="bgm" src="sound/hitNrun.mp3"></audio>
                 <audio id = "click" src = "sound/click.mp3" preload = "auto"></audio>
-                vol: <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+                <img class = "mute" src = "img/UIBlock/mute.png">
+                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0">
             </ul>
+            
         </div>
     </div>
 </body>
