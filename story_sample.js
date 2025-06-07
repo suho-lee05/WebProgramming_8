@@ -267,6 +267,7 @@ function initGameState() {
   OnBaseCount = 0;
   score += 0;
   scores += 0;
+  homerunCount = 0;
   rate1 = (1 / (brickColumnCount * brickRowCount)) * 100 * 4 * 100;
   rate2 = rate1;
   // $("#stadium-container p:nth-of-type(1)").html("OPPONENT: " + opponentScore);
@@ -412,7 +413,6 @@ function storyEasy() {
   $("#S").empty();
   $("#B").empty();
 
-
   initGameState();
   startGameLoopOnce();
 }
@@ -468,7 +468,6 @@ function storyHard() {
   goCount=0;
   stopCount=0;
   brickDy = 0;
-
   $("#number").html("9");
   
   $("#O").empty();
@@ -1131,18 +1130,17 @@ function go() {
   }
   else if(totalBrick == hit2){
     $("#bar").css({backgroundColor : "#FF9F1C"});
-           bar = 0;
+    bar = 0;
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
   homerunCount++;
   }else if(totalBrick == hit3){
-        $("#bar").css({backgroundColor : "#E63946"});
-              bar = 0;
+    $("#bar").css({backgroundColor : "#E63946"});
+    bar = 0;
   $("#bar").css("width", bar + "%");
   $("#barText").html("홈런까지 : " + bar + "%");
   homerunCount++;
   }
-
 }
 
 function stop() {
@@ -1155,13 +1153,13 @@ function stop() {
   isHit = false;
   brickDy = 0;
   isPaused = false;
+  homerunCount = 0;
   items = [];
   $("#gostop > div:first-child").show();
   $("#hitContainer").animate(
   { bottom: "4px", left: "800px"},500,function () {
     $(this).css({ bottom: "600px", left: "0px" });
   }
-  
   );
   getOnBase();
   goCount=0;
