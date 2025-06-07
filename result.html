@@ -196,6 +196,7 @@
                 $("#exit").click(()=>{
                     clickSound.currentTime = 0;
                     clickSound.play();
+                    window.location.href = "about:blank";
                 });
                 function setHoverEffect(selector) {
                 $(selector).mouseover(function() {
