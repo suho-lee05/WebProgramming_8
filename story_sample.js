@@ -178,7 +178,12 @@ class Runner {
       $(`#runner${this.num}`).hide();
       OnBaseCount--;
       this.pos = 0;
-      return 1;
+      if(goCount!=0){
+        return 2;
+      }
+      else{
+        return 1;
+      }
     }
     $(`#runner${this.num}`).css(positions[this.pos]).show();
     OnBaseCount++;
@@ -970,7 +975,7 @@ function decreaseBar() {
         }, 100);
     let h2 = $("#band1").animate({ left: 0 }, 8000).promise();
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
-
+    nowHit= 5;
     $.when(h2, h3).then(function(){
       if(totalBrick!=0){
       hitBlock(5);
@@ -1030,11 +1035,23 @@ function getOnBase() {
   // $("#stadium-container p:nth-of-type(2)").html("YOU: " + scores);
 
   if(totalBrick == hit2){
-    scores +=1;
+    if(goCount!=0){
+      scores+=2;
+    }else{
+      scores +=1;
+    }
   }else if(totalBrick == hit3){
-    scores+=2;
+        if(goCount!=0){
+      scores+=4;
+    }else{
+      scores +=2;
+    }
   }else if(totalBrick == 0){
-    scores+=3;
+    if(goCount!=0){
+      scores+=6;
+    }else{
+      scores +=3;
+    }
   }
 
   console.log(scores);
@@ -1136,7 +1153,6 @@ function stop() {
   $("#B").empty();
   $("#S").empty();
   isHit = false;
-  goCount=0;
   brickDy = 0;
   isPaused = false;
   items = [];
@@ -1148,6 +1164,7 @@ function stop() {
   
   );
   getOnBase();
+  goCount=0;
   if(stopCount==9){
     if (scores > totalOpponentScore) {
     setTimeout(() => {
