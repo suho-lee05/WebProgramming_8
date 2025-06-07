@@ -1277,7 +1277,7 @@ function generateOpponentScore(difficulty) {
 
 function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수입니다.
 
-  $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
+  //$("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
 
   if (strikes >= 3) {
     console.log("삼진 아웃!");
@@ -1288,7 +1288,7 @@ function updateStrikeBallDisplay() {  //스트라이크 볼 판정 관련 함수
     $("#B").empty();
     $("#S").empty();
     handleOut();
-    $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
+    //$("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
     return;
   }
 
@@ -1320,7 +1320,7 @@ requestAnimationFrame(() => {
         isPaused = false;
         isEffecting = false;
         walk();
-        $("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
+        //$("#countDisplay").text(`S: ${strikes} | B: ${balls}`);
         
       }, 2000);
         
