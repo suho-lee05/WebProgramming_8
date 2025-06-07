@@ -864,7 +864,7 @@ function collisionDetection() {
           //   console.log("볼: " + balls);
           //   updateStrikeBallDisplay();
 
-            totalBrick--;
+          totalBrick--;
           decreaseBar();
           if(b.status === 5 || b.status ===6){
             items.push({
@@ -958,6 +958,7 @@ function decreaseBar() {
     isEffecting = true;
     rightPressed = false; //홈런이펙트 시작하면 패들 못 움직이게
     leftPressed = false;
+    nowHit= 5;
     const selectedHomerunSound = homerunSounds[Math.floor(Math.random() * homerunSounds.length)];
       selectedHomerunSound.currentTime = 0;
       selectedHomerunSound.play();
@@ -974,7 +975,7 @@ function decreaseBar() {
         }, 100);
     let h2 = $("#band1").animate({ left: 0 }, 8000).promise();
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
-    nowHit= 5;
+
     $.when(h2, h3).then(function(){
       if(totalBrick!=0){
       hitBlock(5);
@@ -1605,7 +1606,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
   OnBaseCount = 0;
   runnerIndex = 0;
   isPaused = false;
-
+  isEscLocked = false;
   for (let i = 1; i <= 3; i++) {
     $(`#out${i}`).attr("src", "img/noOut.png");
   }
@@ -1693,7 +1694,7 @@ window.onload = function() {
     case "endless": storyEndless(); break;
   }
   $("#goBtn").on("click", function (e) {
-    if (isEscLocked || isEffecting) {
+    if (isEscLocked || isEffecting) {``
       e.preventDefault();
       return;
     }
