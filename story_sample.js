@@ -968,7 +968,8 @@ function decreaseBar() {
   }
   if (totalBrick == 0 || totalBrick == hit1 || totalBrick == hit2 || totalBrick == hit3 ){
     isPaused = true;
-    isEffecting = true;
+    if(totalBrick == 0){
+      isEffecting =true;
     rightPressed = false; //홈런이펙트 시작하면 패들 못 움직이게
     leftPressed = false;
     nowHit= 5;
@@ -990,12 +991,8 @@ function decreaseBar() {
     let h3 = $("#band2").animate({ right: 0 }, 8000).promise();
 
     $.when(h2, h3).then(function(){
-      if(totalBrick!=0){
-      hitBlock(5);
-      }
-      else{
+      if(totalBrick==0){
         hitBlock(6);
-      }
       // goCount = 0;
       // brickDy = 0;
       // nowHit = 5;
@@ -1015,9 +1012,14 @@ function decreaseBar() {
       });
       // isPaused = false;
       // isHit = false;
-    });
+    }
+      });
   });
   }
+  if(totalBrick!=0){
+    hitBlock(5);
+  }
+}
 
    if (bar > 10000) {
     bar = 10000;
