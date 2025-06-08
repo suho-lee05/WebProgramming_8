@@ -212,9 +212,9 @@ class Runner {
         $("#batterImg").css({ "left":"75px", "marginTop":"20px", "width":"140px", "height":"140px", "borderColor":"purple" ,"zIndex" :"2"});
 
         // 이미지 교체
-        $("#previousBatter").attr("src", `img/${prevNum}uniform.png`);
-        $("#batterImg").attr("src", `img/${num}uniform.png`);
-        $("#nextBatter").attr("src", `img/${nextNum}uniform.png`);
+        $("#previousBatter").attr("src", `img/${prevNum}uniform.jpg`);
+        $("#batterImg").attr("src", `img/${num}uniform.jpg`);
+        $("#nextBatter").attr("src", `img/${nextNum}uniform.jpg`);
     }); 
   }
 }
@@ -384,7 +384,7 @@ function initPlayer() {
     const [num, name] = p.split(",");
     $("#playerList").append(`<li><span>${num}</span> ${name}</li>`);
   });
-  $("#batterImg").attr("src", `img/51uniform.png`);
+  $("#batterImg").attr("src", `img/51uniform.jpg`);
   $("#runner1").attr("src", `img/51piece.png`).css({ top: positions[0].top, left: positions[0].left }).show();
 }
 
@@ -1103,7 +1103,7 @@ function hitBlock(stat) {
 
   const [num] = playerList[nowPlayer].split(",");
 
-  $("#hitImg2").attr("src", `img/${num}profile.png`);
+  $("#hitImg2").attr("src", `img/${num}profile.jpg`);
   switch (stat) {
     case 2:
       $("#hitImg1").attr("src", "img/1basehit.png");
@@ -1224,7 +1224,7 @@ function addPlayer() {
   runner.setImg();
   $(`#runner${runner.num}`).css(positions[0]).show();
 
-  $("#betterImg").attr("src", `img/${num}uniform.png`);
+  $("#betterImg").attr("src", `img/${num}uniform.jpg`);
 }
 
 function showBlockMessage(message, colorClass) {
