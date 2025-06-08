@@ -219,38 +219,6 @@ class Runner {
   }
 }
 
-// class Runner {
-//   constructor(num) {
-//     this.num = num;
-//     this.pos = 0;
-//   }
-
-//   async getOnBase(h) {
-//     for (let i = 0; i < h; i++) {
-//       this.pos++;
-
-//       if (this.pos > 3) {
-//         await sleep(300); // 마지막 움직임도 살짝 보여주기 위해 잠깐 대기
-//         $(`#runner${this.num}`).hide();
-//         OnBaseCount--;
-//         this.pos = 0;
-//         return 1;
-//       }
-
-//       $(`#runner${this.num}`).css(positions[this.pos]).show();
-//       await sleep(500); // 각 이동 사이 간격
-//     }
-
-//     OnBaseCount++;
-//     return 0;
-//   }
-
-//   setImg() {
-//     const num = playerList[nowPlayer].split(",")[0];
-//     $(`#runner${this.num}`).attr("src", `img/${num}piece.png`);
-//     $("#batterImg").attr("src", `img/${num}uniform.png`);
-//   }
-// }
 
 
 const runners = [new Runner(1), new Runner(2), new Runner(3), new Runner(4)];
@@ -298,43 +266,7 @@ function initPaddle() {
   paddleX = (canvas.width - paddleWidth) / 2;
 }
 
-// ==== 블록 초기화 함수 수정 ====
-// function initBricks() {
-//   const total = brickRowCount * brickColumnCount;
 
-//   const statusCounts = blockCountByStatus[currentDifficulty];
-//   const totalSpecial = statusCounts[2] + statusCounts[3] + statusCounts[4];
-//   const remaining = total - totalSpecial;
-
-//   // status 배열 구성 (주의: 1은 일반 블록, 2~4는 루타 블록)
-//   const statusList = [];
-
-//   for (let i = 0; i < statusCounts[2]; i++) statusList.push(2); // 1루타
-//   for (let i = 0; i < statusCounts[3]; i++) statusList.push(3); // 2루타
-//   for (let i = 0; i < statusCounts[4]; i++) statusList.push(4); // 3루타
-//   for (let i = 0; i < statusCounts[5]; i++) statusList.push(5); // 3루타
-//   for (let i = 0; i < statusCounts[6]; i++) statusList.push(6); // 3루타
-//   for (let i = 0; i < remaining; i++)     statusList.push(1); // 일반 블록
-
-//   // 셔플
-//   for (let i = statusList.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [statusList[i], statusList[j]] = [statusList[j], statusList[i]];
-//   }
-
-//   // 블록 생성
-//   let index = 0;
-//   for (let c = 0; c < brickColumnCount; c++) {
-//     bricks[c] = [];
-//     for (let r = 0; r < brickRowCount; r++) {
-//       bricks[c][r] = {
-//         x: 0,
-//         y: 0,
-//         status: statusList[index++] // 0~4
-//       };
-//     }
-//   }
-// }
 
 function initBricks() { //2025-06-02 브릭 status 6까지 추가 해서 수정한 함수
   const total = brickRowCount * brickColumnCount;
@@ -725,39 +657,6 @@ function updateItems() {
   }
 }
 
-
-// function updateItems() {
-//   const itemSpeed = 3;
-
-//   for (let i = items.length - 1; i >= 0; i--) {
-//     const item = items[i];
-//     item.y += itemSpeed;
-
-//     // 패들과 충돌
-//     if (
-//       item.y >= canvas.height - paddleHeight &&
-//       item.x > paddleX &&
-//       item.x < paddleX + paddleWidth
-//     ) {
-//       handleItemEffect(6);  //볼 판정정
-//       items.splice(i, 1);
-//     }
-//     // 바닥에 닿았을 때
-//     else if (item.y > canvas.height) {
-//       handleItemEffect(5);  // 스트라이크 판정 
-//       items.splice(i, 1);
-//     }
-//   }
-// }
-
-// function handleItemEffect(type) {
-//   if (type === 5) {  // 스트라이크
-//     strikes++;
-//   } else if (type === 6) {  // 볼
-//     balls++;
-//   }
-//   updateStrikeBallDisplay();
-// }
 
 
 function checkBricksAtBottom() {
@@ -1656,25 +1555,7 @@ document.querySelector(".replayBtn").addEventListener("click", () => {
 });
 
 
-// document.addEventListener("keydown", function (e) {
-//   if(isEffecting) return;
-//   const key = e.key.toLowerCase();
-//   if (isHit) {
 
-//     if(nowHit == 6){
-//       if(key == "s"){
-//           stop();
-//       }
-//     }
-//     else{
-//       if (key === "g") {
-//         go();
-//       } else if (key === "s") {
-//         stop();
-//       }
-//     }
-//   }
-// });
 
 document.addEventListener("keydown", function (e) {
   if (isEffecting) return;
@@ -1736,9 +1617,3 @@ window.onload = function() {
   });
 };
 
-
-
-// window.addEventListener("blur",()=>{
-//   rightPressed = false;
-//   leftPressed = false;
-// });
